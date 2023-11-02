@@ -1,0 +1,66 @@
+[libos]
+entrypoint = "{{ appname }}"
+
+[loader]
+entrypoint = "file:{{ libos }}"
+log_level = "error"
+# argv0_override = "{{ appname }}"
+insecure__use_cmdline_argv = true
+
+[sys]
+insecure__allow_eventfd = true
+stack.size = "128M"
+brk.max_size = "128M"
+
+[loader.env]
+LD_LIBRARY_PATH = "/lib:/lib/x86_64-linux-gnu"
+{# Without this, Glibc would allocate a 64MB ARENA for each thread. #}
+MALLOC_ARENA_MAX = "1"
+
+[[fs.mounts]]
+type = "chroot"
+path = "/lib"
+uri = "file:{{ libdir }}"
+
+[[fs.mounts]]
+type = "chroot"
+path = "/etc"
+uri = "file:/etc"
+
+[[fs.mounts]]
+type = "chroot"
+path = "/data"
+uri = "file:data"
+
+[sgx]
+edmm_enable = false
+debug = true
+nonpie_binary = true
+enclave_size = "4G"
+max_threads = 16
+insecure__rpc_thread_num = 8
+file_check_policy = "allow_all_but_log"
+# remote_attestation = "{{ ra_method }}"
+
+# {% if ra_method == "epid" %}
+# ra_client_linkable = true
+# ra_client_spid = "{{ ra_client_spid }}"
+# {% endif %}
+
+trusted_files = [
+  "file:{{ appname }}",
+  "file:{{ libos }}",
+  "file:{{ libdir }}",
+  "file:seed1",
+]
+
+allowed_files = [
+  "file:/etc/hosts",
+  "file:/etc/resolv.conf",
+  "file:/etc/ssl/openssl.cnf",
+  "file:data/",
+  "file:challenge",
+  "file:challenge.verified.hash",
+  "file:response",
+  "file:response.hash",  
+]
