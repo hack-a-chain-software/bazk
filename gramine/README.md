@@ -48,6 +48,7 @@ scp -r -i ~/gramine-vm_key.pem /mnt/d/Projects/HAC/Repos/snark-setup/phase1-cli 
 # VM host
 cargo run --release --bin phase1 --features cli
 cp ~/snark-setup/target/release/phase1 ~/gramine/phase1-verify/phase1-verify
+cd ~/gramine/
 ```
 
 #### With SGX Support
@@ -57,7 +58,6 @@ Note: This requires the hardare support SGX and properly configured, and the int
 To execute your code application within an SGX enclave, utilize the following command:
 
 ```bash
-sudo make SGX=1 --always-make
 sudo make run SGX=1 --always-make
 ./gramine-sgx phase1-verify
 ```
@@ -75,15 +75,11 @@ sudo make run SGX=0 --always-make
 
 ### Create a new cerimony
 
-#### Host
-
 ```bash
+# HOST
 ./phase1-verify/phase1-verify --curve-kind bls12_377 --batch-size 512 --contribution-mode full --power 10 --proving-system groth16 new --challenge-fname ./data/challenge_pot10_0001.ptau --challenge-hash-fname ./data/challenge_pot10_0001.ptau.hash
-```
 
-#### SGX
-
-```bash
+# SGX
 ./gramine-sgx phase1-verify --curve-kind bls12_377 --batch-size 512 --contribution-mode full --power 10 --proving-system groth16 new --challenge-fname challenge --challenge-hash-fname challenge.verified.hash
 
 ### Contribute to the ceremony
@@ -93,7 +89,11 @@ SEED=`tr -dc 'A-F0-9' < /dev/urandom | head -c32`
 echo $SEED > ./data/seed1
 
 # First contribution - Step 1 - Contribute to the ceremony and generate a response file
+# HOST
 ./phase1-verify/phase1-verify --curve-kind bls12_377 --batch-size 512 --contribution-mode full --power 10 --seed ./data/seed1 --proving-system groth16 contribute --challenge-fname ./data/challenge_pot10_0001.ptau --challenge-hash-fname ./data/challenge_pot10_0001.ptau.hash --response-fname ./data/response_pot10_0001.ptau --response-hash-fname ./data/response_pot10_0001.ptau.hash
+
+# SGX
+./gramine-sgx phase1-verify --curve-kind bls12_377 --batch-size 512 --contribution-mode full --power 10 --seed seed1 --proving-system groth16 contribute --challenge-fname challenge --challenge-hash-fname challenge.verified.hash --response-fname response --response-hash-fname response.verified.hash
 
 # First contribution - Step 2 - Verify the contribution and generate a new challenge file
 ./phase1-verify/phase1-verify --curve-kind bls12_377 --batch-size 512 --contribution-mode full --power 10 --proving-system groth16 verify-and-transform-pok-and-correctness --challenge-fname ./data/challenge_pot10_0001.ptau --challenge-hash-fname ./data/challenge_pot10_0001.ptau.hash --response-fname ./data/response_pot10_0001.ptau --response-hash-fname ./data/response_pot10_0001.ptau.hash --new-challenge-fname ./data/challenge_pot10_0002.ptau --new-challenge-hash-fname ./data/challenge_pot10_0002.ptau.hash
@@ -102,8 +102,7 @@ echo $SEED > ./data/seed1
 ./phase1-verify/phase1-verify --curve-kind bls12_377 --batch-size 512 --contribution-mode full --power 10 --seed ./data/seed1 --proving-system groth16 contribute --challenge-fname ./data/challenge_pot10_0002.ptau --challenge-hash-fname ./data/challenge_pot10_0002.ptau.hash --response-fname ./data/response_pot10_0002.ptau --response-hash-fname ./data/response_pot10_0002.ptau.hash
 
 ./phase1-verify/phase1-verify --curve-kind bls12_377 --batch-size 512 --contribution-mode full --power 10 --proving-system groth16 verify-and-transform-pok-and-correctness --challenge-fname ./data/challenge_pot10_0002.ptau --challenge-hash-fname ./data/challenge_pot10_0002.ptau.hash --response-fname ./data/response_pot10_0002.ptau --response-hash-fname ./data/response_pot10_0002.ptau.hash --new-challenge-fname ./data/challenge_pot10_0003.ptau --new-challenge-hash-fname ./data/challenge_pot10_0003.ptau.hash
-
-```
+````
 
 ### Verify the contribution
 
@@ -118,6 +117,7 @@ echo $SEED > ./data/seed1
 mmap (memory map) and BufWriter in Rust serve different purposes and operate at different levels of abstraction when it comes to handling I/O operations:
 
 ### Memory Map (mmap)
+
 - Low-Level: Memory mapping is a low-level mechanism provided by the operating system that maps a file or device into memory. It allows a program to access file data directly from memory rather than going through read and write system calls, which can be more efficient for certain operations because it avoids the overhead of the system call interface.
 
 - File as Memory: When a file is memory-mapped, it appears to the program as a part of its virtual memory address space. This can make reading from and writing to the file as easy as accessing memory arrays, which can be very fast and convenient, especially for random access and for large files.
@@ -127,6 +127,7 @@ mmap (memory map) and BufWriter in Rust serve different purposes and operate at 
 - Direct Access: Memory mapping is useful when you need to manipulate a file as if it were a large array, or when you want multiple processes to share access to the same file data.
 
 ### BufWriter
+
 - High-Level: BufWriter is a high-level abstraction provided by Rust's standard library. It wraps around a Write instance and buffers the writes to it, reducing the number of write operations that actually hit the underlying writer, which is often a file or a network stream.
 
 - Buffered I/O: The purpose of BufWriter is to reduce the number of write system calls by collecting data to be written in a memory buffer and then writing it out in larger chunks. This can greatly improve performance when many small writes are performed.
@@ -136,6 +137,7 @@ mmap (memory map) and BufWriter in Rust serve different purposes and operate at 
 - Simplicity and Safety: BufWriter is generally easier to use correctly than memory mapping, as it abstracts away many of the complexities and potential pitfalls of direct file memory access. It's also more idiomatic in Rust for regular file I/O operations.
 
 ### Key Differences
+
 - Control: mmap gives you more control and potentially better performance for large files or shared memory, but it's also more complex and can introduce subtle bugs if not used carefully. BufWriter is simpler and safer for common I/O tasks.
 
 - Use Case: mmap is often used for applications that require processing large files or implementing inter-process communication. BufWriter is typically used for writing data to files or streams where you want to minimize system call overhead.
