@@ -6,13 +6,10 @@
 /pruntime.sig
 /pruntime.token
 /bin
-*/data/
 */cruntime/
 *.hash
 *.manifest
 *.sgx
 *.sig
 *.ssh
-*/seed1
-*/challenge
-*/response
+data/

@@ -51,7 +51,6 @@ trusted_files = [
   "file:{{ appname }}",
   "file:{{ libos }}",
   "file:{{ libdir }}",
-  "file:seed1",
 ]
 
 allowed_files = [
@@ -62,5 +61,6 @@ allowed_files = [
   "file:challenge",
   "file:challenge.verified.hash",
   "file:response",
-  "file:response.hash",  
+  "file:response.hash",
+  "file:seed1",
 ]
