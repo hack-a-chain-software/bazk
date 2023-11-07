@@ -96,18 +96,36 @@ echo $SEED > ./data/seed1
 ./gramine-sgx phase1-verify --curve-kind bls12_377 --batch-size 512 --contribution-mode full --power 10 --seed seed1 --proving-system groth16 contribute --challenge-fname challenge --challenge-hash-fname challenge.verified.hash --response-fname response --response-hash-fname response.verified.hash
 
 # First contribution - Step 2 - Verify the contribution and generate a new challenge file
+# HOST 
 ./phase1-verify/phase1-verify --curve-kind bls12_377 --batch-size 512 --contribution-mode full --power 10 --proving-system groth16 verify-and-transform-pok-and-correctness --challenge-fname ./data/challenge_pot10_0001.ptau --challenge-hash-fname ./data/challenge_pot10_0001.ptau.hash --response-fname ./data/response_pot10_0001.ptau --response-hash-fname ./data/response_pot10_0001.ptau.hash --new-challenge-fname ./data/challenge_pot10_0002.ptau --new-challenge-hash-fname ./data/challenge_pot10_0002.ptau.hash
 
+# SGX
+./gramine-sgx phase1-verify --curve-kind bls12_377 --batch-size 512 --contribution-mode full --power 10 --proving-system groth16 verify-and-transform-pok-and-correctness --challenge-fname challenge --challenge-hash-fname challenge.verified.hash --response-fname response --response-hash-fname response.verified.hash --new-challenge-fname challenge --new-challenge-hash-fname challenge.verified.hash
+
+
 # Second contribution
+# HOST
 ./phase1-verify/phase1-verify --curve-kind bls12_377 --batch-size 512 --contribution-mode full --power 10 --seed ./data/seed1 --proving-system groth16 contribute --challenge-fname ./data/challenge_pot10_0002.ptau --challenge-hash-fname ./data/challenge_pot10_0002.ptau.hash --response-fname ./data/response_pot10_0002.ptau --response-hash-fname ./data/response_pot10_0002.ptau.hash
 
+# SGX
+./gramine-sgx phase1-verify --curve-kind bls12_377 --batch-size 512 --contribution-mode full --power 10 --seed seed1 --proving-system groth16 contribute --challenge-fname challenge --challenge-hash-fname challenge.verified.hash --response-fname response --response-hash-fname response.verified.hash
+
+# HOST
 ./phase1-verify/phase1-verify --curve-kind bls12_377 --batch-size 512 --contribution-mode full --power 10 --proving-system groth16 verify-and-transform-pok-and-correctness --challenge-fname ./data/challenge_pot10_0002.ptau --challenge-hash-fname ./data/challenge_pot10_0002.ptau.hash --response-fname ./data/response_pot10_0002.ptau --response-hash-fname ./data/response_pot10_0002.ptau.hash --new-challenge-fname ./data/challenge_pot10_0003.ptau --new-challenge-hash-fname ./data/challenge_pot10_0003.ptau.hash
+
+# SGX
+./gramine-sgx phase1-verify --curve-kind bls12_377 --batch-size 512 --contribution-mode full --power 10 --proving-system groth16 verify-and-transform-pok-and-correctness --challenge-fname challenge --challenge-hash-fname challenge.verified.hash --response-fname response --response-hash-fname response.verified.hash --new-challenge-fname challenge --new-challenge-hash-fname challenge.verified.hash
 ````
 
 ### Verify the contribution
 
 ```bash
+# HOST
 ./phase1-verify/phase1-verify --curve-kind bls12_377 --batch-size 512 --contribution-mode full --power 10 --proving-system groth16 verify-and-transform-ratios --response-fname ./data/challenge_pot10_0002.ptau
+
+# SGX
+./gramine-sgx phase1-verify --curve-kind bls12_377 --batch-size 512 --contribution-mode full --power 10 --proving-system groth16 verify-and-transform-ratios --response-fname challenge
+
 
 ./phase1-verify/phase1-verify --curve-kind bls12_377 --batch-size 512 --contribution-mode full --power 10 --proving-system groth16 verify-and-transform-ratios --response-fname ./data/challenge_pot10_0003.ptau
 ```
