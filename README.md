@@ -65,7 +65,7 @@ And maybe replace the rpc endpoint if you deployed it on a different testnet.
 To build the template app, run the following command in the root directory of this repo:
 
 ```bash
-cd nodejs-app-template/
+cd gramine/
 yarn && yarn build
 IAS_SPID=YOUR_SPID_GOT_FROM_INTEL ./build.sh
 ```
@@ -75,7 +75,7 @@ You would get a measurement result in the log like this:
 ```
     0000000000010000-00000001ff463000 [REG:RWX] (free)
 Measurement:
-    77a4da49a4cc1b1db7fb44dab7200af92003265817ac63392f2ad91cb5fe3f1e
+    bf3110b54e00be02617c7fe36e44a6335507b9d72eddec9ff8ac973a48f818e7
 ```
 
 ### Add the measurement result to the validator contract
@@ -91,7 +91,7 @@ You will see a line of log in the log panel like this:
 To run the pod app, you need a machine with at least Linux kernel v5.13 and SGX enabled.
 
 ```bash
-cd nodejs-app-template/gramine-build/
+cd gramine/phase1-build/
 docker run --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v`pwd`/dist:/app -it gramineproject/gramine
 cd /app
 IAS_API_KEY=YOUR_IAS_API_KEY_GOT_FROM_INTEL ./gramine-sgx node

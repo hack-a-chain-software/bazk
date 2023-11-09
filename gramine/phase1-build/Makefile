@@ -8,7 +8,7 @@ CFLAGS = -Wall -Wextra
 
 USE_MUSL ?= 0
 
-BIN_NAME = phase1-verify
+BIN_NAME = phase1
 RA_METHOD ?= epid
 
 GRAMINE_DIR ?= $(shell ./gramine-dir libs)
