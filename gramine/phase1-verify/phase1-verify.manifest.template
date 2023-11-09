@@ -3,19 +3,19 @@ entrypoint = "{{ appname }}"
 
 [loader]
 entrypoint = "file:{{ libos }}"
+argv0_override = "{{ appname }}"
+argv = ["node", "app/index.js"]
 log_level = "error"
-# argv0_override = "{{ appname }}"
-insecure__use_cmdline_argv = true
 
 [sys]
 insecure__allow_eventfd = true
-stack.size = "128M"
-brk.max_size = "128M"
+stack.size = "2M"
+brk.max_size = "256M"
 
 [loader.env]
 LD_LIBRARY_PATH = "/lib:/lib/x86_64-linux-gnu"
-{# Without this, Glibc would allocate a 64MB ARENA for each thread. #}
 MALLOC_ARENA_MAX = "1"
+IAS_API_KEY = { passthrough = true }
 
 [[fs.mounts]]
 type = "chroot"
@@ -32,31 +32,35 @@ type = "chroot"
 path = "/data"
 uri = "file:data"
 
+[[fs.mounts]]
+type = "chroot"
+path = "/app"
+uri = "file:app"
+
 [sgx]
-edmm_enable = false
-debug = true
+debug = false
 nonpie_binary = true
 enclave_size = "4G"
 max_threads = 16
-insecure__rpc_thread_num = 8
-file_check_policy = "allow_all_but_log"
-# remote_attestation = "{{ ra_method }}"
+remote_attestation = "{{ ra_method }}"
 
-# {% if ra_method == "epid" %}
-# ra_client_linkable = true
-# ra_client_spid = "{{ ra_client_spid }}"
-# {% endif %}
+{% if ra_method == "epid" %}
+ra_client_linkable = true
+ra_client_spid = "{{ ra_client_spid }}"
+{% endif %}
 
 trusted_files = [
   "file:{{ appname }}",
   "file:{{ libos }}",
   "file:{{ libdir }}",
+  "file:app/",
 ]
 
 allowed_files = [
   "file:/etc/hosts",
   "file:/etc/resolv.conf",
   "file:/etc/ssl/openssl.cnf",
+  "file:index.js",
   "file:data/",
   "file:challenge",
   "file:challenge.verified.hash",

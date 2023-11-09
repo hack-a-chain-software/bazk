@@ -12,4 +12,8 @@
 *.sgx
 *.sig
 *.ssh
-data/
+/data
+/dist
+/yarn.lock
+/yarn-error.log
+node_modules

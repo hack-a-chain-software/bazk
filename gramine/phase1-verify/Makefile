@@ -6,15 +6,10 @@ ARCH_LIBDIR ?= /lib/$(shell $(CC) -dumpmachine)
 
 CFLAGS = -Wall -Wextra
 
-GRAMINE_LOG_LEVEL = error
-
 USE_MUSL ?= 0
 
 BIN_NAME = phase1-verify
 RA_METHOD ?= epid
-
-DATA_DIRS = data/protected_files \
-            data/storage_files
 
 GRAMINE_DIR ?= $(shell ./gramine-dir libs)
 GRAMINE_LIBOS ?= $(shell ./gramine-dir libos)
@@ -36,7 +31,7 @@ ifeq ($(V),1)
 CARGO_ARGS += -vv
 endif
 
-PREFIX ?= ../bin
+PREFIX ?= ./dist
 PRUNTIME_DATA_DIR ?= data
 PRUNTIME_SEAL_DIR ?= ${PRUNTIME_DATA_DIR}/protected_files
 PRUNTIME_STORAGE_DIR ?= ${PRUNTIME_DATA_DIR}/storage_files
@@ -48,12 +43,9 @@ all: ${BIN_NAME} ${LIBOS}
 signed-sgx-artifacts: ${BIN_NAME}.manifest ${BIN_NAME}.manifest.sgx ${BIN_NAME}.sig
 
 ${BIN_NAME}.manifest: ${BIN_NAME}.manifest.template
+	echo "IAS_SPID=${IAS_SPID}"
 	gramine-manifest \
-		-Dinstall_dir=$(INSTALL_DIR) \
-		-Dlog_level=$(GRAMINE_LOG_LEVEL) \
 		-Dra_client_spid=${IAS_SPID} \
-		-Dseal_dir=${PRUNTIME_SEAL_DIR} \
-		-Dstorage_dir=${PRUNTIME_STORAGE_DIR} \
 		-Dlibdir=${RUNTIME_DIR}/lib/ \
 		-Dlibos=${LIBOS} \
 		-Dra_method=${RA_METHOD} \
@@ -90,12 +82,6 @@ ${BIN_NAME}.token: ${BIN_NAME}.sig
 .PHONY: token
 token: ${BIN_NAME}.token
 
-.PHONY: dirs
-dirs: ${DATA_DIRS}
-
-${DATA_DIRS}:
-	mkdir -p $@
-
 .PHONY: clean
 clean:
 	$(RM) *.token *.sig *.manifest.sgx *.manifest ${BIN_NAME}.o
@@ -124,6 +110,7 @@ dist: pre-dist ${BIN_NAME}.manifest
 	cp ${BIN_NAME}.manifest ${PREFIX}/
 endif
 	cp gramine-direct ${PREFIX}/
+	cp -r app ${PREFIX}/
 
 token-dist: token dist
 	cp ${BIN_NAME}.token ${PREFIX}/
@@ -134,5 +121,5 @@ run: all token
 ifeq ($(SGX),1)
 	./gramine-sgx ${BIN_NAME}
 else
-	gramine-direct ${BIN_NAME}
+	./gramine-direct ${BIN_NAME}
 endif
