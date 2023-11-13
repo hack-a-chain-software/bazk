@@ -1,10 +1,12 @@
 [libos]
-entrypoint = "{{ appname }}"
+# entrypoint = "{{ appname }}"
+entrypoint = "./node"
 
 [loader]
 entrypoint = "file:{{ libos }}"
-argv0_override = "{{ appname }}"
-argv = ["node", "app/index.js"]
+# argv0_override = "{{ appname }}"
+# argv = ["node", "app/index.js"]
+insecure__use_cmdline_argv = true
 log_level = "error"
 
 [sys]
@@ -51,6 +53,8 @@ ra_client_spid = "{{ ra_client_spid }}"
 
 trusted_files = [
   "file:{{ appname }}",
+  "file:node",
+  "file:phase1",
   "file:{{ libos }}",
   "file:{{ libdir }}",
   "file:app/",

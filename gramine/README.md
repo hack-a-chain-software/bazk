@@ -36,6 +36,11 @@ If you want to copy files from your local machine to the remote machine, you can
 
 ```bash
 scp -r -i ~/gramine-vm_key.pem /mnt/d/projects/hac/repos/bazk/gramine azureuser@172.190.7.62:~/
+
+
+scp -r -i ~/gramine-vm_key.pem /mnt/d/projects/hac/repos/bazk/gramine/phase1-build/phase1.manifest.template azureuser@172.190.7.62:~/gramine/phase1-build/
+
+scp -r -i ~/gramine-vm_key.pem /mnt/d/projects/hac/repos/bazk/gramine/phase1-build/Makefile azureuser@172.190.7.62:~/gramine/phase1-build/
 ```
 
 ### Copy files and compile snark-setup inside the vm
