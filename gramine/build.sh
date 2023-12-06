@@ -1,9 +1,9 @@
 #!/bin/sh
 set -e
-# (cd phase1-build && rm *.manifest && rm *.sgx && rm *.sig && rm -r cruntime && rm -r app && rm -r dist)
-(cd phase1-build && git clean -fxd)
+(cd bazk-build && rm *.manifest && rm *.sgx && rm *.sig && rm -r cruntime && rm -r app && rm -r dist)
+(cd bazk-build && git clean -fxd)
 
-cp -r dist phase1-build/app
+cp -r dist bazk-build/app
 cp `which node` phase1-build/
 
 win_path=$(pwd | sed 's|^/\([a-z]\)/|\U\1:/|')
