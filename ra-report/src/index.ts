@@ -1,7 +1,6 @@
-import { ApiPromise, WsProvider } from '@polkadot/api'
 import { KeyringPair } from '@polkadot/keyring/types';
 import { Codec } from '@polkadot/types/types';
-import { options, OnChainRegistry, signCertificate, PinkContractPromise, ILooseResult, CertificateData } from '@phala/sdk'
+import { getClient, getContract, signCertificate, PinkContractPromise, ILooseResult, CertificateData } from '@phala/sdk'
 import axios, { AxiosResponse } from 'axios';
 import * as base64js from 'base64-js';
 import * as fs from 'fs/promises';
@@ -107,20 +106,14 @@ class Contract {
 
     static async connect(config: {
         rpc: string,
+        pruntimeURL?: string
         contractId: string,
         pair: KeyringPair,
         abi: string,
     }): Promise<Contract> {
-        const { rpc, contractId, pair, abi } = config;
-        const api = await ApiPromise.create(
-            options({
-                provider: new WsProvider(rpc),
-                noInitWarn: true,
-            })
-        )
-        const phatRegistry = await OnChainRegistry.create(api)
-        const contractKey = await phatRegistry.getContractKeyOrFail(contractId)
-        const contract = new PinkContractPromise(api, phatRegistry, JSON.parse(abi), contractId, contractKey)
+        const { rpc, contractId, pair, abi, pruntimeURL } = config;
+        const phatRegistry = await getClient({ transport: rpc, pruntimeURL });
+        const contract = await getContract({ client: phatRegistry, contractId, abi });
         const cert = await signCertificate({ pair });
         return new Contract(contract, pair, cert);
     }

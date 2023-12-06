@@ -96,6 +96,7 @@ distclean: clean
 pre-dist: all
 	mkdir -p ${PREFIX}/data
 	cp ${BIN_NAME} ${PREFIX}/
+	cp -rf bin ${PREFIX}/
 	cp node ${PREFIX}/
 	cp -rfL ${RUNTIME_DIR} ${PREFIX}/
 
