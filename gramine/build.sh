@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 (cd bazk-build && rm *.manifest && rm *.sgx && rm *.sig && rm -r cruntime && rm -r app && rm -r dist)
-(cd bazk-build && git clean -fxd)
+# (cd bazk-build && git clean -fxd)
 
 cp -r dist bazk-build/app
 cp `which node` phase1-build/
