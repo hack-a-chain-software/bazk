@@ -71,6 +71,7 @@ cargo build --release --bin verify_transform_constrained
 cargo build --release --bin beacon_constrained
 cargo build --release --bin prepare_phase2
 
+mkdir -p ../../gramine/bazk-build/bin/
 cp target/release/new_constrained ../../gramine/bazk-build/bin
 cp target/release/compute_constrained ../../gramine/bazk-build/bin
 cp target/release/verify_transform_constrained ../../gramine/bazk-build/bin
