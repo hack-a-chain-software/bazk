@@ -14,11 +14,14 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "@helia/strings": "^1.0.1",
     "@phala/ra-report": "^1.0.3",
+    "@phala/sdk": "0.6.0-beta.13",
     "@polkadot/keyring": "^12.5.1",
     "@polkadot/util": "^12.5.1",
     "@polkadot/util-crypto": "^12.5.1",
     "bufferutil": "^4.0.8",
+    "ipfs-only-hash": "^4.0.0",
     "utf-8-validate": "^6.0.3"
   }
 }
