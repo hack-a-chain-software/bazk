@@ -140,13 +140,13 @@ mod pod_validator {
 
         #[ink(message)]
         pub fn add_ceremony_hashes(&mut self, ceremony_id: u32, hashes: Vec<File>) -> Result<()> {
-            ink::env::debug_println!("[Contract] add_ceremony_hashes called with ceremony_id: {}, hashes: {:?}", ceremony_id, hashes);
+            ink::env::debug_println!("[Contract] add_ceremony_hashes called with ceremony_id: {}", ceremony_id);
 
             let mut found = false;
             for (id, ceremony_hashes) in self.ceremony_hashes.iter_mut() {
                 if *id == ceremony_id {
                     ink::env::debug_println!("[Contract] Ceremony ID {} found, adding hashes.", ceremony_id);
-                    for hash in hashes {
+                    for hash in &hashes {
                         ceremony_hashes.push(hash.clone());
                     }
                     found = true;
@@ -157,7 +157,7 @@ mod pod_validator {
 
             if !found {
                 ink::env::debug_println!("[Contract] Ceremony ID {} not found, creating new entry.", ceremony_id);
-                self.ceremony_hashes.push((ceremony_id, hashes));
+                self.ceremony_hashes.push((ceremony_id, hashes.clone()));
                 ink::env::debug_println!("[Contract] Ceremony ID {} created.", ceremony_id);
             }
 
@@ -273,6 +273,31 @@ mod pod_validator {
             self.env().emit_event(MetadataAdded { ceremony_id: ceremony_id, name: name.clone(), value: value.clone() });
             ink::env::debug_println!("[Contract] MetadataAdded event emitted.");
         
+            Ok(())
+        }
+
+        #[ink(message)]
+        pub fn add_ceremony_metadatas(&mut self, ceremony_id: u32, metadatas: Vec<Metadata>) -> Result<()> {
+            ink::env::debug_println!("[Contract] add_ceremony_metadatas called with ceremony_id: {}", ceremony_id);
+
+            let mut found = false;
+            for (id, ceremony_metadatas) in self.ceremony_metadatas.iter_mut() {
+                if *id == ceremony_id {
+                    ink::env::debug_println!("[Contract] Ceremony ID {} found, adding metadatas.", ceremony_id);
+                    for metadata in &metadatas {
+                        ceremony_metadatas.push(metadata.clone());
+                    }
+                    found = true;
+                    break;
+                }
+            }
+       
+            if !found {
+                ink::env::debug_println!("[Contract] Ceremony ID {} not found, creating new entry.", ceremony_id);
+                self.ceremony_metadatas.push((ceremony_id, metadatas.clone()));
+                ink::env::debug_println!("[Contract] Ceremony metadata created for ceremony ID {}.", ceremony_id);
+            }
+
             Ok(())
         }
 
