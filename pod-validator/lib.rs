@@ -165,36 +165,6 @@ mod pod_validator {
         }
 
         #[ink(message)]
-        pub fn add_ceremony_hash(&mut self, ceremony_id: u32, hash: String, name: String, timestamp: u32) -> Result<()> {
-            ink::env::debug_println!("[Contract] add_ceremony_hash called with ceremony_id: {}, hash: {}, name: {}, timestamp: {}", ceremony_id, hash, name, timestamp);
-
-            let file = File {
-                hash: hash.clone(),
-                name: name.clone(),
-                timestamp: timestamp
-            };
-        
-            let mut found = false;
-            for (id, hashes) in self.ceremony_hashes.iter_mut() {
-                if *id == ceremony_id {
-                    ink::env::debug_println!("[Contract] Ceremony ID {} found, adding hash.", ceremony_id);
-                    hashes.push(file.clone());
-                    found = true;
-                    ink::env::debug_println!("[Contract] Hash added to ceremony ID {}.", ceremony_id);
-                    break;
-                }
-            }
-
-            if !found {
-                ink::env::debug_println!("[Contract] Ceremony ID {} not found, creating new entry.", ceremony_id);
-                self.ceremony_hashes.push((ceremony_id, vec![file]));
-                ink::env::debug_println!("[Contract] Ceremony ID {} created.", ceremony_id);
-            }
-
-            Ok(())
-        }
-
-        #[ink(message)]
         pub fn is_last_hash(&self, ceremony_id: u32, ipfs_hash: String) -> Result<bool> {
             for (id, hashes) in self.ceremony_hashes.iter() {
                 if id == &ceremony_id {
@@ -244,36 +214,6 @@ mod pod_validator {
         #[ink(message)]
         pub fn get_cerimonies(&self) -> Result<Vec<Ceremony>> {
             return Ok(self.ceremonies.clone());
-        }
-
-        #[ink(message)]
-        pub fn add_ceremony_metadata(&mut self, ceremony_id: u32, name: String, value: String) -> Result<()> {
-            ink::env::debug_println!("[Contract] add_ceremony_metadata called with ceremony_id: {}, name: {}, value: {}", ceremony_id, name, value);
-            
-            let metadata = Metadata {
-                name: name.clone(),
-                value: value.clone()
-            };
-
-            let mut found = false;
-            for (id, metadatas) in self.ceremony_metadatas.iter_mut() {
-                if *id == ceremony_id {
-                    ink::env::debug_println!("[Contract] Ceremony ID {} found, adding metadata.", ceremony_id);
-                    metadatas.push(metadata.clone());
-                    found = true;
-                    break;
-                }
-            }
-        
-            if !found {
-                ink::env::debug_println!("[Contract] Ceremony ID {} not found, creating new entry.", ceremony_id);
-                self.ceremony_metadatas.push((ceremony_id, vec![metadata]));
-            }
-
-            self.env().emit_event(MetadataAdded { ceremony_id: ceremony_id, name: name.clone(), value: value.clone() });
-            ink::env::debug_println!("[Contract] MetadataAdded event emitted.");
-        
-            Ok(())
         }
 
         #[ink(message)]

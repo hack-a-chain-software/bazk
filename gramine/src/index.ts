@@ -217,68 +217,33 @@ async function handleInputFile(
 
     console.log("[Enclave] nSignals: ", nSignals);
 
-    console.log("[Enclave] Adding nPrvInputs to contract...");
+    let metadataArray: Metadata[] = [];
 
-    await contract.send.addCeremonyMetadata(
-      { pair, cert, address: cert.address },
+    metadataArray.push(createMetadata("nPrvInputs", nPrvInputs.toString()));
+    metadataArray.push(createMetadata("nPubInputs", nPubInputs.toString()));
+    metadataArray.push(createMetadata("nInputs", nInputs.toString()));
+    metadataArray.push(createMetadata("nOutputs", nOutputs.toString()));
+    metadataArray.push(createMetadata("nVars", nVars.toString()));
+    metadataArray.push(createMetadata("nConstants", nConstants.toString()));
+    metadataArray.push(createMetadata("nSignals", nSignals.toString()));
+
+    console.log("[Enclave] Adding metadata to contract...");
+
+    console.log(
+      "[Phala] Calling method addCeremonyMetadatas with args:",
       ceremonyId,
-      "nPrvInputs",
-      nPrvInputs
+      metadataArray
     );
 
-    console.log("[Enclave] Adding nPubInputs to contract...");
-
-    await contract.send.addCeremonyMetadata(
+    const result = await contract.send.addCeremonyMetadatas(
       { pair, cert, address: cert.address },
       ceremonyId,
-      "nPubInputs",
-      nPubInputs
+      metadataArray
     );
 
-    console.log("[Enclave] Adding nInputs to contract...");
+    // await result.waitFinalized();
 
-    await contract.send.addCeremonyMetadata(
-      { pair, cert, address: cert.address },
-      ceremonyId,
-      "nInputs",
-      nInputs
-    );
-
-    console.log("[Enclave] Adding nOutputs to contract...");
-
-    await contract.send.addCeremonyMetadata(
-      { pair, cert, address: cert.address },
-      ceremonyId,
-      "nOutputs",
-      nOutputs
-    );
-
-    console.log("[Enclave] Adding nVars to contract...");
-
-    await contract.send.addCeremonyMetadata(
-      { pair, cert, address: cert.address },
-      ceremonyId,
-      "nVars",
-      nVars
-    );
-
-    console.log("[Enclave] Adding nConstants to contract...");
-
-    await contract.send.addCeremonyMetadata(
-      { pair, cert, address: cert.address },
-      ceremonyId,
-      "nConstants",
-      nConstants
-    );
-
-    console.log("[Enclave] Adding nSignals to contract...");
-
-    await contract.send.addCeremonyMetadata(
-      { pair, cert, address: cert.address },
-      ceremonyId,
-      "nSignals",
-      nSignals
-    );
+    console.log("[Phala] Transaction finalized");
   }
 }
 
@@ -303,26 +268,11 @@ async function handleOutputFiles(
     for (let i = 0; i < outputFileNames.length; i++) {
       let outputFileName = outputFileNames[i];
       const timestamp = Math.floor(Date.now() / 1000);
-      console.log(`[IPFS] Output file name: `, outputFileName);
-      console.log(`[IPFS] Uploading output file to IPFS...`);
+      console.log("[IPFS] Uploading output file to IPFS...", outputFileName);
       const ipfsHash = await uploadToPinata(outputFileName);
       outputFileHashes.push(ipfsHash);
 
       console.log(`[IPFS] Output file uploaded to IPFS with hash: `, ipfsHash);
-
-      let computedOutput = outputFileHashes[outputFileHashes.length - 1];
-      console.log("[Enclave] Computed output hash:", computedOutput);
-
-      console.log("[Enclave] Signing computed result...");
-      const sigOfComputedResult = pair.sign(computedOutput);
-
-      console.log("[Enclave] Verifying if computed result is valid...");
-      const computedResultValid = signatureVerify(
-        computedOutput,
-        sigOfComputedResult,
-        publicKey
-      ).isValid;
-      console.log("[Enclave] Computed result valid: ", computedResultValid);
 
       console.log("[Enclave] Adding file object to array...");
 
@@ -351,7 +301,21 @@ async function handleOutputFiles(
 
     // await result.waitFinalized();
 
-    console.log("[Phala] Waiting for transaction to be finalized...");
+    console.log("[Phala] Transaction finalized");
+
+    let computedOutput = outputFileHashes[outputFileHashes.length - 1];
+    console.log("[Enclave] Computed output hash:", computedOutput);
+
+    console.log("[Enclave] Signing computed result...");
+    const sigOfComputedResult = pair.sign(computedOutput);
+
+    console.log("[Enclave] Verifying if computed result is valid...");
+    const computedResultValid = signatureVerify(
+      computedOutput,
+      sigOfComputedResult,
+      publicKey
+    ).isValid;
+    console.log("[Enclave] Computed result valid: ", computedResultValid);
   }
 }
 
@@ -361,8 +325,17 @@ interface File {
   timestamp: number;
 }
 
+interface Metadata {
+  name: string;
+  value: string;
+}
+
 function createFileObject(hash: string, name: string, timestamp: number): File {
   return { hash, name, timestamp };
+}
+
+function createMetadata(name: string, value: string): Metadata {
+  return { name, value };
 }
 
 async function createNewCeremony(
