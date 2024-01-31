@@ -33,6 +33,9 @@ mod pod_validator {
     pub struct CeremonyAdded {
         ceremony_id: u32,
         phase: u32,
+        name: String,
+        description: String,
+        deadline: u32,
         timestamp: u32
     }
 
@@ -66,6 +69,9 @@ mod pod_validator {
     pub struct Ceremony {
         ceremony_id: u32,
         phase: u32,
+        name: String,
+        description: String,
+        deadline: u32,
         timestamp: u32
     }
 
@@ -194,12 +200,25 @@ mod pod_validator {
         }
 
         #[ink(message)]
-        pub fn new_ceremony(&mut self, ceremony_id: u32, phase: u32, timestamp: u32, metadatas: Vec<Metadata>) -> Result<()> {
+        pub fn get_ceremony_deadline(&self, ceremony_id: u32) -> Result<u32> {
+            for ceremony in self.ceremonies.iter() {
+                if ceremony.ceremony_id == ceremony_id {
+                    return Ok(ceremony.deadline);
+                }
+            }
+            Err(Error::CeremonyNotFound)
+        }
+
+        #[ink(message)]
+        pub fn new_ceremony(&mut self, ceremony_id: u32, phase: u32, name: String, description: String, deadline: u32, timestamp: u32, metadatas: Vec<Metadata>) -> Result<()> {
             ink::env::debug_println!("[Contract] new_ceremony called with ceremony_id: {}, phase: {}, timestamp: {}", ceremony_id, phase, timestamp);
             
             self.ceremonies.push(Ceremony {
                 ceremony_id: ceremony_id,
                 phase: phase,
+                name: name.clone(),
+                description: description.clone(),
+                deadline: deadline,
                 timestamp: timestamp
             });
 
@@ -210,7 +229,7 @@ mod pod_validator {
 
             ink::env::debug_println!("[Contract] Metadatas added to ceremony ID {}.", ceremony_id);
             
-            self.env().emit_event(CeremonyAdded { ceremony_id: ceremony_id, phase: phase, timestamp: timestamp });
+            self.env().emit_event(CeremonyAdded { ceremony_id: ceremony_id, phase: phase, name: name.clone(), description: description.clone(), deadline: deadline, timestamp: timestamp });
 
             ink::env::debug_println!("[Contract] CeremonyAdded event emitted.");
             Ok(())

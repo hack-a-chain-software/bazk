@@ -17,7 +17,7 @@ const execFile = promisify(execFileCallback);
 const sgxEnabled = process.env.SGX_ENABLED === "true" || false;
 
 const VALIDATOR_CONTRACT_ADDRESS =
-  "0x7d3fa2f612826cc87aaf2898ffa38054a128e33fb22698688e766d441df9920b";
+  "0xb5794092160cb68361c0b1d668399236f5ed874412ff30e68aaccb958e555afe";
 
 async function main(args?: string[]) {
   console.log("[Enclave] Welcome to PoC Enclave, fasten your seat belt!");
@@ -32,7 +32,7 @@ async function main(args?: string[]) {
   const publicKey = pair.publicKey;
 
   const VALIDATOR_ABI =
-    '{"contract":{"authors":["Kevin Wang <wy721@qq.com>"],"name":"pod_validator","version":"0.1.0"},"source":{"build_info":{"build_mode":"Release","cargo_contract_version":"3.2.0","rust_toolchain":"stable-x86_64-unknown-linux-gnu","wasm_opt_settings":{"keep_debug_symbols":false,"optimization_passes":"Z"}},"compiler":"rustc 1.72.1","hash":"0xfb00d3731cfdb8c9cfb55f451173709a35f143854ff632d0bcb06f85dd628224","language":"ink! 4.2.0"},"spec":{"constructors":[{"args":[],"default":false,"docs":[],"label":"default","payable":false,"returnType":{"displayName":["ink_primitives","ConstructorResult"],"type":16},"selector":"0xed4b9d1b"}],"docs":[],"environment":{"accountId":{"displayName":["AccountId"],"type":0},"balance":{"displayName":["Balance"],"type":40},"blockNumber":{"displayName":["BlockNumber"],"type":6},"chainExtension":{"displayName":["ChainExtension"],"type":43},"hash":{"displayName":["Hash"],"type":41},"maxEventTopics":4,"timestamp":{"displayName":["Timestamp"],"type":42}},"events":[{"args":[{"docs":[],"indexed":false,"label":"mr_enclave","type":{"displayName":[],"type":1}}],"docs":["A new pod mr_enclave is added."],"label":"PodAdded"},{"args":[{"docs":[],"indexed":false,"label":"ceremony_id","type":{"displayName":["u32"],"type":6}},{"docs":[],"indexed":false,"label":"phase","type":{"displayName":["u32"],"type":6}},{"docs":[],"indexed":false,"label":"timestamp","type":{"displayName":["u32"],"type":6}}],"docs":[],"label":"CeremonyAdded"},{"args":[{"docs":[],"indexed":false,"label":"ceremony_id","type":{"displayName":["u32"],"type":6}},{"docs":[],"indexed":false,"label":"name","type":{"displayName":["String"],"type":9}},{"docs":[],"indexed":false,"label":"value","type":{"displayName":["String"],"type":9}}],"docs":[],"label":"MetadataAdded"}],"lang_error":{"displayName":["ink","LangError"],"type":18},"messages":[{"args":[],"default":false,"docs":[" Returns the public key."],"label":"public_key","mutates":false,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":19},"selector":"0x52061d7d"},{"args":[{"label":"pod","type":{"displayName":[],"type":1}}],"default":false,"docs":[],"label":"allow","mutates":true,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":21},"selector":"0xaef3befe"},{"args":[{"label":"report","type":{"displayName":["SignedReport"],"type":24}}],"default":false,"docs":[" Validates the given RA report and signs the inner user_report_data."],"label":"sign","mutates":false,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":25},"selector":"0x81ca8fa1"},{"args":[{"label":"ceremony_id","type":{"displayName":["u32"],"type":6}},{"label":"hashes","type":{"displayName":["Vec"],"type":7}}],"default":false,"docs":[],"label":"add_ceremony_hashes","mutates":true,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":21},"selector":"0xaecba820"},{"args":[{"label":"ceremony_id","type":{"displayName":["u32"],"type":6}},{"label":"ipfs_hash","type":{"displayName":["String"],"type":9}}],"default":false,"docs":[],"label":"is_last_hash","mutates":false,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":27},"selector":"0xd3d7b2d4"},{"args":[{"label":"ceremony_id","type":{"displayName":["u32"],"type":6}}],"default":false,"docs":[],"label":"get_ceremony_hashes","mutates":false,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":30},"selector":"0xb12eab37"},{"args":[{"label":"ceremony_id","type":{"displayName":["u32"],"type":6}}],"default":false,"docs":[],"label":"get_ceremony_hashes_count","mutates":false,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":32},"selector":"0x002d1e5f"},{"args":[{"label":"ceremony_id","type":{"displayName":["u32"],"type":6}},{"label":"phase","type":{"displayName":["u32"],"type":6}},{"label":"timestamp","type":{"displayName":["u32"],"type":6}},{"label":"metadatas","type":{"displayName":["Vec"],"type":12}}],"default":false,"docs":[],"label":"new_ceremony","mutates":true,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":21},"selector":"0x489150a1"},{"args":[],"default":false,"docs":[],"label":"get_cerimonies","mutates":false,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":34},"selector":"0xd101eea9"},{"args":[{"label":"ceremony_id","type":{"displayName":["u32"],"type":6}}],"default":false,"docs":[],"label":"get_ceremony","mutates":false,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":36},"selector":"0xad9b0765"},{"args":[{"label":"ceremony_id","type":{"displayName":["u32"],"type":6}},{"label":"metadatas","type":{"displayName":["Vec"],"type":12}}],"default":false,"docs":[],"label":"add_ceremony_metadatas","mutates":true,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":21},"selector":"0x6c751030"},{"args":[{"label":"ceremony_id","type":{"displayName":["u32"],"type":6}}],"default":false,"docs":[],"label":"get_ceremony_metadata","mutates":false,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":38},"selector":"0x9ec8a573"}]},"storage":{"root":{"layout":{"struct":{"fields":[{"layout":{"leaf":{"key":"0x00000000","ty":0}},"name":"owner"},{"layout":{"leaf":{"key":"0x00000000","ty":3}},"name":"allowlist"},{"layout":{"leaf":{"key":"0x00000000","ty":4}},"name":"ceremony_hashes"},{"layout":{"leaf":{"key":"0x00000000","ty":10}},"name":"ceremony_metadatas"},{"layout":{"leaf":{"key":"0x00000000","ty":14}},"name":"ceremonies"}],"name":"Validator"}},"root_key":"0x00000000"}},"types":[{"id":0,"type":{"def":{"composite":{"fields":[{"type":1,"typeName":"[u8; 32]"}]}},"path":["ink_primitives","types","AccountId"]}},{"id":1,"type":{"def":{"array":{"len":32,"type":2}}}},{"id":2,"type":{"def":{"primitive":"u8"}}},{"id":3,"type":{"def":{"sequence":{"type":1}}}},{"id":4,"type":{"def":{"sequence":{"type":5}}}},{"id":5,"type":{"def":{"tuple":[6,7]}}},{"id":6,"type":{"def":{"primitive":"u32"}}},{"id":7,"type":{"def":{"sequence":{"type":8}}}},{"id":8,"type":{"def":{"composite":{"fields":[{"name":"hash","type":9,"typeName":"String"},{"name":"name","type":9,"typeName":"String"},{"name":"timestamp","type":6,"typeName":"u32"}]}},"path":["pod_validator","pod_validator","File"]}},{"id":9,"type":{"def":{"primitive":"str"}}},{"id":10,"type":{"def":{"sequence":{"type":11}}}},{"id":11,"type":{"def":{"tuple":[6,12]}}},{"id":12,"type":{"def":{"sequence":{"type":13}}}},{"id":13,"type":{"def":{"composite":{"fields":[{"name":"name","type":9,"typeName":"String"},{"name":"value","type":9,"typeName":"String"}]}},"path":["pod_validator","pod_validator","Metadata"]}},{"id":14,"type":{"def":{"sequence":{"type":15}}}},{"id":15,"type":{"def":{"composite":{"fields":[{"name":"ceremony_id","type":6,"typeName":"u32"},{"name":"phase","type":6,"typeName":"u32"},{"name":"timestamp","type":6,"typeName":"u32"}]}},"path":["pod_validator","pod_validator","Ceremony"]}},{"id":16,"type":{"def":{"variant":{"variants":[{"fields":[{"type":17}],"index":0,"name":"Ok"},{"fields":[{"type":18}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":17},{"name":"E","type":18}],"path":["Result"]}},{"id":17,"type":{"def":{"tuple":[]}}},{"id":18,"type":{"def":{"variant":{"variants":[{"index":1,"name":"CouldNotReadInput"}]}},"path":["ink_primitives","LangError"]}},{"id":19,"type":{"def":{"variant":{"variants":[{"fields":[{"type":20}],"index":0,"name":"Ok"},{"fields":[{"type":18}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":20},{"name":"E","type":18}],"path":["Result"]}},{"id":20,"type":{"def":{"sequence":{"type":2}}}},{"id":21,"type":{"def":{"variant":{"variants":[{"fields":[{"type":22}],"index":0,"name":"Ok"},{"fields":[{"type":18}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":22},{"name":"E","type":18}],"path":["Result"]}},{"id":22,"type":{"def":{"variant":{"variants":[{"fields":[{"type":17}],"index":0,"name":"Ok"},{"fields":[{"type":23}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":17},{"name":"E","type":23}],"path":["Result"]}},{"id":23,"type":{"def":{"variant":{"variants":[{"index":0,"name":"BadOrigin"},{"index":1,"name":"InvalidReport"},{"index":2,"name":"PodNotAllowed"},{"index":3,"name":"CeremonyNotFound"}]}},"path":["pod_validator","pod_validator","Error"]}},{"id":24,"type":{"def":{"composite":{"fields":[{"name":"report","type":9,"typeName":"String"},{"name":"signature","type":9,"typeName":"String"},{"name":"certificate","type":9,"typeName":"String"}]}},"path":["pod_validator","pod_validator","SignedReport"]}},{"id":25,"type":{"def":{"variant":{"variants":[{"fields":[{"type":26}],"index":0,"name":"Ok"},{"fields":[{"type":18}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":26},{"name":"E","type":18}],"path":["Result"]}},{"id":26,"type":{"def":{"variant":{"variants":[{"fields":[{"type":20}],"index":0,"name":"Ok"},{"fields":[{"type":23}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":20},{"name":"E","type":23}],"path":["Result"]}},{"id":27,"type":{"def":{"variant":{"variants":[{"fields":[{"type":28}],"index":0,"name":"Ok"},{"fields":[{"type":18}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":28},{"name":"E","type":18}],"path":["Result"]}},{"id":28,"type":{"def":{"variant":{"variants":[{"fields":[{"type":29}],"index":0,"name":"Ok"},{"fields":[{"type":23}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":29},{"name":"E","type":23}],"path":["Result"]}},{"id":29,"type":{"def":{"primitive":"bool"}}},{"id":30,"type":{"def":{"variant":{"variants":[{"fields":[{"type":31}],"index":0,"name":"Ok"},{"fields":[{"type":18}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":31},{"name":"E","type":18}],"path":["Result"]}},{"id":31,"type":{"def":{"variant":{"variants":[{"fields":[{"type":7}],"index":0,"name":"Ok"},{"fields":[{"type":23}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":7},{"name":"E","type":23}],"path":["Result"]}},{"id":32,"type":{"def":{"variant":{"variants":[{"fields":[{"type":33}],"index":0,"name":"Ok"},{"fields":[{"type":18}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":33},{"name":"E","type":18}],"path":["Result"]}},{"id":33,"type":{"def":{"variant":{"variants":[{"fields":[{"type":6}],"index":0,"name":"Ok"},{"fields":[{"type":23}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":6},{"name":"E","type":23}],"path":["Result"]}},{"id":34,"type":{"def":{"variant":{"variants":[{"fields":[{"type":35}],"index":0,"name":"Ok"},{"fields":[{"type":18}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":35},{"name":"E","type":18}],"path":["Result"]}},{"id":35,"type":{"def":{"variant":{"variants":[{"fields":[{"type":14}],"index":0,"name":"Ok"},{"fields":[{"type":23}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":14},{"name":"E","type":23}],"path":["Result"]}},{"id":36,"type":{"def":{"variant":{"variants":[{"fields":[{"type":37}],"index":0,"name":"Ok"},{"fields":[{"type":18}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":37},{"name":"E","type":18}],"path":["Result"]}},{"id":37,"type":{"def":{"variant":{"variants":[{"fields":[{"type":15}],"index":0,"name":"Ok"},{"fields":[{"type":23}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":15},{"name":"E","type":23}],"path":["Result"]}},{"id":38,"type":{"def":{"variant":{"variants":[{"fields":[{"type":39}],"index":0,"name":"Ok"},{"fields":[{"type":18}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":39},{"name":"E","type":18}],"path":["Result"]}},{"id":39,"type":{"def":{"variant":{"variants":[{"fields":[{"type":12}],"index":0,"name":"Ok"},{"fields":[{"type":23}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":12},{"name":"E","type":23}],"path":["Result"]}},{"id":40,"type":{"def":{"primitive":"u128"}}},{"id":41,"type":{"def":{"composite":{"fields":[{"type":1,"typeName":"[u8; 32]"}]}},"path":["ink_primitives","types","Hash"]}},{"id":42,"type":{"def":{"primitive":"u64"}}},{"id":43,"type":{"def":{"variant":{}},"path":["ink_env","types","NoChainExtension"]}}],"version":"4"}';
+    '{"contract":{"authors":["Kevin Wang <wy721@qq.com>"],"name":"pod_validator","version":"0.1.0"},"source":{"build_info":{"build_mode":"Release","cargo_contract_version":"3.2.0","rust_toolchain":"stable-x86_64-unknown-linux-gnu","wasm_opt_settings":{"keep_debug_symbols":false,"optimization_passes":"Z"}},"compiler":"rustc 1.72.1","hash":"0xbb034005fa55af50bfa0de4ec6ffe94ba16f8dbcd0aa990a5fe9ed54e87dde43","language":"ink! 4.2.0"},"spec":{"constructors":[{"args":[],"default":false,"docs":[],"label":"default","payable":false,"returnType":{"displayName":["ink_primitives","ConstructorResult"],"type":16},"selector":"0xed4b9d1b"}],"docs":[],"environment":{"accountId":{"displayName":["AccountId"],"type":0},"balance":{"displayName":["Balance"],"type":40},"blockNumber":{"displayName":["BlockNumber"],"type":6},"chainExtension":{"displayName":["ChainExtension"],"type":43},"hash":{"displayName":["Hash"],"type":41},"maxEventTopics":4,"timestamp":{"displayName":["Timestamp"],"type":42}},"events":[{"args":[{"docs":[],"indexed":false,"label":"mr_enclave","type":{"displayName":[],"type":1}}],"docs":["A new pod mr_enclave is added."],"label":"PodAdded"},{"args":[{"docs":[],"indexed":false,"label":"ceremony_id","type":{"displayName":["u32"],"type":6}},{"docs":[],"indexed":false,"label":"phase","type":{"displayName":["u32"],"type":6}},{"docs":[],"indexed":false,"label":"name","type":{"displayName":["String"],"type":9}},{"docs":[],"indexed":false,"label":"description","type":{"displayName":["String"],"type":9}},{"docs":[],"indexed":false,"label":"deadline","type":{"displayName":["u32"],"type":6}},{"docs":[],"indexed":false,"label":"timestamp","type":{"displayName":["u32"],"type":6}}],"docs":[],"label":"CeremonyAdded"},{"args":[{"docs":[],"indexed":false,"label":"ceremony_id","type":{"displayName":["u32"],"type":6}},{"docs":[],"indexed":false,"label":"name","type":{"displayName":["String"],"type":9}},{"docs":[],"indexed":false,"label":"value","type":{"displayName":["String"],"type":9}}],"docs":[],"label":"MetadataAdded"}],"lang_error":{"displayName":["ink","LangError"],"type":18},"messages":[{"args":[],"default":false,"docs":[" Returns the public key."],"label":"public_key","mutates":false,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":19},"selector":"0x52061d7d"},{"args":[{"label":"pod","type":{"displayName":[],"type":1}}],"default":false,"docs":[],"label":"allow","mutates":true,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":21},"selector":"0xaef3befe"},{"args":[{"label":"report","type":{"displayName":["SignedReport"],"type":24}}],"default":false,"docs":[" Validates the given RA report and signs the inner user_report_data."],"label":"sign","mutates":false,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":25},"selector":"0x81ca8fa1"},{"args":[{"label":"ceremony_id","type":{"displayName":["u32"],"type":6}},{"label":"hashes","type":{"displayName":["Vec"],"type":7}}],"default":false,"docs":[],"label":"add_ceremony_hashes","mutates":true,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":21},"selector":"0xaecba820"},{"args":[{"label":"ceremony_id","type":{"displayName":["u32"],"type":6}},{"label":"ipfs_hash","type":{"displayName":["String"],"type":9}}],"default":false,"docs":[],"label":"is_last_hash","mutates":false,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":27},"selector":"0xd3d7b2d4"},{"args":[{"label":"ceremony_id","type":{"displayName":["u32"],"type":6}}],"default":false,"docs":[],"label":"get_ceremony_hashes","mutates":false,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":30},"selector":"0xb12eab37"},{"args":[{"label":"ceremony_id","type":{"displayName":["u32"],"type":6}}],"default":false,"docs":[],"label":"get_ceremony_hashes_count","mutates":false,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":32},"selector":"0x002d1e5f"},{"args":[{"label":"ceremony_id","type":{"displayName":["u32"],"type":6}}],"default":false,"docs":[],"label":"get_ceremony_deadline","mutates":false,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":32},"selector":"0x4d0e10e7"},{"args":[{"label":"ceremony_id","type":{"displayName":["u32"],"type":6}},{"label":"phase","type":{"displayName":["u32"],"type":6}},{"label":"name","type":{"displayName":["String"],"type":9}},{"label":"description","type":{"displayName":["String"],"type":9}},{"label":"deadline","type":{"displayName":["u32"],"type":6}},{"label":"timestamp","type":{"displayName":["u32"],"type":6}},{"label":"metadatas","type":{"displayName":["Vec"],"type":12}}],"default":false,"docs":[],"label":"new_ceremony","mutates":true,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":21},"selector":"0x489150a1"},{"args":[],"default":false,"docs":[],"label":"get_cerimonies","mutates":false,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":34},"selector":"0xd101eea9"},{"args":[{"label":"ceremony_id","type":{"displayName":["u32"],"type":6}}],"default":false,"docs":[],"label":"get_ceremony","mutates":false,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":36},"selector":"0xad9b0765"},{"args":[{"label":"ceremony_id","type":{"displayName":["u32"],"type":6}},{"label":"metadatas","type":{"displayName":["Vec"],"type":12}}],"default":false,"docs":[],"label":"add_ceremony_metadatas","mutates":true,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":21},"selector":"0x6c751030"},{"args":[{"label":"ceremony_id","type":{"displayName":["u32"],"type":6}}],"default":false,"docs":[],"label":"get_ceremony_metadata","mutates":false,"payable":false,"returnType":{"displayName":["ink","MessageResult"],"type":38},"selector":"0x9ec8a573"}]},"storage":{"root":{"layout":{"struct":{"fields":[{"layout":{"leaf":{"key":"0x00000000","ty":0}},"name":"owner"},{"layout":{"leaf":{"key":"0x00000000","ty":3}},"name":"allowlist"},{"layout":{"leaf":{"key":"0x00000000","ty":4}},"name":"ceremony_hashes"},{"layout":{"leaf":{"key":"0x00000000","ty":10}},"name":"ceremony_metadatas"},{"layout":{"leaf":{"key":"0x00000000","ty":14}},"name":"ceremonies"}],"name":"Validator"}},"root_key":"0x00000000"}},"types":[{"id":0,"type":{"def":{"composite":{"fields":[{"type":1,"typeName":"[u8; 32]"}]}},"path":["ink_primitives","types","AccountId"]}},{"id":1,"type":{"def":{"array":{"len":32,"type":2}}}},{"id":2,"type":{"def":{"primitive":"u8"}}},{"id":3,"type":{"def":{"sequence":{"type":1}}}},{"id":4,"type":{"def":{"sequence":{"type":5}}}},{"id":5,"type":{"def":{"tuple":[6,7]}}},{"id":6,"type":{"def":{"primitive":"u32"}}},{"id":7,"type":{"def":{"sequence":{"type":8}}}},{"id":8,"type":{"def":{"composite":{"fields":[{"name":"hash","type":9,"typeName":"String"},{"name":"name","type":9,"typeName":"String"},{"name":"timestamp","type":6,"typeName":"u32"}]}},"path":["pod_validator","pod_validator","File"]}},{"id":9,"type":{"def":{"primitive":"str"}}},{"id":10,"type":{"def":{"sequence":{"type":11}}}},{"id":11,"type":{"def":{"tuple":[6,12]}}},{"id":12,"type":{"def":{"sequence":{"type":13}}}},{"id":13,"type":{"def":{"composite":{"fields":[{"name":"name","type":9,"typeName":"String"},{"name":"value","type":9,"typeName":"String"}]}},"path":["pod_validator","pod_validator","Metadata"]}},{"id":14,"type":{"def":{"sequence":{"type":15}}}},{"id":15,"type":{"def":{"composite":{"fields":[{"name":"ceremony_id","type":6,"typeName":"u32"},{"name":"phase","type":6,"typeName":"u32"},{"name":"name","type":9,"typeName":"String"},{"name":"description","type":9,"typeName":"String"},{"name":"deadline","type":6,"typeName":"u32"},{"name":"timestamp","type":6,"typeName":"u32"}]}},"path":["pod_validator","pod_validator","Ceremony"]}},{"id":16,"type":{"def":{"variant":{"variants":[{"fields":[{"type":17}],"index":0,"name":"Ok"},{"fields":[{"type":18}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":17},{"name":"E","type":18}],"path":["Result"]}},{"id":17,"type":{"def":{"tuple":[]}}},{"id":18,"type":{"def":{"variant":{"variants":[{"index":1,"name":"CouldNotReadInput"}]}},"path":["ink_primitives","LangError"]}},{"id":19,"type":{"def":{"variant":{"variants":[{"fields":[{"type":20}],"index":0,"name":"Ok"},{"fields":[{"type":18}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":20},{"name":"E","type":18}],"path":["Result"]}},{"id":20,"type":{"def":{"sequence":{"type":2}}}},{"id":21,"type":{"def":{"variant":{"variants":[{"fields":[{"type":22}],"index":0,"name":"Ok"},{"fields":[{"type":18}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":22},{"name":"E","type":18}],"path":["Result"]}},{"id":22,"type":{"def":{"variant":{"variants":[{"fields":[{"type":17}],"index":0,"name":"Ok"},{"fields":[{"type":23}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":17},{"name":"E","type":23}],"path":["Result"]}},{"id":23,"type":{"def":{"variant":{"variants":[{"index":0,"name":"BadOrigin"},{"index":1,"name":"InvalidReport"},{"index":2,"name":"PodNotAllowed"},{"index":3,"name":"CeremonyNotFound"}]}},"path":["pod_validator","pod_validator","Error"]}},{"id":24,"type":{"def":{"composite":{"fields":[{"name":"report","type":9,"typeName":"String"},{"name":"signature","type":9,"typeName":"String"},{"name":"certificate","type":9,"typeName":"String"}]}},"path":["pod_validator","pod_validator","SignedReport"]}},{"id":25,"type":{"def":{"variant":{"variants":[{"fields":[{"type":26}],"index":0,"name":"Ok"},{"fields":[{"type":18}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":26},{"name":"E","type":18}],"path":["Result"]}},{"id":26,"type":{"def":{"variant":{"variants":[{"fields":[{"type":20}],"index":0,"name":"Ok"},{"fields":[{"type":23}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":20},{"name":"E","type":23}],"path":["Result"]}},{"id":27,"type":{"def":{"variant":{"variants":[{"fields":[{"type":28}],"index":0,"name":"Ok"},{"fields":[{"type":18}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":28},{"name":"E","type":18}],"path":["Result"]}},{"id":28,"type":{"def":{"variant":{"variants":[{"fields":[{"type":29}],"index":0,"name":"Ok"},{"fields":[{"type":23}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":29},{"name":"E","type":23}],"path":["Result"]}},{"id":29,"type":{"def":{"primitive":"bool"}}},{"id":30,"type":{"def":{"variant":{"variants":[{"fields":[{"type":31}],"index":0,"name":"Ok"},{"fields":[{"type":18}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":31},{"name":"E","type":18}],"path":["Result"]}},{"id":31,"type":{"def":{"variant":{"variants":[{"fields":[{"type":7}],"index":0,"name":"Ok"},{"fields":[{"type":23}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":7},{"name":"E","type":23}],"path":["Result"]}},{"id":32,"type":{"def":{"variant":{"variants":[{"fields":[{"type":33}],"index":0,"name":"Ok"},{"fields":[{"type":18}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":33},{"name":"E","type":18}],"path":["Result"]}},{"id":33,"type":{"def":{"variant":{"variants":[{"fields":[{"type":6}],"index":0,"name":"Ok"},{"fields":[{"type":23}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":6},{"name":"E","type":23}],"path":["Result"]}},{"id":34,"type":{"def":{"variant":{"variants":[{"fields":[{"type":35}],"index":0,"name":"Ok"},{"fields":[{"type":18}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":35},{"name":"E","type":18}],"path":["Result"]}},{"id":35,"type":{"def":{"variant":{"variants":[{"fields":[{"type":14}],"index":0,"name":"Ok"},{"fields":[{"type":23}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":14},{"name":"E","type":23}],"path":["Result"]}},{"id":36,"type":{"def":{"variant":{"variants":[{"fields":[{"type":37}],"index":0,"name":"Ok"},{"fields":[{"type":18}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":37},{"name":"E","type":18}],"path":["Result"]}},{"id":37,"type":{"def":{"variant":{"variants":[{"fields":[{"type":15}],"index":0,"name":"Ok"},{"fields":[{"type":23}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":15},{"name":"E","type":23}],"path":["Result"]}},{"id":38,"type":{"def":{"variant":{"variants":[{"fields":[{"type":39}],"index":0,"name":"Ok"},{"fields":[{"type":18}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":39},{"name":"E","type":18}],"path":["Result"]}},{"id":39,"type":{"def":{"variant":{"variants":[{"fields":[{"type":12}],"index":0,"name":"Ok"},{"fields":[{"type":23}],"index":1,"name":"Err"}]}},"params":[{"name":"T","type":12},{"name":"E","type":23}],"path":["Result"]}},{"id":40,"type":{"def":{"primitive":"u128"}}},{"id":41,"type":{"def":{"composite":{"fields":[{"type":1,"typeName":"[u8; 32]"}]}},"path":["ink_primitives","types","Hash"]}},{"id":42,"type":{"def":{"primitive":"u64"}}},{"id":43,"type":{"def":{"variant":{}},"path":["ink_env","types","NoChainExtension"]}}],"version":"4"}';
   const RPC = "wss://poc6.phala.network/ws";
 
   console.log("[Phala] Connecting to validator contract...");
@@ -78,20 +78,59 @@ async function main(args?: string[]) {
 
   console.log("[Enclave] Looking for the ceremony Id...");
 
-  const power = Number(args?.[args.length - 2]) || 0;
-  const bash = Number(args?.[args.length - 1]) || 0;
+  let power = 0;
+  let bash = 0;
+
+  const fileArgs = args as string[];
+
+  console.log("[Enclave] File name: ", commandfileName);
+  console.log("[Enclave] File args: ", fileArgs);
 
   if (isNaN(firstArgument as number)) {
     console.log(
       "[Enclave] Ceremony id not provided, generating new ceremony..."
     );
+
     commandfileName = firstArgument as string;
+
+    // new ceremony:
+    // node index.js ceremony_id ./bin/compute_constrained challenge response power bash name description deadline
+
     const phase = getPhase(commandfileName);
+    const deadline = args?.pop();
+    const description = args?.pop();
+    const name = args?.pop();
+    bash = Number(args?.[args.length - 1])
+    power = Number(args?.[args.length - 2])
+
+    if (name == null) {
+      console.error(
+        "[Enclave] Name not provided, please provide a name for the ceremony"
+      );
+      return;
+    }
+
+    if (description == null) {
+      console.error(
+        "[Enclave] Description not provided, please provide a description for the ceremony"
+      );
+      return;
+    }
+
+    if (deadline == null) {
+      console.error(
+        "[Enclave] Deadline not provided, please provide a deadline for the ceremony"
+      );
+      return;
+    }
 
     ceremonyId = await createNewCeremony(
       phase,
       power,
       bash,
+      name,
+      description,
+      deadline,
       contract,
       pair,
       cert
@@ -100,12 +139,18 @@ async function main(args?: string[]) {
     console.log("[Enclave] Ceremony id provided, continuing ceremony...");
     ceremonyId = firstArgument as number;
     commandfileName = args?.shift() as string;
+    bash = Number(args?.[args.length - 1])
+    power = Number(args?.[args.length - 2])
+
+    await validadeDeadline(ceremonyId, validatorContract);
+    await validateLastHash(
+      ceremonyId,
+      validatorContract,
+      commandfileName,
+      fileArgs
+    );
   }
 
-  const fileArgs = args as string[];
-
-  console.log("[Enclave] File name: ", commandfileName);
-  console.log("[Enclave] File args: ", fileArgs);
   console.log("[Enclave] Getting validator public key...");
 
   const validatorPubkey = (await validatorContract.call("publicKey")) as any;
@@ -123,13 +168,6 @@ async function main(args?: string[]) {
   }
 
   try {
-    await validateLastHash(
-      validatorContract,
-      ceremonyId as number,
-      commandfileName,
-      fileArgs
-    );
-
     console.log("[Enclave] Running command...: ", commandfileName, fileArgs);
 
     const { stdout, stderr } = await execFile(commandfileName, fileArgs);
@@ -342,6 +380,9 @@ async function createNewCeremony(
   phase: number,
   power: number,
   bash: number,
+  name: string,
+  description: string,
+  deadline: string,
   contract: any,
   pair: any,
   cert: any
@@ -370,6 +411,9 @@ async function createNewCeremony(
     { pair, cert, address: cert.address },
     ceremonyId,
     phase,
+    name,
+    description,
+    deadline,
     timestamp,
     metadataArray
   )) as any;
@@ -392,8 +436,8 @@ async function createNewCeremony(
 }
 
 async function validateLastHash(
-  validatorContract: ra.Contract,
   ceremonyId: number,
+  validatorContract: ra.Contract,
   commandfileName: string,
   fileArgs: string[] | undefined
 ) {
@@ -478,6 +522,44 @@ async function validateLastHash(
         );
       }
     }
+  }
+}
+
+async function validadeDeadline(
+  ceremonyId: number,
+  validatorContract: ra.Contract
+) {
+  console.log(
+    "[Phala] getCeremonyDeadline - Calling method with args:",
+    ceremonyId
+  );
+
+  const txCeremonyDeadline = (await validatorContract.call(
+    "getCeremonyDeadline",
+    ceremonyId
+  )) as any;
+
+  if (txCeremonyDeadline?.isErr) {
+    throw new Error(
+      `[Phala] getCeremonyDeadline - Failed to get ceremony deadline: ${txCeremonyDeadline.asErr}`
+    );
+  }
+
+  const ceremonyDeadline = txCeremonyDeadline.asOk.toNumber();
+
+  console.log(
+    "[Phala] getCeremonyDeadline - Ceremony deadline: ",
+    ceremonyDeadline
+  );
+
+  const currentTime = Math.floor(Date.now() / 1000);
+
+  console.log("[Enclave] Current time: ", currentTime);
+
+  if (currentTime > ceremonyDeadline) {
+    throw new Error(
+      "[Enclave] Ceremony deadline expired, please create a new ceremony"
+    );
   }
 }
 
