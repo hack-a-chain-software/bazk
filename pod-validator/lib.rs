@@ -141,120 +141,141 @@ mod pod_validator {
             Ok(signature)
         }
 
-        #[ink(message)]
-        pub fn add_ceremony_hashes(&mut self, ceremony_id: u32, hashes: Vec<File>) -> Result<()> {
-            self.ensure_owner()?;
+        fn add_ceremony_hashes(&mut self, ceremony_id: u32, new_hashes: Vec<File>) -> Result<()> {
             ink::env::debug_println!("[Contract] add_ceremony_hashes called with ceremony_id: {}", ceremony_id);
-
-            let mut found = false;
-            for (id, ceremony_hashes) in self.ceremony_hashes.iter_mut() {
-                if *id == ceremony_id {
+        
+            // Find the ceremony by ID and append hashes, or create a new entry if not found
+            match self.ceremony_hashes.iter_mut().find(|(id, _)| *id == ceremony_id) {
+                Some((_, ceremony_hashes)) => {
                     ink::env::debug_println!("[Contract] Ceremony ID {} found, adding hashes.", ceremony_id);
-                    for hash in &hashes {
-                        ceremony_hashes.push(hash.clone());
-                    }
-                    found = true;
-                    ink::env::debug_println!("[Contract] Hashes added to ceremony ID {}.", ceremony_id);
-                    break;
+                    ceremony_hashes.extend(new_hashes.into_iter());
+                },
+                None => {
+                    ink::env::debug_println!("[Contract] Ceremony ID {} not found, creating new entry.", ceremony_id);
+                    self.ceremony_hashes.push((ceremony_id, new_hashes));
                 }
             }
-
-            if !found {
-                ink::env::debug_println!("[Contract] Ceremony ID {} not found, creating new entry.", ceremony_id);
-                self.ceremony_hashes.push((ceremony_id, hashes.clone()));
-                ink::env::debug_println!("[Contract] Ceremony ID {} created.", ceremony_id);
-            }
-
+        
+            ink::env::debug_println!("[Contract] Operation completed for ceremony ID {}.", ceremony_id);
             Ok(())
         }
 
         #[ink(message)]
+        /// Checks if the given IPFS hash is the last hash in the ceremony.
         pub fn is_last_hash(&self, ceremony_id: u32, ipfs_hash: String) -> Result<bool> {
-            for (id, hashes) in self.ceremony_hashes.iter() {
-                if id == &ceremony_id {
-                    if let Some(last_hash) = hashes.last() {
-                        return Ok(last_hash.hash == ipfs_hash);
-                    }
-                }
-            }
-            Err(Error::CeremonyNotFound)
+            self.ceremony_hashes.iter()
+                .find(|(id, _)| *id == ceremony_id)
+                .map_or(Err(Error::CeremonyNotFound), |(_, hashes)| {
+                    hashes.last()
+                        .map(|last_hash| Ok(last_hash.hash == ipfs_hash))
+                        .unwrap_or(Err(Error::CeremonyNotFound))
+                })
         }
 
         #[ink(message)]
+        /// Gets the IPFS hashes associated with the given ceremony.
         pub fn get_ceremony_hashes(&self, ceremony_id: u32) -> Result<Vec<File>> {
-            for (id, hashes) in self.ceremony_hashes.iter() {
-                if id == &ceremony_id {
-                    return Ok(hashes.clone());
-                }
-            }
-            Err(Error::CeremonyNotFound)
+            self.ceremony_hashes.iter()
+                .find(|(id, _)| *id == ceremony_id)
+                .map(|(_, hashes)| Ok(hashes.clone()))
+                .unwrap_or(Err(Error::CeremonyNotFound))
         }
 
         #[ink(message)]
+        /// Gets the number of IPFS hashes associated with the given ceremony.
         pub fn get_ceremony_hashes_count(&self, ceremony_id: u32) -> Result<u32> {
-            for (id, hashes) in self.ceremony_hashes.iter() {
-                if id == &ceremony_id {
-                    return Ok(hashes.len() as u32);
-                }
-            }
-            return Ok(0);
+            let hash_count = self.ceremony_hashes.iter()
+                .find(|(id, _)| *id == ceremony_id)
+                .map_or(0, |(_, hashes)| hashes.len() as u32);
+        
+            Ok(hash_count)
         }
 
         #[ink(message)]
+        /// Gets the deadline for the given ceremony.
         pub fn get_ceremony_deadline(&self, ceremony_id: u32) -> Result<u32> {
-            for ceremony in self.ceremonies.iter() {
-                if ceremony.ceremony_id == ceremony_id {
-                    return Ok(ceremony.deadline);
-                }
-            }
-            Err(Error::CeremonyNotFound)
+            self.ceremonies.iter()
+                .find(|&ceremony| ceremony.ceremony_id == ceremony_id)
+                .map(|ceremony| Ok(ceremony.deadline))
+                .unwrap_or(Err(Error::CeremonyNotFound))
         }
 
         #[ink(message)]
-        pub fn new_ceremony(&mut self, ceremony_id: u32, phase: u32, name: String, description: String, deadline: u32, timestamp: u32, metadatas: Vec<Metadata>) -> Result<()> {
-            self.ensure_owner()?;
-            ink::env::debug_println!("[Contract] new_ceremony called with ceremony_id: {}, phase: {}, timestamp: {}", ceremony_id, phase, timestamp);
-            
-            self.ceremonies.push(Ceremony {
-                ceremony_id: ceremony_id,
-                phase: phase,
-                name: name.clone(),
-                description: description.clone(),
-                deadline: deadline,
-                timestamp: timestamp
-            });
+        /// Adds a new contribution to the ceremony.
+        pub fn add_contribution(&mut self, ceremony_id: u32, phase: u32, name: String, description: String, deadline: u32, timestamp: u32, metadatas: Vec<Metadata>, hashes: Vec<File>) -> Result<()> {
+            // self.ensure_owner()?;
+            ink::env::debug_println!("[Contract] add_contribution called with ceremony_id: {}, phase: {}, timestamp: {}", ceremony_id, phase, timestamp);
 
-            ink::env::debug_println!("[Contract] Ceremony created for ceremony ID {}.", ceremony_id);
-            ink::env::debug_println!("[Contract] Adding metadatas to ceremony ID {}.", ceremony_id);
+            // Check if the ceremony already exists
+            let ceremony_exists = self.ceremonies.iter().any(|c| c.ceremony_id == ceremony_id);
+            ink::env::debug_println!("[Contract] Ceremony exists: {}", ceremony_exists);
 
-            self.add_ceremony_metadatas(ceremony_id, metadatas)?;
+            if !ceremony_exists {
+                let ceremony = Ceremony {
+                    ceremony_id,
+                    phase,
+                    name: name.clone(),
+                    description: description.clone(),
+                    deadline,
+                    timestamp
+                };
+                self.ceremonies.push(ceremony);
+                ink::env::debug_println!("[Contract] Ceremony created for ceremony ID {}.", ceremony_id);
+            }
+        
+            // Add metadata to the ceremony
+            if !metadatas.is_empty() {
+                ink::env::debug_println!("[Contract] Adding metadatas to ceremony ID {}.", ceremony_id);
+                self.add_ceremony_metadatas(ceremony_id, metadatas)?;
+                ink::env::debug_println!("[Contract] Metadatas added to ceremony ID {}.", ceremony_id);
+            }
 
-            ink::env::debug_println!("[Contract] Metadatas added to ceremony ID {}.", ceremony_id);
-            
-            self.env().emit_event(CeremonyAdded { ceremony_id: ceremony_id, phase: phase, name: name.clone(), description: description.clone(), deadline: deadline, timestamp: timestamp });
-
-            ink::env::debug_println!("[Contract] CeremonyAdded event emitted.");
+            // Add file hashes to the ceremony
+            if !hashes.is_empty() {
+                ink::env::debug_println!("[Contract] Adding hashes to ceremony ID {}.", ceremony_id);
+                self.add_ceremony_hashes(ceremony_id, hashes)?;
+                ink::env::debug_println!("[Contract] Hashes added to ceremony ID {}.", ceremony_id);
+            }
+        
+            ink::env::debug_println!("[Contract] add_contribution completed for ceremony ID {}.", ceremony_id);
             Ok(())
         }
 
         #[ink(message)]
-        pub fn get_cerimonies(&self) -> Result<Vec<Ceremony>> {
-            return Ok(self.ceremonies.clone());
+        /// Gets all ceremonies, including the number of IPFS hashes associated with each.
+        pub fn get_cerimonies(&self) -> Result<Vec<(Ceremony, u32)>> {
+            let ceremonies_with_hash_counts = self.ceremonies.iter().map(|ceremony| {
+                let hash_count = self.ceremony_hashes.iter()
+                    .find(|(id, _)| *id == ceremony.ceremony_id)
+                    .map_or(0, |(_, hashes)| hashes.len()) as u32;
+                (ceremony.clone(), hash_count)
+            }).collect::<Vec<(Ceremony, u32)>>();
+        
+            Ok(ceremonies_with_hash_counts)
         }
 
         #[ink(message)]
-        pub fn get_ceremony(&self, ceremony_id: u32) -> Result<Ceremony> {
-            for ceremony in self.ceremonies.iter() {
-                if ceremony.ceremony_id == ceremony_id {
-                    return Ok(ceremony.clone());
-                }
-            }
-            Err(Error::CeremonyNotFound)
+        /// Gets the ceremony with the given id, including IPFS hashes and metadata.
+        pub fn get_ceremony(&self, ceremony_id: u32) -> Result<(Ceremony, Vec<File>, Vec<Metadata>), Error> {
+            // Find the ceremony with the given id
+            let ceremony = self.ceremonies.iter()
+                .find(|c| c.ceremony_id == ceremony_id)
+                .ok_or(Error::CeremonyNotFound)?;
+        
+            // Retrieve hashes associated with the ceremony
+            let hashes = self.ceremony_hashes.iter()
+                .find(|(id, _)| id == &ceremony_id)
+                .map_or_else(|| Ok(Vec::new()), |(_, h)| Ok(h.clone()))?;
+        
+            // Retrieve metadata associated with the ceremony
+            let metadatas = self.ceremony_metadatas.iter()
+                .find(|(id, _)| id == &ceremony_id)
+                .map_or_else(|| Ok(Vec::new()), |(_, m)| Ok(m.clone()))?;
+        
+            Ok((ceremony.clone(), hashes, metadatas))
         }
-
-        #[ink(message)]
-        pub fn add_ceremony_metadatas(&mut self, ceremony_id: u32, metadatas: Vec<Metadata>) -> Result<()> {
-            self.ensure_owner()?;
+        
+        fn add_ceremony_metadatas(&mut self, ceremony_id: u32, metadatas: Vec<Metadata>) -> Result<()> {
             ink::env::debug_println!("[Contract] add_ceremony_metadatas called with ceremony_id: {}", ceremony_id);
 
             let mut ceremony_found = false;
@@ -291,15 +312,14 @@ mod pod_validator {
 
             Ok(())
         }
-
+        
         #[ink(message)]
+        /// Gets the metadata for the given ceremony.
         pub fn get_ceremony_metadata(&self, ceremony_id: u32) -> Result<Vec<Metadata>> {
-            for (id, metadatas) in self.ceremony_metadatas.iter() {
-                if id == &ceremony_id {
-                    return Ok(metadatas.clone());
-                }
-            }
-            Err(Error::CeremonyNotFound)
+            self.ceremony_metadatas.iter()
+                .find(|(id, _)| *id == ceremony_id)
+                .map(|(_, metadatas)| Ok(metadatas.clone()))
+                .unwrap_or(Err(Error::CeremonyNotFound))
         }
     }
 
