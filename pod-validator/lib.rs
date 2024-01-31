@@ -143,6 +143,7 @@ mod pod_validator {
 
         #[ink(message)]
         pub fn add_ceremony_hashes(&mut self, ceremony_id: u32, hashes: Vec<File>) -> Result<()> {
+            self.ensure_owner()?;
             ink::env::debug_println!("[Contract] add_ceremony_hashes called with ceremony_id: {}", ceremony_id);
 
             let mut found = false;
@@ -211,6 +212,7 @@ mod pod_validator {
 
         #[ink(message)]
         pub fn new_ceremony(&mut self, ceremony_id: u32, phase: u32, name: String, description: String, deadline: u32, timestamp: u32, metadatas: Vec<Metadata>) -> Result<()> {
+            self.ensure_owner()?;
             ink::env::debug_println!("[Contract] new_ceremony called with ceremony_id: {}, phase: {}, timestamp: {}", ceremony_id, phase, timestamp);
             
             self.ceremonies.push(Ceremony {
@@ -252,6 +254,7 @@ mod pod_validator {
 
         #[ink(message)]
         pub fn add_ceremony_metadatas(&mut self, ceremony_id: u32, metadatas: Vec<Metadata>) -> Result<()> {
+            self.ensure_owner()?;
             ink::env::debug_println!("[Contract] add_ceremony_metadatas called with ceremony_id: {}", ceremony_id);
 
             let mut ceremony_found = false;
