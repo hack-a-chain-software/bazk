@@ -5,9 +5,10 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "build": "webpack"
+    "build": "webpack && cpy \"ceremonies/**/*\" dist/ceremonies"
   },
   "devDependencies": {
+    "cpy-cli": "^5.0.0",
     "ts-loader": "^9.5.0",
     "typescript": "^5.2.2",
     "webpack": "^5.89.0",

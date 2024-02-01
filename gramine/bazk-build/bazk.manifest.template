@@ -64,6 +64,7 @@ trusted_files = [
   "file:bin/compute_constrained",
   "file:bin/verify_transform_constrained",
   "file:bin/prepare_phase2",
+  "file:ceremonies/",
 ]
 
 allowed_files = [
