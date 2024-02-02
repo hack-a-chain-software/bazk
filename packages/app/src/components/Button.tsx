@@ -23,7 +23,7 @@ export const ButtonSecondaryLarge = ({
   <button
   onClick={onClick}
   className="
-    w-full px-4 py-3 rounded-md leading-[19.6px] border border-[#CBD5E1] text-[#475569] font-semibold"
+    text-sm md:text-base w-full px-4 py-2 md:py-3 rounded-md leading-[19.6px] border border-[#CBD5E1] text-[#475569] font-semibold"
   >
     {label}
   </button>
@@ -36,7 +36,7 @@ export const ButtonLarge = ({
   <button
     onClick={onClick}
     className="
-      w-full px-4 py-3 rounded-md leading-[19.6px] bg-[#624BFF] hover:bg-[#5340D9] text-white font-semibold"
+      text-sm md:text-base w-full px-4 py-2 md:py-3 rounded-md leading-[19.6px] bg-[#624BFF] hover:bg-[#5340D9] text-white font-semibold"
   >
     {label}
   </button>

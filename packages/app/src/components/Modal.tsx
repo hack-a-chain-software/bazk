@@ -43,13 +43,13 @@ export const Modal = ({
               <Dialog.Panel
                 className={
                   twMerge(
-                    'relative w-full max-w-md transform overflow-hidden rounded-xl bg-white p-6 text-left align-middle shadow-xl transition-all',
+                    'relative w-full max-w-md transform overflow-hidden rounded-xl bg-white p-4 md:p-6 text-left align-middle shadow-xl transition-all',
                     rootClass,
                   )
                 }
               >
                 <div
-                  className="absolute top-6 right-6"
+                  className="absolute md:top-6 md:right-6 top-4 right-4"
                 >
                   <button
                     onClick={onClose}

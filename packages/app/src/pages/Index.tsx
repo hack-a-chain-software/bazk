@@ -14,10 +14,12 @@ const tableColumns = [
   {
     key: 'ceremonyId',
     label: 'ID',
+    classRoot: 'min-w-[70px]'
   },
   {
     key: 'name',
     label: 'Circuit Name',
+    classRoot: 'min-w-[190px]',
     render: (row: any) => (
       <NameColumn
         name={row.name}
@@ -27,10 +29,12 @@ const tableColumns = [
   {
     key: 'hash',
     label: 'Hash',
+    classRoot: 'min-w-[160px]',
   },
   {
     key: 'deadline',
     label: 'Deadline',
+    classRoot: 'min-w-[130px]',
     render: (row: any) => {
       return (
         <CreatedAtColumn
@@ -42,6 +46,7 @@ const tableColumns = [
   {
     key: 'status',
     label: 'Status',
+    classRoot: 'min-w-[72px]',
     render: (row: any) => {
       return (
         <Status
@@ -53,6 +58,7 @@ const tableColumns = [
   {
     key: 'contributions',
     label: 'Contributions',
+    classRoot: 'min-w-[92px]',
     render: (row: any) => (
       <ContributionsColumn
         contributions={row.contributions}
@@ -62,6 +68,7 @@ const tableColumns = [
   {
     key: 'actions',
     label: 'Actions',
+    classRoot: 'min-w-[53px]',
     render: (row: any) => {
       return (
         <Link

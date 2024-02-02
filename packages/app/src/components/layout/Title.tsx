@@ -3,7 +3,7 @@ export const Title = ({ title }: { title: string }) => {
     <div>
       <h1
         className="
-          text-2xl
+          text-[22px] md:text-2xl
           font-semibold
           leading-[28.8px]
           text-dark-blue-600

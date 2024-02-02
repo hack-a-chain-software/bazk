@@ -9,38 +9,38 @@ export const FinishedPage = () => {
       className="space-y-4 gap-4 max-w-[546px] mx-auto"
     >
       <div
-        className="bg-white rounded-lg p-6 flex flex-col gap-6"
+        className="bg-white rounded-lg p-4 md:p-6 flex flex-col gap-4 md:gap-6"
       >
         <div
-          className="w-[90px] h-[90px] rounded-full bg-[#D0F9DE80] justify-center items-center flex"
+          className="w-[80px] h-[80px] md:w-[90px] md:h-[90px] rounded-full bg-[#D0F9DE80] justify-center items-center flex"
         >
           <div
-            className="w-[66px] h-[66px] bg-[#D0F9DE] rounded-full justify-center items-center flex"
+            className="w-[60px] h-[60px] md:w-[66px] md:h-[66px] bg-[#D0F9DE] rounded-full justify-center items-center flex"
           >
             <Completed
-              className="text-[#03863D] w-[42px] h-[42px]"
+              className="text-[#03863D] w-[36px] h-[36px] md:w-[42px] md:h-[42px]"
             />
           </div>
         </div>
 
         <div
-          className="flex flex-col gap-2"
+          className="flex flex-col gap-3 md:gap-2"
         >
           <span
-            className="text-[#1E293B] text-[22px] leading-[30.8px] font-semibold"
+            className="text-[#1E293B] text-lg md:text-[22px] leading-[30.8px] font-semibold"
           >
             Ceremony Created
           </span>
 
           <span
-            className="text-[#475569] leading-[22.4px]"
+            className="text-sm md:text-base text-[#475569] leading-[22.4px]"
           >
             Your ceremony will be listed on the Dashboard, and you can view all the details and track your contribution on the Ceremony page.
           </span>
         </div>
 
         <div
-          className="flex items-center gap-2 pt-4"
+          className="flex items-center gap-3 md:gap-2 pt-4"
         >
           <Link
             to="/"

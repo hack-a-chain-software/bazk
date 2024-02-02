@@ -1,13 +1,14 @@
 import { Link } from "react-router-dom";
 import logo from '/logo.svg'
+import MenuMobile from "./MenuMobile";
 
 export const Header = () => {
   return (
     <div
-      className="bg-dark-blue"
+      className="bg-dark-blue px-4"
     >
       <header
-        className="mx-auto w-full max-w-7xl md:flex md:items-center md:justify-between py-4"
+        className="mx-auto w-full max-w-7xl flex items-center justify-between py-4 min-h-[72px]"
       >
         <Link
           to="/"
@@ -17,7 +18,7 @@ export const Header = () => {
 
         <Link
           to="/ceremony/create"
-          className="py-2 px-6"
+          className="py-2 px-6 hidden md:block"
         >
           <span
             className="
@@ -28,6 +29,8 @@ export const Header = () => {
             Create ceremony
           </span>
         </Link>
+
+        <MenuMobile />
       </header>
 
     </div>

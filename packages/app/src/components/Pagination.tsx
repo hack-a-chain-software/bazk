@@ -53,11 +53,11 @@ export const Pagination = ({
       />
 
       <div
-        className="px-6 py-4 rounded-b-lg flex items-center justify-between"
+        className="px-4 md:px-6 py-4 rounded-b-lg flex items-center justify-between"
       >
         <div>
           <span
-            className="text-sm text-[#1E293B]"
+            className="text-xs md:text-sm text-[#1E293B]"
           >
             {`Showing ${itemsPerPage} of ${totalItems} Contributions`}
           </span>

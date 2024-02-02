@@ -1,8 +1,10 @@
+import { twMerge } from "tailwind-merge";
 import DefaultColumn from "./columns/Default";
 
 export interface ColumnInterface {
   key: string;
   label: string;
+  classRoot?: string
   render?: (row: any, index: number) => any
 }
 
@@ -23,13 +25,13 @@ export const Table = ({
         w-full
         bg-white
         rounded-t-lg
-        space-y-6
-        px-6 pt-6
+        space-y-3 md:space-y-6
+        px-4 md:px-6 md:pt-6 pt-3
       "
     >
       <div>
         <h2
-          className="text-lg font-semibold text-[#1E293B] tracking-[0.36px]"
+          className="md:text-lg font-semibold text-[#1E293B] md:tracking-[0.36px]"
         >
           {title}
         </h2>
@@ -43,10 +45,13 @@ export const Table = ({
             className="bg-[#F1F5F9]"
           >
             <tr>
-              {columns && columns.map(({ key, label }) => {
+              {columns && columns.map(({ key, label, classRoot }) => {
                 return (
                   <th
-                    className="text-left p-4 text-sm font-semibold"
+                    className={twMerge(
+                      'text-left p-3 md:p-4 text-xs md:text-sm font-semibold',
+                      classRoot
+                    )}
                     key={`table-column-${key}`}
                   >
                     {label}
@@ -69,7 +74,7 @@ export const Table = ({
                   {columns && columns.map(({ render, key }) => {
                     return (
                       <td
-                        className="p-4"
+                        className="p-3 md:p-4"
                         key={`${rowKey}-column-${key}`}
                       >
                         {render ? render(row, index) : DefaultColumn(row[key] || '')}

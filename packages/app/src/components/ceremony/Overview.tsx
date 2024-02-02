@@ -8,7 +8,7 @@ export const Overview = ({
   return (
     <div
       className="
-        p-6
+        p-4 md:p-6
         h-max
         bg-white
         col-span-4
@@ -17,65 +17,65 @@ export const Overview = ({
       "
     >
       <div
-        className="flex flex-col gap-2 pb-4"
+        className="flex flex-col gap-2 pb-3 md:pb-4"
       >
         <span
-          className="text-sm text-[#475569] leading-[19.6px]"
+          className="text-xs md:text-sm text-[#475569] leading-[16.8px] md:leading-[19.6px]"
         >
           Ceremony Name
         </span>
 
         <span
-          className="text-xl font-medium text-[#1E293B] leading-[28px]"
+          className="text-lg md:text-xl font-medium text-[#1E293B] leading-[140%]"
         >
           {ceremony.name}
         </span>
       </div>
 
       <div
-        className="flex flex-col gap-2 pb-6"
+        className="flex flex-col gap-2 pb-4 md:pb-6"
       >
         <span
-          className="text-sm text-[#475569] leading-[19.6px]"
+          className="text-xs md:text-sm text-[#475569] leading-[16.8px] md:leading-[19.6px]"
         >
           Description
         </span>
 
         <span
-          className="leading-[22.4px] text-[#1E293B]"
+          className="text-sm md:text-base leading-[140%] text-[#1E293B]"
         >
           {ceremony.description}
         </span>
       </div>
 
       <div
-        className="flex flex-col gap-2"
+        className="flex flex-col gap-3 md:gap-2"
       >
         <span
-          className="text-[#1E293B] text-lg font-semibold tracking-[0.36px] leading-[25.2px]"
+          className="text-[#1E293B] md:text-lg font-semibold tracking-[0.36px] leading-[140%]"
         >
           Ceremony details
         </span>
 
         <div
-          className="bg-[#F1F5F9] p-4 rounded-lg divide divide-y-[1px] divide-[#CBD5E1]"
+          className="bg-[#F1F5F9] p-3 md:p-4 rounded-lg divide divide-y-[1px] divide-[#CBD5E1]"
         >
           <div
             className="
               p-2
-              flex justify-between items-center
+              flex justify-between items-center flex-wrap gap-2
             "
           >
             <span
               className="
-                text-[#475569]
+                text-[#475569] text-sm md:text-base
               "
             >
               Ceremony ID:
             </span>
 
             <span
-              className="text-[#1E293B] font-medium"
+              className="text-[#1E293B] font-medium text-sm md:text-base"
             >
               {ceremony.ceremonyId}
             </span>
@@ -84,19 +84,19 @@ export const Overview = ({
           <div
             className="
               p-2
-              flex justify-between items-center
+              flex justify-between items-center flex-wrap gap-2
             "
           >
             <span
               className="
-                text-[#475569]
+                text-[#475569] text-sm md:text-base
               "
             >
               Deadline:
             </span>
 
             <span
-              className="text-[#1E293B] font-medium"
+              className="text-[#1E293B] font-medium text-sm md:text-base"
             >
               04/05/2024
             </span>
@@ -105,19 +105,19 @@ export const Overview = ({
           <div
             className="
               p-2
-              flex justify-between items-center
+              flex justify-between items-center flex-wrap gap-2
             "
           >
             <span
               className="
-                text-[#475569]
+                text-[#475569] text-sm md:text-base
               "
             >
               Parameters:
             </span>
 
             <span
-              className="text-[#1E293B] font-medium"
+              className="text-[#1E293B] font-medium text-sm md:text-base"
             >
               1024 4352 121 17 7
             </span>
@@ -126,19 +126,19 @@ export const Overview = ({
           <div
             className="
               p-2
-              flex justify-between items-center
+              flex justify-between items-center flex-wrap gap-2
             "
           >
             <span
               className="
-                text-[#475569]
+                text-[#475569] text-sm md:text-base
               "
             >
               Hash:
             </span>
 
             <span
-              className="text-[#1E293B] font-medium"
+              className="text-[#1E293B] font-medium text-sm md:text-base"
             >
               264480...e61873
             </span>

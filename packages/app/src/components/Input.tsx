@@ -20,10 +20,10 @@ export const TextArea = ({
     >
       <span
         className="
-          text-sm
+          text-xs md:text-sm
           font-medium
           text-[#1E293B]
-          leading-[19.6px]
+          leading-[140%]
         "
       >
         {label}
@@ -54,10 +54,10 @@ export const Input = ({
     >
       <span
         className="
-          text-sm
+          text-xs md:text-sm
           font-medium
           text-[#1E293B]
-          leading-[19.6px]
+          leading-[140%]
         "
       >
         {label}

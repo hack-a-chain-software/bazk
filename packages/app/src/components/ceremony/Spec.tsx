@@ -99,7 +99,10 @@ export const Specs = ({
 
   return (
     <div
-      className="w-full grid grid-cols-4 gap-4"
+      className="
+        flex flex-wrap
+        w-full md:grid grid-cols-3 lg:grid-cols-4 gap-4
+      "
     >
       {specList.map(({ value, icon, label, color }) => (
           <Card

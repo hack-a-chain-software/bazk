@@ -28,13 +28,15 @@ export const ContributionButton = () => {
         rootClass="max-w-[520px]"
       >
         <div
-          className="p-3 rounded-full bg-[#F3EBFD] w-max"
+          className="p-2 md:p-3 rounded-full bg-[#F3EBFD] w-max"
         >
-          <Puzzle/>
+          <Puzzle
+            className="w-10 h-10 md:w-[64px] md:h-[64px]"
+          />
         </div>
 
         <div
-          className="pt-6 flex flex-col gap-2"
+          className="pt-4 md:pt-6 flex flex-col gap-2"
         >
           <span
             className="
@@ -58,7 +60,7 @@ export const ContributionButton = () => {
         </div>
 
         <div
-          className="pt-10 flex items-center gap-4"
+          className="pt-[32px] md:pt-10 flex items-center gap-3 md:gap-4"
         >
           <ButtonSecondaryLarge
             onClick={() => {}}

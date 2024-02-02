@@ -16,7 +16,7 @@ export const CreatePage = () => {
       />
 
       <div
-        className="bg-white rounded-lg p-6 flex flex-col gap-4"
+        className="bg-white rounded-lg p-4 md:p-6 flex flex-col gap-3 md:gap-4"
       >
         <Input
           value=""
@@ -33,7 +33,7 @@ export const CreatePage = () => {
         />
 
         <div
-          className="w-full flex items-center gap-6"
+          className="w-full flex items-center gap-3 md:gap-6 flex-wrap md:flex-nowrap"
         >
           <Input
             value=""
@@ -61,7 +61,7 @@ export const CreatePage = () => {
           />
 
           <div
-            className="w-full"
+            className="w-full hidden md:block"
           />
         </div>
 

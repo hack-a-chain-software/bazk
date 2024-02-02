@@ -20,6 +20,7 @@ const tableColumns = [
   {
     key: 'order',
     label: 'Order',
+    classRoot: 'min-w-[48px]',
     render: (row: any) => (
       <OrderColumn
         order={row.order}
@@ -29,6 +30,7 @@ const tableColumns = [
   {
     key: 'hashes',
     label: 'Hashes',
+    classRoot: 'min-w-[160px]',
     render: (row: any) => (
       <NameColumn
         name={shortenHash(row.hash, 10)}
@@ -38,6 +40,7 @@ const tableColumns = [
   {
     key: 'contribution-date',
     label: 'Contribution Date',
+    classRoot: 'min-w-[140px]',
     render: (row: any) => {
       return (
         <CreatedAtColumn
@@ -141,19 +144,18 @@ export const CeremonyPage = () => {
 
       {ceremony && (
         <div
-          className="grid grid-cols-12 gap-6 "
+          className="space-y-4 md:space-y-0 md:grid grid-cols-12 gap-6"
         >
           <Overview
             ceremony={ceremony}
           />
 
           <div
-            className="w-full col-span-8 flex flex-col gap-6"
+            className="w-full col-span-8 flex flex-col gap-4 md:gap-6"
           >
             <Specs
               ceremony={ceremony}
             />
-
 
             <div
               className="w-full"

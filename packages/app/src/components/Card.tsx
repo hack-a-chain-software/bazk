@@ -19,8 +19,9 @@ export const Card = ({
   return (
     <div
       className="
+        flex-1
         bg-white
-        py-5 px-4
+        py-4 md:py-5 px-3 md:px-4
         gap-5
         rounded-lg
         min-w-[150px]
@@ -45,7 +46,7 @@ export const Card = ({
       >
         <span
           className="
-            text-xl
+            text-lg md:text-xl
             font-medium
             leading-[20px]
             text-[#1E293B]
