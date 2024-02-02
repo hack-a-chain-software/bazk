@@ -1,3 +1,5 @@
+import { format } from "date-fns"
+
 export interface OverviewInterface {
   ceremony: any
 }
@@ -98,28 +100,7 @@ export const Overview = ({
             <span
               className="text-[#1E293B] font-medium text-sm md:text-base"
             >
-              04/05/2024
-            </span>
-          </div>
-
-          <div
-            className="
-              p-2
-              flex justify-between items-center flex-wrap gap-2
-            "
-          >
-            <span
-              className="
-                text-[#475569] text-sm md:text-base
-              "
-            >
-              Parameters:
-            </span>
-
-            <span
-              className="text-[#1E293B] font-medium text-sm md:text-base"
-            >
-              1024 4352 121 17 7
+              {format(ceremony.deadline * 1000, 'dd/MM/yyyy')}
             </span>
           </div>
 
