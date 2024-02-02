@@ -83,16 +83,20 @@ const FoundationContextProvider = ({ children }: any) => {
 
     const rawCeremonies = output.toJSON().ok.ok
 
-    return rawCeremonies.map(([ceremony, contributions]: any) => {
-      const isOpen = isBefore(new Date, new Date(ceremony.deadline)) ? 'open' : 'finalized'
+    return rawCeremonies
+      .filter(([ceremony]: any) => ceremony.phase !== 1)
+      .map(([ceremony, contributions]: any) => {
+        const isOpen = isBefore(new Date(), new Date(ceremony.deadline * 1000))
+          ? 'open'
+          : 'finalized'
 
-      return ({
-        ...ceremony,
-        contributions,
-        status: isOpen,
-        hash: '55ab71351f...c8c5cbb24d'
+        return ({
+          ...ceremony,
+          contributions,
+          status: isOpen,
+          hash: '55ab71351f...c8c5cbb24d'
+        })
       })
-    })
   }
 
   const getCeremony = async (id: string | number) => {

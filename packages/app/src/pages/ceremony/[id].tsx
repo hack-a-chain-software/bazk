@@ -14,6 +14,7 @@ import ContributionButton from "@/components/ContributionButton";
 import { useEffect, useState } from 'react';
 import { useFoundationContext } from '@/providers/foundation';
 import { shortenHash } from '@/utils/string';
+import usePaginate from '@/hooks/usePaginate';
 
 const tableColumns = [
   {
@@ -60,10 +61,11 @@ const tableColumns = [
   {
     key: 'download',
     label: '',
-    render: () => {
+    render: (row: any) => {
       return (
         <Link
-          to="#"
+          target='__blank'
+          to={`https://ipfs.io/ipfs/${row.hash}/`}
           className="text-[#624BFF] text-sm text-center block"
         >
           <DownloadIcon/>
@@ -76,12 +78,23 @@ const tableColumns = [
 export const CeremonyPage = () => {
   const { id } = useParams()
 
+  const [currentPage, setCurrentPage] = useState(1)
   const [ceremony, setCeremony] = useState<null | any>(null)
 
   const {
     getCeremony,
     initialized,
   } = useFoundationContext()
+
+  const {
+    page,
+    totalPages,
+    totalItems,
+  } = usePaginate({
+    currentPage,
+    itemsPerPage: 8,
+    items: ceremony?.contributions || [],
+  })
 
   useEffect(() => {
     if (!initialized || !id) {
@@ -147,15 +160,18 @@ export const CeremonyPage = () => {
             >
               <Table
                 title = 'Contribuitons'
-                rows={ceremony.contributions}
+                rows={page}
                 columns={tableColumns}
               />
 
               <Pagination
-                currentPage={4}
-                totalItems={28}
-                itemsPerPage={8}
-                onPageChange={() => {}}
+                totalPages={totalPages}
+                totalItems={totalItems}
+                currentPage={currentPage}
+                itemsPerPage={page?.length || 0}
+                onPageChange={(page: number | string) => {
+                  setCurrentPage(page as number)
+                }}
               />
             </div>
           </div>

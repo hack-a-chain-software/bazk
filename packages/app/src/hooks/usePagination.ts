@@ -19,9 +19,9 @@ export const usePagination = (props: UsePaginationInterface) => {
 
   const lastPage = totalPages
 
-  const rangeStart = currentPage - 2 === initialPage ? initialPage : Math.max(currentPage - 1, 1)
+  const rangeStart = currentPage - 3 <= initialPage ? initialPage : Math.max(currentPage - 1, initialPage)
 
-  const rangeEnd = currentPage + 2 === lastPage ? lastPage : Math.min(currentPage + 1, 10)
+  const rangeEnd = currentPage + 3 >= lastPage ? lastPage : Math.min(currentPage + 1, lastPage)
 
   const baseRange = range(rangeStart, rangeEnd)
 

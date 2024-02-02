@@ -1,126 +1,115 @@
+import { useMemo } from "react"
 import Card from "../Card"
 
 export interface SpecsInterface {
   ceremony: any
 }
 
-// TODO: Complete this
-export const specsMap = {
-  // bash: {
+const baseOrder = [
+  'power',
+  'curve',
+  'memory',
+  'contributions',
+  'nPrvInputs',
+  'nPubInputs',
+  'nConstants',
+  'nSignals'
+];
 
-  //   icon: 'Public',
-  //   label: 'Public Inputs',
-  //   color: 'bg-[#FFD0E6]'
-  // },
-  // nVars: {
-
-  //   icon: 'Public',
-  //   label: 'Public Inputs',
-  //   color: 'bg-[#FFD0E6]'
-  // },
-  // nInputs: {
-
-  //   icon: 'Public',
-  //   label: 'Public Inputs',
-  //   color: 'bg-[#FFD0E6]'
-  // },
-  // nOutputs: {
-
-  //   icon: 'Public',
-  //   label: 'Public Inputs',
-  //   color: 'bg-[#FFD0E6]'
-  // },
-  // nConstants: {
-  //   icon: 'Public',
-  //   label: 'Public Inputs',
-  //   color: 'bg-[#FFD0E6]'
-  // },
-
-  //
+const specsMap = {
+  curve: {
+    icon: 'Curve',
+    label: 'Curve',
+    color: 'bg-[#DCF2E9]',
+    getValue: () => {
+      return 'bn-256'
+    }
+  },
+  memory: {
+    icon: 'Memory',
+    color: 'bg-[#CFF4FC]',
+    label: 'Memory Requirement',
+    getValue: () => {
+      return '3239. mb'
+    }
+  },
+  nConstants: {
+    icon: 'Constraints',
+    label: 'Constraints',
+    color: 'bg-[#FFD3B2]',
+    getValue: ({ metadatas }: any) => {
+      return metadatas.find(({ name }: any) => name === 'nConstants').value
+    }
+  },
+  contributions: {
+    icon: 'Completed',
+    label: 'Completed Contributions',
+    color: 'bg-[#FFF3CD]',
+    getValue: (ceremony: any) => {
+      return ceremony.contributions.length
+    }
+  },
   nSignals: {
-    icon: 'Signals',
-    label: 'Signals',
-    color: 'bg-[#DBC3F6]'
+    icon: 'Wires',
+    label: 'Wires',
+    color: 'bg-[#DBC3F6]',
+    getValue: ({ metadatas }: any) => {
+      return metadatas.find(({ name }: any) => name === 'nSignals').value
+    }
   },
   nPrvInputs: {
     icon: 'Private',
     label: 'Private Inputs',
-    color: 'bg-[#E0DBFF]'
+    color: 'bg-[#E0DBFF]',
+    getValue: ({ metadatas }: any) => {
+      return metadatas.find(({ name }: any) => name === 'nSignals').value
+    }
   },
   power: {
-    icon: 'power',
+    icon: 'Power',
     label: 'power',
-    color: 'bg-[#F8D7DA]'
+    color: 'bg-[#F8D7DA]',
+    getValue: ({ metadatas }: any) => {
+      return metadatas.find(({ name }: any) => name === 'power').value
+    }
   },
   nPubInputs: {
     icon: 'Public',
     label: 'Public Inputs',
-    color: 'bg-[#FFD0E6]'
+    color: 'bg-[#FFD0E6]',
+    getValue: ({ metadatas }: any) => {
+      return metadatas.find(({ name }: any) => name === 'nPubInputs').value
+    }
   },
 }
 
 export const Specs = ({
   ceremony
 }: SpecsInterface) => {
+  const specList = useMemo(() => {
+    return baseOrder.map((key: any) => {
+      const meta = (specsMap as any)[key]
+
+      return {
+        ...meta,
+        value: meta.getValue(ceremony)
+      }
+    })
+  }, [ceremony])
+
   return (
     <div
       className="w-full grid grid-cols-4 gap-4"
     >
-      <Card
-        value="23"
-        icon="Power"
-        label="Power"
-        color="bg-[#F8D7DA]"
-      />
-
-      <Card
-        icon="Curve"
-        label="Curve"
-        value="bn-256"
-        color="bg-[#DCF2E9]"
-      />
-
-      <Card
-        icon="Memory"
-        value="3239. mb"
-        color="bg-[#CFF4FC]"
-        label="Memory Requirement"
-      />
-
-      <Card
-        value="27"
-        icon="Completed"
-        color="bg-[#FFF3CD]"
-        label="Completed Contributions"
-      />
-
-      <Card
-        value="5452"
-        icon="Private"
-        color="bg-[#E0DBFF]"
-        label="Private Inputs"
-      />
-
-      <Card
-        value="1"
-        icon="Public"
-        label="Public Inputs"
-        color="bg-[#FFD0E6]"
-      />
-
-      <Card
-        value="5871794"
-        icon="Constraints"
-        label="Constraints"
-        color="bg-[#FFD3B2]"
-      />
-
-      <Card
-        value="217"
-        icon="Wires"
-        label="Wires"
-        color="bg-[#DBC3F6]"
-      />
+      {specList.map(({ value, icon, label, color }) => (
+          <Card
+            value={value}
+            icon={icon}
+            label={label}
+            color={color}
+            key={`ceremony-spec-${icon}`}
+          />
+      ))}
     </div>
   )
 }

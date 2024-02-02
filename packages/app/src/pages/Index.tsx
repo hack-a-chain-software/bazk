@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useFoundationContext } from "@/providers/foundation";
 import CreatedAtColumn from "@/components/columns/CreatedAt";
+import usePaginate from "@/hooks/usePaginate";
 
 const tableColumns = [
   {
@@ -75,14 +76,23 @@ const tableColumns = [
 ]
 
 export const IndexPage = () => {
-
   const [ceremonies, setCeremonies] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
 
   const {
     initialized,
     getCeremonies,
   } = useFoundationContext()
 
+  const {
+    page,
+    totalPages,
+    totalItems,
+  } = usePaginate({
+    currentPage,
+    itemsPerPage: 11,
+    items: ceremonies,
+  })
 
   useEffect(() => {
     if (!initialized) {
@@ -111,15 +121,18 @@ export const IndexPage = () => {
           <Table
             title = 'Ceremonies'
 
-            rows={ceremonies}
+            rows={page}
             columns={tableColumns}
           />
 
           <Pagination
-            currentPage={4}
-            totalItems={28}
-            itemsPerPage={8}
-            onPageChange={() => {}}
+            totalPages={totalPages}
+            totalItems={totalItems}
+            currentPage={currentPage}
+            itemsPerPage={page.length}
+            onPageChange={(page: number | string) => {
+              setCurrentPage(page as number)
+            }}
           />
         </div>
       )}
