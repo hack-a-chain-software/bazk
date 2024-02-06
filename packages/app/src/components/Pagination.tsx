@@ -89,7 +89,7 @@ export const Pagination = ({
                 )
               }
 
-              if (page === 'ellipsis') {
+              if (page === 'ellipsis-left' || page === 'ellipsis-right') {
                 return (
                   <div
                     key={`pagination-${page}`}

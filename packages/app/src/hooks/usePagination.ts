@@ -27,11 +27,11 @@ export const usePagination = (props: UsePaginationInterface) => {
 
   const items = [
     'prev',
-    ...(!baseRange.includes(initialPage) ? [initialPage, 'ellipsis'] : []),
+    ...(!baseRange.includes(initialPage) ? [initialPage, 'ellipsis-left'] : []),
 
     ...baseRange,
 
-    ...(!baseRange.includes(lastPage) ? ['ellipsis', lastPage] : []),
+    ...(!baseRange.includes(lastPage) ? ['ellipsis-right', lastPage] : []),
     'next'
   ].filter((item) => !!item)
 
