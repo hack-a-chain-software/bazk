@@ -29,6 +29,8 @@
     "@polkadot/keyring": "^12.5.1",
     "@polkadot/util": "^12.5.1",
     "@polkadot/util-crypto": "^12.5.1",
-    "ipfs-only-hash": "^4.0.0"
+    "bufferutil": "^4.0.8",
+    "ipfs-only-hash": "^4.0.0",
+    "utf-8-validate": "^6.0.3"
   }
 }

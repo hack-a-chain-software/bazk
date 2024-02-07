@@ -44,6 +44,18 @@ There are four subdirectories in this repo:
 - [Node.js](https://nodejs.org/en/download/) installed. (Tested version : `v16.17.1`)
 - Intel IAS API key and SPID. (You can get it from [here](https://api.portal.trustedservices.intel.com/EPID-attestation))
 
+#### Initialize submodules
+
+```bash
+git submodule update --init --recursive
+```
+
+#### Install the dependencies
+
+```bash
+yarn gramine
+```
+
 ### Build and deploy the validator contract
 
 First you can build the validator contract by running the following command in the root directory of this repo:
@@ -74,7 +86,7 @@ To build the template app, run the following command in the root directory of th
 cd gramine/
 cp -L $(which node) bazk-build/
 export IAS_SPID=YOUR_IAS_SPID
-yarn && yarn build
+yarn gramine build
 ```
 
 You would get a measurement result in the log like this:
@@ -104,7 +116,7 @@ You will see a line of log in the log panel like this:
 ```bash [Local | Ubuntu-20.04 (WSL)]
 export AZURE_SSH_PATH=~/YOUR_VM_SSH_KEY_FILE.pem
 export AZURE_HOST_IP=YOUR_VM_IP
-yarn deploy-azure
+yarn gramine deploy-azure
 ```
 
 - Connect with SSH
