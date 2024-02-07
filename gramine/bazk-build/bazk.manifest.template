@@ -1,11 +1,8 @@
 [libos]
-# entrypoint = "{{ appname }}"
 entrypoint = "./node"
 
 [loader]
 entrypoint = "file:{{ libos }}"
-# argv0_override = "{{ appname }}"
-# argv = ["node", "app/index.js"]
 insecure__use_cmdline_argv = true
 log_level = "error"
 
@@ -18,6 +15,10 @@ brk.max_size = "256M"
 LD_LIBRARY_PATH = "/lib:/lib/x86_64-linux-gnu"
 MALLOC_ARENA_MAX = "1"
 IAS_API_KEY = { passthrough = true }
+PINATA_API_KEY = { passthrough = true }
+PINATA_API_SECRET = { passthrough = true }
+ACCOUNT_MNEMONIC = { passthrough = true }
+SGX_ENABLED = { passthrough = true }
 
 [[fs.mounts]]
 type = "chroot"
@@ -52,19 +53,18 @@ ra_client_spid = "{{ ra_client_spid }}"
 {% endif %}
 
 trusted_files = [
-  "file:{{ appname }}",
   "file:node",
   "file:{{ libos }}",
   "file:{{ libdir }}",
   "file:app/",
-  "file:bin/contribute",
-  "file:bin/new",
-  "file:bin/verify_contribution",
-  "file:bin/new_constrained",
-  "file:bin/compute_constrained",
-  "file:bin/verify_transform_constrained",
-  "file:bin/prepare_phase2",
-  "file:ceremonies/",
+  "file:app/bin/contribute",
+  "file:app/bin/new",
+  "file:app/bin/verify_contribution",
+  "file:app/bin/new_constrained",
+  "file:app/bin/compute_constrained",
+  "file:app/bin/verify_transform_constrained",
+  "file:app/bin/prepare_phase2",
+  "file:app/ceremonies/",
 ]
 
 allowed_files = [

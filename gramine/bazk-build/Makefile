@@ -37,7 +37,7 @@ PRUNTIME_SEAL_DIR ?= ${PRUNTIME_DATA_DIR}/protected_files
 PRUNTIME_STORAGE_DIR ?= ${PRUNTIME_DATA_DIR}/storage_files
 
 .PHONY: all
-all: ${BIN_NAME} ${LIBOS}
+all: node ${LIBOS}
 
 .PHONY: signed-sgx-artifacts
 signed-sgx-artifacts: ${BIN_NAME}.manifest ${BIN_NAME}.manifest.sgx ${BIN_NAME}.sig
@@ -52,7 +52,7 @@ ${BIN_NAME}.manifest: ${BIN_NAME}.manifest.template
 		-Dappname=${BIN_NAME} \
 		$< $@
 
-${BIN_NAME}.manifest.sgx: ${BIN_NAME}.manifest ${BIN_NAME} ${LIBOS}
+${BIN_NAME}.manifest.sgx: ${BIN_NAME}.manifest node ${LIBOS}
 	@test -s $(SGX_SIGNER_KEY) || \
 	    { echo "SGX signer private key was not found, please specify SGX_SIGNER_KEY!"; exit 1; }
 	gramine-sgx-sign \
@@ -95,8 +95,6 @@ distclean: clean
 .PHONY: pre-dist
 pre-dist: all
 	mkdir -p ${PREFIX}/data
-	cp ${BIN_NAME} ${PREFIX}/
-	cp -rf bin ${PREFIX}/
 	cp node ${PREFIX}/
 	cp -rfL ${RUNTIME_DIR} ${PREFIX}/
 

@@ -5,7 +5,16 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "build": "webpack && cpy \"ceremonies/**/*\" dist/ceremonies"
+    "build": "yarn clean && yarn build-dist && yarn build-manifest",
+    "build-and-deploy": "yarn && yarn build && yarn deploy",
+    "build-manifest": "./build.sh",
+    "build-dist": "yarn build-app",
+    "build-app": "webpack && yarn build-bin && yarn build-ceremonies",
+    "build-bin": "./build-bin.sh",
+    "build-ceremonies": "cpy \"ceremonies/**/*\" dist/ceremonies",
+    "clean": "rm -rf dist && (cd bazk-build || true && rm -f *.manifest *.sgx *.sig && rm -rf cruntime app dist)",
+    "deploy-azure": "ssh -i ${AZURE_SSH_PATH} azureuser@${AZURE_HOST_IP} 'rm -rf ~/bazk-build/*' && scp -r -i ${AZURE_SSH_PATH} $(pwd)/bazk-build/dist azureuser@${AZURE_HOST_IP}:~/bazk-build/",
+    "deploy": "yarn deploy-azure"
   },
   "devDependencies": {
     "cpy-cli": "^5.0.0",
@@ -15,14 +24,11 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@helia/strings": "^1.0.1",
-    "@phala/ra-report": "^1.0.3",
+    "@phala/ra-report": "1.0.2",
     "@phala/sdk": "0.6.0-beta.13",
     "@polkadot/keyring": "^12.5.1",
     "@polkadot/util": "^12.5.1",
     "@polkadot/util-crypto": "^12.5.1",
-    "bufferutil": "^4.0.8",
-    "ipfs-only-hash": "^4.0.0",
-    "utf-8-validate": "^6.0.3"
+    "ipfs-only-hash": "^4.0.0"
   }
 }

@@ -61,34 +61,6 @@ That requires you to have [patron](https://patron.works/getting-started) install
 Goto the contract link on patron, click the `Deploy with Phala` button and follow the instructions to deploy the contract.
 If everything goes well, you would get a contract address, that would be used in the next step, and a web page to operation with the contract.
 
-### Build rust library for KZG and Groth16
-
-```bash
-cd phase2-bn254/powersoftau
-cargo build --release --bin new_constrained
-cargo build --release --bin compute_constrained
-cargo build --release --bin verify_transform_constrained
-cargo build --release --bin beacon_constrained
-cargo build --release --bin prepare_phase2
-
-mkdir -p ../../gramine/bazk-build/bin/
-cp target/release/new_constrained ../../gramine/bazk-build/bin
-cp target/release/compute_constrained ../../gramine/bazk-build/bin
-cp target/release/verify_transform_constrained ../../gramine/bazk-build/bin
-cp target/release/beacon_constrained ../../gramine/bazk-build/bin
-cp target/release/prepare_phase2 ../../gramine/bazk-build/bin
-
-cd ../phase2
-
-cargo build --release --bin new
-cargo build --release --bin contribute
-cargo build --release --bin verify_contribution
-
-cp target/release/new ../../gramine/bazk-build/bin
-cp target/release/contribute ../../gramine/bazk-build/bin
-cp target/release/verify_contribution ../../gramine/bazk-build/bin
-```
-
 ### Build the pod app
 
 You can clone this repo and develop your pod app based on the template in `nodejs-app-template/` directory.
@@ -98,11 +70,11 @@ And maybe replace the rpc endpoint if you deployed it on a different testnet.
 
 To build the template app, run the following command in the root directory of this repo:
 
-```bash
+```bash [Local | Ubuntu-20.04 (WSL)]
 cd gramine/
-yarn && yarn build
+cp -L $(which node) bazk-build/
 export IAS_SPID=YOUR_IAS_SPID
-./build.sh
+yarn && yarn build
 ```
 
 You would get a measurement result in the log like this:
@@ -122,29 +94,104 @@ You will see a line of log in the log panel like this:
 [#638695][2023-10-20T04:16:42.157Z] Added: 0xfc7f4aab5436670d2f4b26c71441cdc420a0d7537b68d4d06c1d6b907cf35d57
 ```
 
+### Deploy on Azure with SGX
+
+- Go to portal.azure.com
+- Create a new virtual machine: Standard DC2s v2 (2 vcpus, 8 GiB memory)
+
+- Copy the `dist` folder from local machine to the VM
+
+```bash [Local | Ubuntu-20.04 (WSL)]
+export AZURE_SSH_PATH=~/YOUR_VM_SSH_KEY_FILE.pem
+export AZURE_HOST_IP=YOUR_VM_IP
+yarn deploy-azure
+```
+
+- Connect with SSH
+
+```bash [Remote]
+ssh -i ~/gramine-vm_key.pem azureuser@172.190.7.62
+```
+
 ### Run the pod app
 
 To run the pod app, you need a machine with at least Linux kernel v5.13 and SGX enabled.
 
 ```bash
-cd phase1-build/
-sudo docker run --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v`pwd`/dist:/app -it gramineproject/gramine
-cd /app
+cd bazk-build/
+sudo docker run --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v`pwd`/dist:/dist -it gramineproject/gramine
+cd /dist
+```
+
+#### Apply the environment variables
+
+```bash
+export ACCOUNT_MNEMONIC=YOUR_ACCOUNT_MNEMONIC_WITH_ENOUGH_BALANCE
+export PINATA_API_KEY=YOUR_PINATA_API_KEY
+export PINATA_API_SECRET=YOUR_PINATA_API_SECRET
+export SGX_ENABLED=true
 export IAS_API_KEY=YOUR_IAS_API_KEY_GOT_FROM_INTEL
+```
 
-# Phase 1 (KZG)
+####  Run Phase 1 using SGX (KZG)
 
-./gramine-sgx phase1 app/index.js ./bin/new_constrained challenge1 10 256
+```bash
+./gramine-sgx bazk ./app/index.js ./app/bin/new_constrained challenge 10 256 "my ceremony name" "my ceremony description" 1709221725
+./gramine-sgx bazk ./app/index.js ./app/bin/compute_constrained challenge1 response1 10 256
+./gramine-sgx bazk ./app/index.js ./app/bin/verify_transform_constrained challenge1 response1 challenge2 10 256
+./gramine-sgx bazk ./app/index.js ./app/bin/compute_constrained challenge2 response2 10 256
+./gramine-sgx bazk ./app/index.js ./app/bin/prepare_phase2 response2 10 256
+```
 
-./gramine-sgx phase1 app/index.js ./bin/compute_constrained challenge1 response1 10 256
-./gramine-sgx phase1 app/index.js ./bin/verify_transform_constrained challenge1 response1 challenge2 10 256
+#### Run Phase 1 using Node directly
 
-./gramine-sgx phase1 app/index.js ./bin/compute_constrained challenge2 response2 10 256
-./gramine-sgx phase1 app/index.js ./bin/prepare_phase2 response2 10 256
+```bash
+# --------------------------------
+# Notes
+# --------------------------------
+# 1) New ceremony with new challenge
+# index.js ./app/bin/new_constrained challenge <power> <bash> <ceremony name> <ceremony description> <deadline timestamp>
+#
+# 2) Contribute to the ceremony
+# index.js <ceremony id> ./app/bin/compute_constrained <challenge> <response> <power> <bash>
+#
+# 3) Verify the ceremony and create new challange
+# index.js <ceremony id> ./app/bin/verify_transform_constrained <existing challenge> <response> <new challenge> <power> <bash>
+#
+# 4) Finalize the ceremony and prepare for phase 2
+# index.js <ceremony id> ./app/bin/prepare_phase2 <response> <power> <bash>
+# --------------------------------
 
-# Phase 2 (Groth16)
+export SGX_ENABLED=false
 
-./gramine-sgx phase1 app/index.js ./bin/new circuit.json circom1.params ./
+./node ./app/index.js ./app/bin/new_constrained challenge 10 256 "my ceremony name" "my ceremony description" 1709221725
+./node ./app/index.js 1707244846 ./app/bin/compute_constrained challenge response 10 256
+./node ./app/index.js 1707244846 ./app/bin/verify_transform_constrained challenge response challenge2 10 256
+./node ./app/index.js 1707244846 ./app/bin/compute_constrained challenge2 response2 10 256
+./node ./app/index.js 1707244846 ./app/bin/prepare_phase2 response2 10 256
+```	
 
-./gramine-sgx phase1 app/index.js ./bin/contribute circom1.params circom2.params
-./gramine-sgx phase1 app/index.js ./bin/verify_contribution circuit.json circom1.params circom2.params ./
+#### Run Phase 2 using SGX (Groth16)
+
+```bash
+./gramine-sgx bazk ./app/index.js ./app/bin/new circuit.json circom1.params ./
+./gramine-sgx bazk ./app/index.js ./app/bin/contribute circom1.params circom2.params
+./gramine-sgx bazk ./app/index.js ./app/bin/verify_contribution circuit.json circom1.params circom2.params ./
+```
+
+#### Run Phase 2 using Node directly
+
+```bash
+./node ./app/index.js ./app/bin/new circuit.json circom1.params ./app/ceremonies/p12 12 256 "my ceremony name" "my ceremony description" 1709221725
+./node ./app/index.js 1706736894 ./app/bin/contribute circom1.params circom2.params
+./node ./app/index.js 1706736894 ./app/bin/contribute circom2.params circom3.params
+./node ./app/index.js 1706736894 ./app/bin/verify_contribution circuit.json circom2.params circom3.params ./
+./node ./app/index.js 1706736894 ./app/bin/contribute circom3.params circom4.params
+```
+
+## Generate circuit files
+
+```bash
+circom circuit.circom --r1cs
+snarkjs rej circuit.r1cs circuit.json
+```
