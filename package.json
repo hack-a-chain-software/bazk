@@ -6,7 +6,8 @@
   "repository": "https://github.com/hack-a-chain-software/bazk.git",
   "license": "MIT",
   "scripts": {
-    "app": "yarn workspace @bazk/app"
+    "app": "yarn workspace @bazk/app",
+    "gramine": "yarn workspace @bazk/gramine"
   },
   "workspaces": {
     "packages": [
