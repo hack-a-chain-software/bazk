@@ -25,6 +25,7 @@ async function main(args?: string[]) {
   console.log("[Enclave] SGX enabled: ", sgxEnabled);
   console.log("[Enclave] Args provided: ", args);
   console.log("[Enclave] Waiting for crypto...");
+
   await cryptoWaitReady();
 
   console.log("[Enclave] Getting key pair...");
