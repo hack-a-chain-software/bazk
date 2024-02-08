@@ -61,6 +61,31 @@ export const PhalaConnect = setup({
   },
   initial: 'restore',
   states: {
+    loggedIn: {
+      on: {
+        sign: {
+          //
+        },
+        signAndSend: {
+          //
+        },
+      },
+    },
+    loggedOut: {
+      on: {
+        closeModal: {
+          actions: assign({
+            showModal: false
+          })
+        },
+        openModal: {
+          target: 'connecting',
+          actions: assign({
+            showModal: true
+          })
+        },
+      }
+    },
     restore: {
       invoke: {
         id: 'phala-connect-restore',
@@ -79,39 +104,6 @@ export const PhalaConnect = setup({
             loading: false,
           })
         }
-      }
-    },
-    loggedIn: {
-      on: {
-        sign: {
-          //
-        },
-        signAndSend: {
-          //
-        },
-      },
-      invoke: {
-        src: 'log',
-        id: 'connected-log',
-        input: ({ context }: any) => ({
-          account: context.account,
-          provider: context.provider,
-        }),
-      }
-    },
-    loggedOut: {
-      on: {
-        closeModal: {
-          actions: assign({
-            showModal: false
-          })
-        },
-        openModal: {
-          target: 'connecting',
-          actions: assign({
-            showModal: true
-          })
-        },
       }
     },
     persist: {
