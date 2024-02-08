@@ -24,7 +24,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
-    "@phala/ra-report": "1.0.2",
+    "@phala/ra-report": "1.0.3",
     "@phala/sdk": "0.6.0-beta.13",
     "@polkadot/keyring": "^12.5.1",
     "@polkadot/util": "^12.5.1",

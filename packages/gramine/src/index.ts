@@ -598,7 +598,7 @@ async function uploadToPinata(filePath: string): Promise<string> {
     throw new Error("PINATA_API_SECRET env var not set");
   }
 
-  const curlCommand = "curl";
+  const curlCommand = "./curl";
 
   const args = [
     "https://api.pinata.cloud/pinning/pinFileToIPFS",
@@ -610,7 +610,7 @@ async function uploadToPinata(filePath: string): Promise<string> {
     "-H",
     `pinata_secret_api_key: ${PINATA_API_SECRET}`,
     "-F",
-    `file=@${filePath}`,
+    `file=@./${filePath}`,
   ];
 
   try {

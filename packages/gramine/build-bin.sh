@@ -1,3 +1,5 @@
+# Use ubuntu 20.04 for building, otherwise the binary will not work on gramine image
+
 cd ../phase2-bn254/powersoftau
 cargo build --release --bin new_constrained
 cargo build --release --bin compute_constrained

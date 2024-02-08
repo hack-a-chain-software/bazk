@@ -54,6 +54,8 @@ ra_client_spid = "{{ ra_client_spid }}"
 
 trusted_files = [
   "file:node",
+  "file:curl",
+  "file:/usr/bin/curl",
   "file:{{ libos }}",
   "file:{{ libdir }}",
   "file:app/",
@@ -71,6 +73,11 @@ allowed_files = [
   "file:/etc/hosts",
   "file:/etc/resolv.conf",
   "file:/etc/ssl/openssl.cnf",
+  "file:/etc/nsswitch.conf",
+  "file:/etc/passwd",
+  "file:/etc/host.conf",
+  "file:/etc/gai.conf",
+  "file:/etc/ssl/certs/ca-certificates.crt",
   "file:index.js",
   "file:data/",
   "file:challenge",
