@@ -111,7 +111,7 @@ export const IndexPage = () => {
 
       setCeremonies(res)
 
-      console.log('ceremonies - ', res)
+      // console.log('ceremonies - ', res)
     })()
   }, [initialized, getCeremonies])
 

@@ -109,7 +109,7 @@ export const CeremonyPage = () => {
 
       setCeremony(res)
 
-      console.log('ceremony - ', res)
+      // console.log('ceremony - ', res)
     })()
   }, [id, initialized, getCeremony])
 

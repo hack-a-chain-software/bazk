@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import logo from '/logo.svg'
 import MenuMobile from "./MenuMobile";
+import { HackaConnectContext } from '@/App';
 
 export const Header = () => {
+  const HackaConnectActorRef = HackaConnectContext.useActorRef()
+
   return (
     <div
       className="bg-dark-blue px-4"
@@ -29,6 +32,14 @@ export const Header = () => {
             Create ceremony
           </span>
         </Link>
+
+        <button
+          onClick={() => HackaConnectActorRef.send({ type: 'openModal' })}
+          className="text-white"
+        >
+          Connect Wallet
+        </button>
+
 
         <MenuMobile />
       </header>
