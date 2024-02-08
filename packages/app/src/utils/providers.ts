@@ -10,14 +10,9 @@ import {
   path,
   map,
   toPairs,
-  // find,
   fromPairs,
-  // sort,
-  // nth,
-  // join,
 } from 'ramda'
 import { ProvidersBaseListInterface, providersBaseList } from './constants'
-import { ProviderContextType } from '@/machines/HackaConnect'
 
 export interface InjectedAccountWithMetaAndName
   extends InjectedAccountWithMeta {
@@ -45,12 +40,6 @@ export const getAvailableProviders = () => {
 
 export const getAllAcountsForProvider = async (selected: ProvidersBaseListInterface, keyring: Keyring) => {
   const { key: name } = selected
-
-  try {
-    keyring.loadAll({ isDevelopment: true })
-  } catch (e) {
-    console.warn(e)
-  }
 
   await new Promise((resolve) => setTimeout(resolve, 2000))
 

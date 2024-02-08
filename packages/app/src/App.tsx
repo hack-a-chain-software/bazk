@@ -9,17 +9,17 @@ import Container from '@/components/layout/Container'
 
 import { FoundationContextProvider } from './providers/foundation'
 import { createActorContext } from '@xstate/react'
-import { HackaConnectMachine } from './machines/HackaConnect'
+import { PhalaConnect } from './machines/phala-connect/PhalaConnectMachine'
 
-export const HackaConnectContext = createActorContext(HackaConnectMachine, {
-  // state: JSON.parse(localStorage.getItem('todos') || 'null')
+export const PhalaConnectContext = createActorContext(PhalaConnect, {
+  // state: JSON.parse(localStorage.getItem('hacka-connect') || 'null')
 });
 
 export default function BazkApp() {
   const Pages = () => useRoutes(routes);
 
   return (
-    <HackaConnectContext.Provider>
+    <PhalaConnectContext.Provider>
       <FoundationContextProvider>
         <Root>
           <Router>
@@ -31,6 +31,6 @@ export default function BazkApp() {
           </Router>
         </Root>x
       </FoundationContextProvider>
-    </HackaConnectContext.Provider>
+    </PhalaConnectContext.Provider>
   )
 }
