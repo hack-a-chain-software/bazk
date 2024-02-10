@@ -121,6 +121,7 @@ export const ConnectWalletButton = () => {
 
             <div>
               <button
+                onClick={() => PhalaConnectActorRef.send({ type: 'sign-out' })}
                 className="flex items-center gap-2 hover:opacity-[.9]"
               >
                 <span
@@ -142,6 +143,7 @@ export const ConnectWalletButton = () => {
             {accounts && accounts.map((account: any) => (
               <button
                 key={account.address}
+                onClick={() => PhalaConnectActorRef.send({ type: 'switch-account', value: account })}
                 className={
                   twMerge(
                     'w-full p-4 rounded-lg border border-[#CBD5E1] h-[52px] flex items-center justify-between hover:bg-[#F1F5F9]',

@@ -5,7 +5,9 @@ export const restoreConnectionActor = fromPromise(
   async () => {
     const cache = await localforage.getItem('/bzk-connect')
 
-    if (!cache || JSON.stringify(cache) === '{}') {
+    console.log('cache', cache)
+
+    if (!cache || JSON.stringify(cache) === '{}' || !cache?.account || !cache?.provider) {
       return {
         value: cache,
         success: false,

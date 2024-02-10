@@ -1,9 +1,9 @@
 import { Keyring } from '@polkadot/ui-keyring'
 import { assign, setup } from "xstate"
 import { getAvailableProviders } from "@/utils/providers";
-import { persistConnectionActor } from './actors/persistConnectionActor';
-import { restoreConnectionActor } from './actors/restoreConnectionActor';
-import { requestConnectionActor } from './actors/requestConnectionActor';
+import { persistConnectionActor } from './actors/persistConnection';
+import { restoreConnectionActor } from './actors/restoreConnection';
+import { requestConnectionActor } from './actors/requestConnection';
 
 export const hackaConnectMachineId = 'hacka-connect-machine'
 
@@ -27,6 +27,7 @@ const hackaConnectMachineContext = () => {
   return {
     keyring,
     account: null,
+    accounts: null,
     provider: null,
     showModal: false,
     providers: getAvailableProviders() || [],
@@ -80,6 +81,9 @@ export const HackaConnectMachine = setup({
             'sign-and-send-tx': {
               target: 'signAndSendTx'
             },
+            'switch-account': {
+              target: 'switchingAccount'
+            }
           },
         },
         signTx: {
@@ -106,12 +110,37 @@ export const HackaConnectMachine = setup({
             }
           }
         },
+        switchingAccount: {
+          invoke: {
+            id: `${hackaConnectMachineId}-persist-connection-actor`,
+            src: 'persistConnection',
+            input: ({ event, context }) => ({
+              account: event.value,
+              accounts: context.accounts,
+              provider: context.provider
+            }),
+            onDone: {
+              target: 'idle',
+              actions: assign({
+                account: ({ event }: any) => event.output.account,
+                accounts: ({ event }: any) => event.output.accounts,
+                provider: ({ event }: any) => event.output.provider,
+              })
+            }
+          }
+        },
         signinOut: {
           invoke: {
-            id: '',
+            id: `${hackaConnectMachineId}-persist-connection-actor`,
             src: 'persistConnection',
+            input: () => ({}),
             onDone: {
               target: 'signedOut',
+              actions: assign({
+                account: null,
+                accounts: null,
+                provider: null,
+              })
             },
             onError: {
               target: 'idle',
