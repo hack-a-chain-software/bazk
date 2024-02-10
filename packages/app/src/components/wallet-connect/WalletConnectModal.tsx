@@ -1,22 +1,17 @@
-import { PhalaConnectContext } from '@/App';
-import { useActorRef, useSelector } from '@xstate/react';
 import Modal from '../Modal';
-import { ConnectFlow } from '@/machines/phala-connect/flows/ConnectFlowMachine';
-
-const ConnectFlowId = 'hacka-connect-connecting-flow'
+import { twMerge } from 'tailwind-merge';
+import { PhalaConnectContext } from '@/App';
+import ChevronIcon from '@/components/icons/Chevron'
+import DownloadIcon from '@/components/icons/Download'
+import SpinnerIcon from '@/components/icons/Spinner';
 
 export const WalletConnectModal = () => {
-  const fallbackActor = useActorRef(ConnectFlow)
-
   const phalaConnectActorRef = PhalaConnectContext.useActorRef()
 
   const showModal = PhalaConnectContext.useSelector((state) => state.context.showModal)
   const providers = PhalaConnectContext.useSelector((state) => state.context.providers)
-
-  const ConnectFlowActorRef = PhalaConnectContext.useSelector((state) => state.children[ConnectFlowId])
-
-  const accounts = useSelector(ConnectFlowActorRef || fallbackActor, (state: any) => state.context.accounts)
-  const isAccounts = useSelector(ConnectFlowActorRef || fallbackActor, (s: any) => s.matches('accounts'))
+  const signinProvider = PhalaConnectContext.useSelector((state) => state.context.provider)
+  const isSigningIn = PhalaConnectContext.useSelector((state: any) => state.matches('signedOut.signingIn'))
 
   return (
     <Modal
@@ -24,93 +19,80 @@ export const WalletConnectModal = () => {
       onClose={() => phalaConnectActorRef.send({ type: 'cancel' })}
       rootClass="max-w-[520px]"
     >
-      {!isAccounts && (
-        <div>
-          <div
-            className="flex flex-col gap-2"
+      <div>
+        <div
+          className="flex flex-col gap-3"
+        >
+          <span
+            className="
+              text-[22px]
+              text-[#1E293B]
+              font-semibold
+              leading-[30.8px]
+            "
           >
-            <span
-              className="
-                text-[22px]
-                text-[#1E293B]
-                font-semibold
-                leading-[30.8px]
-              "
-            >
-              Connect Wallet
-            </span>
+            Connect Wallet
+          </span>
 
-            <span
-              className="
-                text-[#475569]
-                leading-[22.4px]
-              "
-            >
-              Select your wallet
-            </span>
-          </div>
-
-          <div
-            className="pt-[32px] md:pt-10 flex items-center gap-3 md:gap-4"
+          <span
+            className="
+              text-[#1E293B]
+              leading-[140%]
+            "
           >
-            {providers && providers.map((provider: any) => {
-              return (
-                <button
-                  key={provider.key}
-                  onClick={() => ConnectFlowActorRef?.send({ type: 'select.provider', value: provider })}
-                  className="text-black"
+            Select your wallet
+          </span>
+        </div>
+
+        <div
+          className="pt-6 flex items-center gap-3 md:gap-4 flex-col"
+        >
+          {providers && providers.map((provider: any) => (
+            <button
+              key={provider.key}
+              className={
+                twMerge(
+                  'p-4 border border-[#CBD5E1] rounded-lg w-full flex items-center justify-between',
+                  'hover:bg-[#F1F5F9]',
+                )
+              }
+              onClick={() => phalaConnectActorRef?.send({ type: 'sign-in', value: provider })}
+            >
+              <div
+                className="flex items-center gap-3"
+              >
+                <div>
+                  <img src={provider.icon} className="w-9 h-9" />
+                </div>
+
+                <span
+                  className=""
                 >
                   {provider.name}
-                </button>
-              )
-            })}
-          </div>
+                </span>
+              </div>
+
+              <div>
+                {provider?.installed && !isSigningIn && signinProvider?.key !== provider.key && (
+                  <ChevronIcon
+                    className="rotate-180 text-[#64748B] min-w-6 min-h-6"
+                  />
+                )}
+
+                {!provider.installed && (
+                  <DownloadIcon
+                    className="text-white min-w-6 min-h-6"
+                  />
+                )}
+
+                {provider && isSigningIn && signinProvider.key === provider.key && (
+                  <SpinnerIcon />
+                )}
+              </div>
+            </button>
+          ))}
         </div>
-      )}
-
-      {isAccounts && (
-        <div>
-          <div
-            className="pt-4 md:pt-6 flex flex-col gap-2"
-          >
-            <span
-              className="
-                text-[22px]
-                text-[#1E293B]
-                font-semibold
-                leading-[30.8px]
-              "
-            >
-              Connect Wallet
-            </span>
-
-            <span
-              className="
-                text-[#475569]
-                leading-[22.4px]
-              "
-            >
-              Select your account
-            </span>
-          </div>
-
-          <div
-            className="pt-[32px] md:pt-10 flex items-center gap-3 md:gap-4"
-          >
-            {accounts && accounts.map((account: any) => {
-              return (
-                <button
-                  key={account.address}
-                  onClick={() => ConnectFlowActorRef?.send({ type: 'selectAccount', value: account })}
-                  className="text-black"
-                >
-                  {account.name}
-                </button>
-              )
-            })}
-          </div>
-        </div>
-      )}
+      </div>
     </Modal>
   )
 }

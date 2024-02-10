@@ -117,12 +117,8 @@ export const IndexPage = () => {
 
   return (
     <div
-      className="space-y-4"
+      className="min-h-[100vh]"
     >
-      <PageTitle
-        title="Dashboard"
-      />
-
       {ceremonies && ceremonies.length > 0 && (
         <div>
           <Table

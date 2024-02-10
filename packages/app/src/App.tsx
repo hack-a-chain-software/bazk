@@ -9,11 +9,9 @@ import Container from '@/components/layout/Container'
 
 import { FoundationContextProvider } from './providers/foundation'
 import { createActorContext } from '@xstate/react'
-import { PhalaConnect } from './machines/phala-connect/PhalaConnectMachine'
+import { HackaConnectMachine } from './machines/hacka-connect/HackaConnectMachine'
 
-export const PhalaConnectContext = createActorContext(PhalaConnect, {
-  // state: JSON.parse(localStorage.getItem('hacka-connect') || 'null')
-});
+export const PhalaConnectContext = createActorContext(HackaConnectMachine);
 
 export default function BazkApp() {
   const Pages = () => useRoutes(routes);
