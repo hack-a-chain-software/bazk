@@ -16,7 +16,7 @@ export const WalletConnectModal = () => {
   return (
     <Modal
       isOpen={showModal}
-      onClose={() => phalaConnectActorRef.send({ type: 'cancel' })}
+      onClose={() => phalaConnectActorRef.send({ type: 'close-modal' })}
       rootClass="max-w-[520px]"
     >
       <div>
