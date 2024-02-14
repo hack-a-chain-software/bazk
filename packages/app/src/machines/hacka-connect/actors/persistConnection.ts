@@ -8,3 +8,5 @@ export const persistConnectionActor = fromPromise(
     return input
   }
 )
+
+export default persistConnectionActor

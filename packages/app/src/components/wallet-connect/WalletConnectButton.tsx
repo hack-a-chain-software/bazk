@@ -15,8 +15,6 @@ export const ConnectWalletButton = () => {
 
   const isSignedOut = PhalaConnectContext.useSelector((state) => state.matches('signedOut'))
 
-  console.log('accounts', accounts)
-
   if (isSignedOut || !provider || !selectedAccount) {
     return (
       <>

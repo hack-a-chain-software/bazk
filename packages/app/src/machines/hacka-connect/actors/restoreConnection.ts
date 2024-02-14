@@ -3,7 +3,7 @@ import { fromPromise } from 'xstate';
 
 export const restoreConnectionActor = fromPromise(
   async () => {
-    const cache = await localforage.getItem('/bzk-connect')
+    const cache = await localforage.getItem('/bzk-connect') as any
 
     console.log('cache', cache)
 
@@ -20,3 +20,5 @@ export const restoreConnectionActor = fromPromise(
     }
   }
 )
+
+export default restoreConnectionActor

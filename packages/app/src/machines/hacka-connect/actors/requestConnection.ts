@@ -11,3 +11,5 @@ export const requestConnectionActor = fromPromise(
     }
   }
 )
+
+export default requestConnectionActor

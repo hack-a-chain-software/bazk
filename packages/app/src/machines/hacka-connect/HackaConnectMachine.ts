@@ -1,18 +1,18 @@
 import { Keyring } from '@polkadot/ui-keyring'
 import { assign, setup } from "xstate"
 import { getAvailableProviders } from "@/utils/providers";
-import { persistConnectionActor } from './actors/persistConnection';
-import { restoreConnectionActor } from './actors/restoreConnection';
-import { requestConnectionActor } from './actors/requestConnection';
+import persistConnection from './actors/persistConnection';
+import restoreConnection from './actors/restoreConnection';
+import requestConnection from './actors/requestConnection';
 
 export const hackaConnectMachineId = 'hacka-connect-machine'
 
 export const hackaConnectMachineTypes = {} as any
 
 const hackaConnectMachineActors = {
-  persistConnection: persistConnectionActor,
-  restoreConnection: restoreConnectionActor,
-  requestConnection: requestConnectionActor,
+  persistConnection,
+  restoreConnection,
+  requestConnection,
 }
 
 const hackaConnectMachineContext = () => {
