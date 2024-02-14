@@ -40,6 +40,7 @@ export const HackaConnectMachine = setup({
 }).createMachine({
   initial: 'restore',
   id: hackaConnectMachineId,
+  context: hackaConnectMachineContext,
   states: {
     restore: {
       invoke: {
@@ -231,7 +232,6 @@ export const HackaConnectMachine = setup({
       }
     },
   },
-  context: hackaConnectMachineContext,
 })
 
 export default HackaConnectMachine

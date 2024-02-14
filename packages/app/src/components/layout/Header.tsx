@@ -11,25 +11,29 @@ export const Header = () => {
       <header
         className="mx-auto w-full max-w-7xl flex items-center justify-between py-4 min-h-[72px]"
       >
-        <Link
-          to="/"
+        <div
+          className="flex items-center justify-start"
         >
-          <img src={logo} className="h-[22px]" alt="Bazk logo" />
-        </Link>
-
-        <Link
-          to="/ceremony/create"
-          className="py-2 px-6 hidden md:block"
-        >
-          <span
-            className="
-              text-white
-              font-medium
-            "
+          <Link
+            to="/"
           >
-            Create ceremony
-          </span>
-        </Link>
+            <img src={logo} className="h-[22px]" alt="Bazk logo" />
+          </Link>
+
+          <Link
+            to="/ceremony/create"
+            className="py-2 px-6 hidden md:block hover:opacity-90"
+          >
+            <span
+              className="
+                text-white
+                font-medium
+              "
+            >
+              Create ceremony
+            </span>
+          </Link>
+        </div>
 
         <ConnectWalletButton />
 

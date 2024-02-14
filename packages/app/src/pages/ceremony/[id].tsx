@@ -108,8 +108,6 @@ export const CeremonyPage = () => {
       const res = await getCeremony(id) as any
 
       setCeremony(res)
-
-      // console.log('ceremony - ', res)
     })()
   }, [id, initialized, getCeremony])
 
@@ -161,9 +159,10 @@ export const CeremonyPage = () => {
               className="w-full"
             >
               <Table
-                title = 'Contribuitons'
                 rows={page}
+                title="Contribuitons"
                 columns={tableColumns}
+                classRoot="min-h-[589.38px]"
               />
 
               <Pagination

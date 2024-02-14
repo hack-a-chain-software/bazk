@@ -5,6 +5,7 @@ import ChevronIcon from '@/components/icons/Chevron'
 import { Fragment } from "react"
 import { shortenHash } from "@/utils/string"
 import Logout from "../icons/Logout"
+import Spinner from "../icons/Spinner"
 
 export const ConnectWalletButton = () => {
   const PhalaConnectActorRef = PhalaConnectContext.useActorRef()
@@ -14,6 +15,36 @@ export const ConnectWalletButton = () => {
   const selectedAccount = PhalaConnectContext.useSelector((state) => state.context.account)
 
   const isSignedOut = PhalaConnectContext.useSelector((state) => state.matches('signedOut'))
+  const isRestoring = PhalaConnectContext.useSelector((state) => state.matches('restore'))
+
+  if (isRestoring) {
+    return (
+      <button
+        className={twMerge(
+          'bg-[#1A4748] h-[40px]',
+          'px-4 rounded-lg border border-[#12D97C] hover:bg-[#1A4748]',
+        )}
+      >
+        <div
+          className="flex items-center justify-center gap-2"
+        >
+          <span
+            className="text-white font-medium leading-[140%]"
+          >
+            Connecting
+          </span>
+
+          <div
+            className="w-5 h-5 text-white relative overflow-hidden"
+          >
+            <Spinner
+              className="w-full h-full text-white animate-spin fill-[#64748B]"
+            />
+          </div>
+        </div>
+      </button>
+    )
+  }
 
   if (isSignedOut || !provider || !selectedAccount) {
     return (
@@ -22,13 +53,12 @@ export const ConnectWalletButton = () => {
           onClick={() => PhalaConnectActorRef.send({ type: 'open-modal' })}
           className={twMerge(
             'bg-[#1B233B]',
-            'py-2 px-4 rounded-lg border border-[#12D97C] bg-[#1B233B] hover:bg-[#1A4748]',
+            'h-[40px] px-4 rounded-lg border border-[#12D97C] bg-[#1B233B] hover:bg-[#1A4748]',
           )}
         >
           <div
             className="flex items-center justify-center gap-2"
           >
-
             <span
               className="text-white font-medium leading-[140%]"
             >
@@ -62,13 +92,13 @@ export const ConnectWalletButton = () => {
         className={twMerge(
           'group bg-[#1A4748]',
           'outline-none',
-          'py-2 px-4 rounded-lg border border-[#12D97C] bg-[#1B233B] hover:bg-[#1A4748]',
+          'h-[40px] px-4 rounded-lg border border-[#12D97C] bg-[#1B233B] hover:bg-[#1A4748]',
         )}
       >
         <div
           className="flex items-center justify-center gap-2"
         >
-          <img src={provider?.icon} className="w-7 h-7" />
+          <img src={provider?.icon} className="w-6 h-6" />
 
           <span
             className="text-white font-medium leading-[140%]"

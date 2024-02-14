@@ -38,7 +38,7 @@ const tableColumns = [
     render: (row: any) => {
       return (
         <CreatedAtColumn
-          date={row.timestamp * 1000}
+          date={row.deadline * 1000}
         />
       )
     }
@@ -110,8 +110,6 @@ export const IndexPage = () => {
       const res = await getCeremonies() as any
 
       setCeremonies(res)
-
-      // console.log('ceremonies - ', res)
     })()
   }, [initialized, getCeremonies])
 

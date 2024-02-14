@@ -7,8 +7,8 @@ export interface SpecsInterface {
 
 const baseOrder = [
   'power',
-  'curve',
-  'memory',
+  // 'curve',
+  // 'memory',
   'contributions',
   'nPrvInputs',
   'nPubInputs',
@@ -101,7 +101,7 @@ export const Specs = ({
     <div
       className="
         flex flex-wrap
-        w-full md:grid grid-cols-3 lg:grid-cols-4 gap-4
+        w-full md:grid grid-cols-3 gap-4
       "
     >
       {specList.map(({ value, icon, label, color }) => (
