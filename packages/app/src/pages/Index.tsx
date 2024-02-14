@@ -83,6 +83,7 @@ const tableColumns = [
 ]
 
 export const IndexPage = () => {
+  const [isLoading, setIsLoading] = useState(true)
   const [ceremonies, setCeremonies] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -107,9 +108,12 @@ export const IndexPage = () => {
     }
 
     (async () => {
+      setIsLoading(true)
+
       const res = await getCeremonies() as any
 
       setCeremonies(res)
+      setIsLoading(false)
     })()
   }, [initialized, getCeremonies])
 
@@ -117,28 +121,29 @@ export const IndexPage = () => {
     <div
       className="min-h-[100vh]"
     >
-      {ceremonies && ceremonies.length > 0 && (
+      {!isLoading && (
         <div>
           <Table
-            title = 'Ceremonies'
-
             rows={page}
+            title="Ceremonies"
             columns={tableColumns}
           />
 
-          <Pagination
-            totalPages={totalPages}
-            totalItems={totalItems}
-            currentPage={currentPage}
-            itemsPerPage={page.length}
-            onPageChange={(page: number | string) => {
-              setCurrentPage(page as number)
-            }}
-          />
+          {ceremonies && ceremonies.length > 0 && (
+            <Pagination
+              totalPages={totalPages}
+              totalItems={totalItems}
+              currentPage={currentPage}
+              itemsPerPage={page.length}
+              onPageChange={(page: number | string) => {
+                setCurrentPage(page as number)
+              }}
+            />
+          )}
         </div>
       )}
 
-      {ceremonies.length === 0 && (
+      {isLoading && (
         <div
           className="
             w-full
