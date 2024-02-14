@@ -52,8 +52,8 @@ export const WalletConnectModal = () => {
               key={provider.key}
               className={
                 twMerge(
-                  'p-4 border border-[#CBD5E1] rounded-lg w-full flex items-center justify-between',
-                  'hover:bg-[#F1F5F9]',
+                  'p-4 border border-bazk-grey-500 rounded-lg w-full flex items-center justify-between',
+                  'hover:bg-bazk-grey-300',
                 )
               }
               onClick={() => phalaConnectActorRef?.send({ type: 'sign-in', value: provider })}

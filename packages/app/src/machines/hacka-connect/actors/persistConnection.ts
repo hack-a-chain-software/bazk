@@ -3,7 +3,7 @@ import { fromPromise } from 'xstate';
 
 export const persistConnectionActor = fromPromise(
   async ({ input }: any) => {
-    await localforage.setItem('/bzk-connect', { ...input })
+    await localforage.setItem('/bazk-connect', { ...input })
 
     return input
   }

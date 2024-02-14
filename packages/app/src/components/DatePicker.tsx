@@ -37,7 +37,7 @@ export const DatePicker = ({
           value={value}
           disabled={disabled}
           placeholder={placeholder}
-          className="px-4 py-3 rounded-lg border border-[#CBD5E1] text-sm w-full"
+          className="px-4 py-3 rounded-lg border border-bazk-grey-500 text-sm w-full"
           onChange={(e) => onChange(e.target.value)}
         />
 

@@ -14,8 +14,8 @@ export const PageButton = ({
     className={
       twMerge(
         'text-sm text-[#64748B] leading-[19.6px]',
-        'py-2 px-3 rounded-md hover:bg-[#624BFF] hover:text-white',
-        isActive && 'text-white bg-[#624BFF]',
+        'py-2 px-3 rounded-md hover:bg-bazk-blue-500 hover:text-white',
+        isActive && 'text-white bg-bazk-blue-500',
         className,
       )
     }
@@ -49,7 +49,7 @@ export const Pagination = ({
       className="bg-white rounded-b-lg"
     >
       <div
-        className="bg-[#DEE2E6] h-[1px] mx-6"
+        className="bg-bazk-grey-400 h-[1px] mx-6"
       />
 
       <div

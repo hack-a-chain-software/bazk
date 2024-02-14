@@ -69,7 +69,7 @@ const tableColumns = [
         <Link
           target='__blank'
           to={`https://ipfs.io/ipfs/${row.hash}/`}
-          className="text-[#624BFF] text-sm text-center block"
+          className="text-bazk-blue-500 text-sm text-center block"
         >
           <DownloadIcon/>
         </Link>

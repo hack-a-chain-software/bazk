@@ -43,7 +43,7 @@ export const Table = ({
       >
         <table className="table-auto w-full">
           <thead
-            className="bg-[#F1F5F9]"
+            className="bg-bazk-grey-300"
           >
             <tr>
               {columns && columns.map(({ key, label, classRoot }) => {
@@ -63,7 +63,7 @@ export const Table = ({
           </thead>
 
           <tbody
-            className="divide-y-[1px] divide-[#DEE2E6]"
+            className="divide-y-[1px] divide-bazk-grey-400"
           >
             {rows && rows.map((row, index) => {
               const rowKey = `table-row-${index}`

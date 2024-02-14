@@ -73,7 +73,7 @@ const tableColumns = [
       return (
         <Link
           to={`/ceremony/${row.ceremonyId}`}
-          className="text-[#624BFF] text-sm text-center block"
+          className="text-bazk-blue-500 text-sm text-center block"
         >
           View
         </Link>

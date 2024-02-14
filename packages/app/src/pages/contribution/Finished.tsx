@@ -57,7 +57,7 @@ export const FinishedPage = () => {
               className="flex items-center gap-4"
             >
               <span
-                className="max-w-[calc(100%-36px)] md:max-w-full w-full text-[#1E293B] px-3 md:px-4 py-4 border border-[#CBD5E1] rounded-lg leading-[16px] break-words"
+                className="max-w-[calc(100%-36px)] md:max-w-full w-full text-[#1E293B] px-3 md:px-4 py-4 border border-bazk-grey-500 rounded-lg leading-[16px] break-words"
               >
                 b145sd6fg54dfdf65dfds...g12921fgh2d8
               </span>
@@ -81,7 +81,7 @@ export const FinishedPage = () => {
               className="w-full flex items-center gap-4"
             >
               <span
-                className="flex w-full text-[#1E293B] px-3 md:px-4 py-4 border border-[#CBD5E1] rounded-lg leading-[16px]"
+                className="flex w-full text-[#1E293B] px-3 md:px-4 py-4 border border-bazk-grey-500 rounded-lg leading-[16px]"
               >
                 Opacttickets_000026.zkey
               </span>

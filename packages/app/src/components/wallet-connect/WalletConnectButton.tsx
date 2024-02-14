@@ -21,8 +21,8 @@ export const ConnectWalletButton = () => {
     return (
       <button
         className={twMerge(
-          'bg-[#1A4748] h-[40px]',
-          'px-4 rounded-lg border border-[#12D97C] hover:bg-[#1A4748]',
+          'bg-bazk-800 h-[40px]',
+          'px-4 rounded-lg border border-bazk-500',
         )}
       >
         <div
@@ -52,8 +52,8 @@ export const ConnectWalletButton = () => {
         <button
           onClick={() => PhalaConnectActorRef.send({ type: 'open-modal' })}
           className={twMerge(
-            'bg-[#1B233B]',
-            'h-[40px] px-4 rounded-lg border border-[#12D97C] bg-[#1B233B] hover:bg-[#1A4748]',
+            'bg-bg-bazk-dark-blue',
+            'h-[40px] px-4 rounded-lg border border-bazk-500 hover:bg-bazk-800',
           )}
         >
           <div
@@ -90,9 +90,9 @@ export const ConnectWalletButton = () => {
     <Popover className="relative outline-none">
       <Popover.Button
         className={twMerge(
-          'group bg-[#1A4748]',
+          'group',
           'outline-none',
-          'h-[40px] px-4 rounded-lg border border-[#12D97C] bg-[#1B233B] hover:bg-[#1A4748]',
+          'h-[40px] px-4 rounded-lg border border-bazk-500 bg-bazk-dark-blue hover:bg-bazk-800',
         )}
       >
         <div
@@ -153,7 +153,7 @@ export const ConnectWalletButton = () => {
                 className="flex items-center gap-2 hover:opacity-[.9]"
               >
                 <span
-                  className="text-sm text-[#B02A37] font-medium"
+                  className="text-sm text-bazk-red-500 font-medium"
                 >
                   Logout
                 </span>
@@ -174,8 +174,8 @@ export const ConnectWalletButton = () => {
                 onClick={() => PhalaConnectActorRef.send({ type: 'switch-account', value: account })}
                 className={
                   twMerge(
-                    'w-full p-4 rounded-lg border border-[#CBD5E1] h-[52px] flex items-center justify-between hover:bg-[#F1F5F9]',
-                    account.address === selectedAccount.address && 'border-[#12D97C] hover:bg-[#D0F7E5] bg-[#F3FDF8]'
+                    'w-full p-4 rounded-lg border border-bazk-grey-500 h-[52px] flex items-center justify-between hover:bg-bazk-grey-300',
+                    account.address === selectedAccount.address && 'border-bazk-500 hover:bg-[#D0F7E5] bg-[#F3FDF8]'
                   )
                 }
               >

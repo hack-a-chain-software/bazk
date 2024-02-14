@@ -6,7 +6,7 @@ import ConnectWalletButton from "../wallet-connect/WalletConnectButton";
 export const Header = () => {
   return (
     <div
-      className="bg-dark-blue px-4"
+      className="bg-bazk-dark-blue px-4"
     >
       <header
         className="mx-auto w-full max-w-7xl flex items-center justify-between py-4 min-h-[72px]"
