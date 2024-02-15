@@ -1,7 +1,7 @@
 import localforage from 'localforage';
 import { fromPromise } from 'xstate';
 
-export const restoreConnectionActor = fromPromise(
+export const restoreConnection = fromPromise(
   async () => {
     const cache = await localforage.getItem('/bazk-connect') as any
 
@@ -19,4 +19,4 @@ export const restoreConnectionActor = fromPromise(
   }
 )
 
-export default restoreConnectionActor
+export default restoreConnection

@@ -1,7 +1,7 @@
 import localforage from 'localforage';
 import { fromPromise } from 'xstate';
 
-export const persistConnectionActor = fromPromise(
+export const persistConnection = fromPromise(
   async ({ input }: any) => {
     await localforage.setItem('/bazk-connect', { ...input })
 
@@ -9,4 +9,4 @@ export const persistConnectionActor = fromPromise(
   }
 )
 
-export default persistConnectionActor
+export default persistConnection

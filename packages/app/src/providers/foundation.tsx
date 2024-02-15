@@ -1,29 +1,15 @@
-import abi from '../abi.json'
 import { isBefore } from 'date-fns'
-import { createContext, useReducer, useContext, useEffect } from 'react';
-import { ApiPromise, WsProvider, Keyring } from '@polkadot/api'
-import { options, OnChainRegistry, signCertificate, PinkContractPromise } from '@phala/sdk'
-
-const RPC_TESTNET_URL = 'wss://poc6.phala.network/ws'
-
-const BAZK_CONTRACT_ID = '0xeb6ba2385f46ec1904a97b08cee844ed903d336f9d3b2fb405e0651f7f06f85b'
+import { createContext, useContext, useCallback } from 'react';
+import { Keyring } from '@polkadot/api'
+import { signCertificate } from '@phala/sdk'
+import { ApiServiceContext } from '@/App';
 
 interface FoundationContextValue {
-  booting: boolean
-  initialized: boolean,
-  api: ApiPromise | null
-  contract: PinkContractPromise | null
-  init: () => Promise<void>
   getCeremonies: () => Promise<any[]>
   getCeremony: (id: string | number) => Promise<any>
 }
 
 const initialState = {
-  api: null,
-  contract: null,
-  booting: false,
-  initialized: false,
-  init: async () => {},
   getCeremony: async () => {},
   getCeremonies: async () => [],
 };
@@ -32,43 +18,10 @@ const FoundationContext = createContext<FoundationContextValue>({
   ...initialState
 });
 
-const reducer = (state: any, updated: any ) => {
-  return {
-    ...state,
-    ...updated,
-  };
-}
-
 const FoundationContextProvider = ({ children }: any) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const contract = ApiServiceContext.useSelector((state) => state.context.contract)
 
-  const init = async () => {
-    dispatch({
-      booting: true,
-    })
-
-    const api = await ApiPromise.create(
-      options({
-        provider: new WsProvider(RPC_TESTNET_URL),
-        noInitWarn: true,
-      })
-    )
-
-    const phatRegistry = await OnChainRegistry.create(api)
-
-    const contractKey = await phatRegistry.getContractKeyOrFail(BAZK_CONTRACT_ID)
-
-    const contract = new PinkContractPromise(api, phatRegistry, abi, BAZK_CONTRACT_ID, contractKey)
-
-    dispatch({
-      api,
-      contract,
-      booting: false,
-      initialized: true,
-    })
-  }
-
-  const getCeremonies = async () => {
+  const getCeremonies = useCallback(async () => {
     const keyring = new Keyring({ type: 'sr25519' })
 
     const pair = keyring.addFromUri('//bazk')
@@ -77,7 +30,7 @@ const FoundationContextProvider = ({ children }: any) => {
 
     const {
       output
-    } = await state.contract.query.getCerimonies(pair.address, { cert })
+    } = await contract.query.getCerimonies(pair.address, { cert })
 
     const rawCeremonies = output.toJSON().ok.ok
 
@@ -95,9 +48,9 @@ const FoundationContextProvider = ({ children }: any) => {
           hash: '55ab71351f...c8c5cbb24d'
         })
       })
-  }
+  }, [contract])
 
-  const getCeremony = async (id: string | number) => {
+  const getCeremony = useCallback(async (id: string | number) => {
     const keyring = new Keyring({ type: 'sr25519' })
 
     const pair = keyring.addFromUri('//bazk')
@@ -106,7 +59,7 @@ const FoundationContextProvider = ({ children }: any) => {
 
     const {
       output
-    } = await state.contract.query.getCeremony(pair.address, { cert }, id)
+    } = await contract.query.getCeremony(pair.address, { cert }, id)
 
     const [
       ceremony,
@@ -121,29 +74,12 @@ const FoundationContextProvider = ({ children }: any) => {
         .map((contribution: any, index: any) => ({ ...contribution, order: index + 1}))
         .sort((a: any, b: any) => b.timestamp - a.timestamp),
     }
-  }
-
-  useEffect(() => {
-    if (
-      state.booting
-      || state.contract
-      || state.api
-    ) {
-      return
-    }
-
-    init()
-  }, [state])
+  }, [contract])
 
   return (
     <FoundationContext.Provider value={{
-      init,
       getCeremony,
       getCeremonies,
-      api: state.api,
-      booting: state.booting,
-      contract: state.contract,
-      initialized: state.initialized,
     }}>
       {children}
     </FoundationContext.Provider>

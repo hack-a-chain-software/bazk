@@ -1,18 +1,18 @@
 import { Keyring } from '@polkadot/ui-keyring'
 import { assign, setup } from "xstate"
 import { getAvailableProviders } from "@/utils/providers";
-import persistConnection from './actors/persistConnection';
-import restoreConnection from './actors/restoreConnection';
-import requestConnection from './actors/requestConnection';
+import { mockActor, getAccountsBalance, persistConnection, restoreConnection, requestConnection } from '@/machines/actors';
 
 export const hackaConnectMachineId = 'hacka-connect-machine'
 
 export const hackaConnectMachineTypes = {} as any
 
 const hackaConnectMachineActors = {
+  mockActor,
   persistConnection,
   restoreConnection,
   requestConnection,
+  getAccountsBalance,
 }
 
 const hackaConnectMachineContext = () => {
@@ -73,6 +73,9 @@ export const HackaConnectMachine = setup({
       states: {
         idle: {
           on: {
+            'load-account-balance': {
+              target: 'gettingAccountBalance'
+            },
             'sign-out': {
               target: 'signinOut',
             },
@@ -89,8 +92,8 @@ export const HackaConnectMachine = setup({
         },
         signTx: {
           invoke: {
-            id: '',
-            src: 'persistConnection',
+            id: 'mock-acotr',
+            src: 'mockActor',
             input: ({ event }) => ({
               transaction: event.output.transaction
             }),
@@ -101,8 +104,8 @@ export const HackaConnectMachine = setup({
         },
         signAndSendTx: {
           invoke: {
-            id: '',
-            src: 'persistConnection',
+            id: 'mock-acotr',
+            src: 'mockActor',
             input: ({ event }) => ({
               transaction: event.output.transaction
             }),
@@ -110,6 +113,22 @@ export const HackaConnectMachine = setup({
               target: 'idle',
             }
           }
+        },
+        gettingAccountBalance: {
+          invoke: {
+            src: 'getAccountsBalance',
+            id: 'getAccountsBalance',
+            input: ({ context, event }) => ({
+              api: event.value,
+              accounts: context.accounts,
+            }),
+            onDone: {
+              target: 'idle',
+              actions: assign({
+                accounts: ({ event }) => event.output.updatedAccounts
+              })
+            }
+          },
         },
         switchingAccount: {
           invoke: {

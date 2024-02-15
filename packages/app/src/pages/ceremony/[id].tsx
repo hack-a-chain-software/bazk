@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react';
 import { useFoundationContext } from '@/providers/foundation';
 import { shortenHash } from '@/utils/string';
 import usePaginate from '@/hooks/usePaginate';
+import { ApiServiceContext } from '@/App';
 
 const tableColumns = [
   {
@@ -84,9 +85,10 @@ export const CeremonyPage = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [ceremony, setCeremony] = useState<null | any>(null)
 
+  const isStarted = ApiServiceContext.useSelector(state => state.matches('started'))
+
   const {
     getCeremony,
-    initialized,
   } = useFoundationContext()
 
   const {
@@ -100,7 +102,7 @@ export const CeremonyPage = () => {
   })
 
   useEffect(() => {
-    if (!initialized || !id) {
+    if (!isStarted || !id) {
       return
     }
 
@@ -109,7 +111,7 @@ export const CeremonyPage = () => {
 
       setCeremony(res)
     })()
-  }, [id, initialized, getCeremony])
+  }, [id, isStarted, getCeremony])
 
   return (
     <div

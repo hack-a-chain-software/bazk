@@ -1,6 +1,5 @@
 import Table from "@/components/Table";
 import Pagination from '@/components/Pagination'
-import PageTitle from "@/components/layout/Title";
 import NameColumn from "@/components/columns/Name";
 import ContributionsColumn from "@/components/columns/Contributions";
 import Status from "@/components/Tag";
@@ -9,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useFoundationContext } from "@/providers/foundation";
 import CreatedAtColumn from "@/components/columns/CreatedAt";
 import usePaginate from "@/hooks/usePaginate";
+import { ApiServiceContext } from "@/App";
 
 const tableColumns = [
   {
@@ -87,8 +87,9 @@ export const IndexPage = () => {
   const [ceremonies, setCeremonies] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
 
+  const isStarted = ApiServiceContext.useSelector(state => state.matches('started'))
+
   const {
-    initialized,
     getCeremonies,
   } = useFoundationContext()
 
@@ -103,7 +104,7 @@ export const IndexPage = () => {
   })
 
   useEffect(() => {
-    if (!initialized) {
+    if (!isStarted) {
       return
     }
 
@@ -115,7 +116,7 @@ export const IndexPage = () => {
       setCeremonies(res)
       setIsLoading(false)
     })()
-  }, [initialized, getCeremonies])
+  }, [isStarted, getCeremonies])
 
   return (
     <div
