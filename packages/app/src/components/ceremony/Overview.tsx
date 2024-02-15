@@ -60,7 +60,7 @@ export const Overview = ({
         </span>
 
         <div
-          className="bg-[#F1F5F9] p-3 md:p-4 rounded-lg divide divide-y-[1px] divide-[#CBD5E1]"
+          className="bg-bazk-grey-300 p-3 md:p-4 rounded-lg divide divide-y-[1px] divide-bazk-grey-500"
         >
           <div
             className="

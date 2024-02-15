@@ -60,8 +60,6 @@ const FoundationContextProvider = ({ children }: any) => {
 
     const contract = new PinkContractPromise(api, phatRegistry, abi, BAZK_CONTRACT_ID, contractKey)
 
-    console.log('initialized - ', new Date())
-
     dispatch({
       api,
       contract,
@@ -133,8 +131,6 @@ const FoundationContextProvider = ({ children }: any) => {
     ) {
       return
     }
-
-    console.log('booting - ', new Date())
 
     init()
   }, [state])

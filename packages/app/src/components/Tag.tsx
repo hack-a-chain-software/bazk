@@ -3,23 +3,23 @@ import { twMerge } from 'tailwind-merge'
 const classes = {
   open: {
     label: 'Open',
-    color: 'text-[#198754]',
-    backgroundColor: 'bg-[#DCF2E9]',
+    color: 'text-bazk-green-500',
+    backgroundColor: 'bg-bazk-green-100',
   },
   finalized: {
     label: 'Finalized',
-    color: 'text-[#B02A37]',
-    backgroundColor: 'bg-[#F8D7DA]',
+    color: 'text-bazk-red-500',
+    backgroundColor: 'bg-bazk-red-100',
   },
   phala: {
     label: 'Phala',
-    color: 'text-[#997404]',
-    backgroundColor: 'bg-[#FFF3CD]',
+    color: 'text-bazk-yellow-500',
+    backgroundColor: 'bg-bazk-yellow-100',
   },
   external: {
     label: 'External',
-    color: 'text-[#087990]',
-    backgroundColor: 'bg-[#CFF4FC]',
+    color: 'text-bazk-cyan-500',
+    backgroundColor: 'bg-bazk-cyan-100',
   }
 }
 

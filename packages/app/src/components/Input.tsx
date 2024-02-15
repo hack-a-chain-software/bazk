@@ -33,7 +33,7 @@ export const TextArea = ({
         value={value}
         disabled={disabled}
         placeholder={placeholder}
-        className="px-4 py-3 rounded-lg border border-[#CBD5E1] text-sm h-[92px]"
+        className="px-4 py-3 rounded-lg border border-bazk-grey-500 text-sm h-[92px]"
         onChange={(e) => onChange(e.target.value)}
       />
     </label>
@@ -68,7 +68,7 @@ export const Input = ({
         disabled={disabled}
         autoFocus={autofocus}
         placeholder={placeholder}
-        className="px-4 py-3 rounded-lg border border-[#CBD5E1] text-sm"
+        className="px-4 py-3 rounded-lg border border-bazk-grey-500 text-sm"
         onChange={(e) => onChange(e.target.value)}
       />
     </label>

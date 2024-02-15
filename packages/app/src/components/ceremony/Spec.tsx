@@ -7,8 +7,8 @@ export interface SpecsInterface {
 
 const baseOrder = [
   'power',
-  'curve',
-  'memory',
+  // 'curve',
+  // 'memory',
   'contributions',
   'nPrvInputs',
   'nPubInputs',
@@ -20,14 +20,14 @@ const specsMap = {
   curve: {
     icon: 'Curve',
     label: 'Curve',
-    color: 'bg-[#DCF2E9]',
+    color: 'bg-bazk-green-100',
     getValue: () => {
       return 'bn-256'
     }
   },
   memory: {
     icon: 'Memory',
-    color: 'bg-[#CFF4FC]',
+    color: 'bg-bazk-cyan-100',
     label: 'Memory Requirement',
     getValue: () => {
       return '3239. mb'
@@ -36,7 +36,7 @@ const specsMap = {
   nConstants: {
     icon: 'Constraints',
     label: 'Constraints',
-    color: 'bg-[#FFD3B2]',
+    color: 'bg-bazk-orange-500',
     getValue: ({ metadatas }: any) => {
       return metadatas.find(({ name }: any) => name === 'nConstants').value
     }
@@ -60,7 +60,7 @@ const specsMap = {
   nPrvInputs: {
     icon: 'Private',
     label: 'Private Inputs',
-    color: 'bg-[#E0DBFF]',
+    color: 'bg-bazk-blue-200',
     getValue: ({ metadatas }: any) => {
       return metadatas.find(({ name }: any) => name === 'nSignals').value
     }
@@ -68,7 +68,7 @@ const specsMap = {
   power: {
     icon: 'Power',
     label: 'power',
-    color: 'bg-[#F8D7DA]',
+    color: 'bg-bazk-red-100',
     getValue: ({ metadatas }: any) => {
       return metadatas.find(({ name }: any) => name === 'power').value
     }
@@ -101,7 +101,7 @@ export const Specs = ({
     <div
       className="
         flex flex-wrap
-        w-full md:grid grid-cols-3 lg:grid-cols-4 gap-4
+        w-full md:grid grid-cols-3 gap-4
       "
     >
       {specList.map(({ value, icon, label, color }) => (

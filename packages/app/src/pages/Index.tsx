@@ -38,7 +38,7 @@ const tableColumns = [
     render: (row: any) => {
       return (
         <CreatedAtColumn
-          date={row.timestamp * 1000}
+          date={row.deadline * 1000}
         />
       )
     }
@@ -73,7 +73,7 @@ const tableColumns = [
       return (
         <Link
           to={`/ceremony/${row.ceremonyId}`}
-          className="text-[#624BFF] text-sm text-center block"
+          className="text-bazk-blue-500 text-sm text-center block"
         >
           View
         </Link>
@@ -83,6 +83,7 @@ const tableColumns = [
 ]
 
 export const IndexPage = () => {
+  const [isLoading, setIsLoading] = useState(true)
   const [ceremonies, setCeremonies] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -107,44 +108,42 @@ export const IndexPage = () => {
     }
 
     (async () => {
+      setIsLoading(true)
+
       const res = await getCeremonies() as any
 
       setCeremonies(res)
-
-      console.log('ceremonies - ', res)
+      setIsLoading(false)
     })()
   }, [initialized, getCeremonies])
 
   return (
     <div
-      className="space-y-4"
+      className="min-h-[100vh]"
     >
-      <PageTitle
-        title="Dashboard"
-      />
-
-      {ceremonies && ceremonies.length > 0 && (
+      {!isLoading && (
         <div>
           <Table
-            title = 'Ceremonies'
-
             rows={page}
+            title="Ceremonies"
             columns={tableColumns}
           />
 
-          <Pagination
-            totalPages={totalPages}
-            totalItems={totalItems}
-            currentPage={currentPage}
-            itemsPerPage={page.length}
-            onPageChange={(page: number | string) => {
-              setCurrentPage(page as number)
-            }}
-          />
+          {ceremonies && ceremonies.length > 0 && (
+            <Pagination
+              totalPages={totalPages}
+              totalItems={totalItems}
+              currentPage={currentPage}
+              itemsPerPage={page.length}
+              onPageChange={(page: number | string) => {
+                setCurrentPage(page as number)
+              }}
+            />
+          )}
         </div>
       )}
 
-      {ceremonies.length === 0 && (
+      {isLoading && (
         <div
           className="
             w-full

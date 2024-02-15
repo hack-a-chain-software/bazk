@@ -14,13 +14,20 @@
     "@headlessui/react": "^1.7.18",
     "@phala/sdk": "^0.5.8",
     "@polkadot/api": "^10.11.2",
+    "@polkadot/extension-inject": "^0.46.6",
+    "@polkadot/ui-keyring": "^3.6.4",
+    "@types/ramda": "^0.29.10",
+    "@xstate/react": "^4.0.3",
     "date-fns": "^3.3.1",
+    "localforage": "^1.10.0",
+    "ramda": "^0.29.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router": "^6.21.3",
     "react-router-dom": "^6.21.3",
     "react-transition-group": "^4.4.5",
-    "tailwind-merge": "^2.2.1"
+    "tailwind-merge": "^2.2.1",
+    "xstate": "^5.6.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.43",

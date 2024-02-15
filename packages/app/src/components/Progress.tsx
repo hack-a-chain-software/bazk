@@ -8,13 +8,13 @@ export const Progress = ({ progress }: ProgressInterface) => {
       className="w-full flex justify-center items-center gap-2.5 py-4"
     >
       <div
-        className="h-2 md:h-3 w-full bg-[#E0DBFF] rounded-[20px]"
+        className="h-2 md:h-3 w-full bg-bazk-blue-200 rounded-[20px]"
       >
         <div
           style={{
             width: `${progress}%`
           }}
-          className="h-full rounded-[20px] bg-[#624BFF]"
+          className="h-full rounded-[20px] bg-bazk-blue-500"
         />
       </div>
 

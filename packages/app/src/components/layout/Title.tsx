@@ -6,7 +6,7 @@ export const Title = ({ title }: { title: string }) => {
           text-[22px] md:text-2xl
           font-semibold
           leading-[28.8px]
-          text-dark-blue-600
+          text-bazk-dark-blue-600
         "
       >
         {title}
