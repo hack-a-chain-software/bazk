@@ -1,0 +1,21 @@
+{
+  "name": "@phala/ra-report",
+  "version": "1.0.4",
+  "description": "Tools for generating report for nodejs app running in Gramine",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.6",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@phala/sdk": "^0.6.0-nightly-20231114",
+    "@polkadot/keyring": "^12.5.1",
+    "axios": "^1.5.1",
+    "base64-js": "^1.5.1"
+  }
+}

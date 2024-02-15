@@ -1,0 +1,125 @@
+[libos]
+entrypoint = "./node"
+
+[loader]
+entrypoint = "file:{{ libos }}"
+insecure__use_cmdline_argv = true
+log_level = "error"
+
+[sys]
+insecure__allow_eventfd = true
+stack.size = "2M"
+brk.max_size = "256M"
+
+[loader.env]
+LD_LIBRARY_PATH = "/lib:/lib/x86_64-linux-gnu"
+MALLOC_ARENA_MAX = "1"
+IAS_API_KEY = { passthrough = true }
+PINATA_API_KEY = { passthrough = true }
+PINATA_API_SECRET = { passthrough = true }
+ACCOUNT_MNEMONIC = { passthrough = true }
+SGX_ENABLED = { passthrough = true }
+
+[[fs.mounts]]
+type = "chroot"
+path = "/lib"
+uri = "file:{{ libdir }}"
+
+[[fs.mounts]]
+type = "chroot"
+path = "/etc"
+uri = "file:/etc"
+
+[[fs.mounts]]
+type = "chroot"
+path = "/data"
+uri = "file:data"
+
+[[fs.mounts]]
+type = "chroot"
+path = "/app"
+uri = "file:app"
+
+[sgx]
+debug = false
+nonpie_binary = true
+enclave_size = "4G"
+max_threads = 16
+remote_attestation = "{{ ra_method }}"
+
+{% if ra_method == "epid" %}
+ra_client_linkable = true
+ra_client_spid = "{{ ra_client_spid }}"
+{% endif %}
+
+trusted_files = [
+  "file:node",
+  "file:curl",
+  "file:/usr/bin/curl",
+  "file:{{ libos }}",
+  "file:{{ libdir }}",
+  "file:app/",
+  "file:app/bin/contribute",
+  "file:app/bin/new",
+  "file:app/bin/verify_contribution",
+  "file:app/bin/new_constrained",
+  "file:app/bin/compute_constrained",
+  "file:app/bin/verify_transform_constrained",
+  "file:app/bin/prepare_phase2",
+  "file:app/ceremonies/",
+]
+
+allowed_files = [
+  "file:/etc/hosts",
+  "file:/etc/resolv.conf",
+  "file:/etc/ssl/openssl.cnf",
+  "file:/etc/nsswitch.conf",
+  "file:/etc/passwd",
+  "file:/etc/host.conf",
+  "file:/etc/gai.conf",
+  "file:/etc/ssl/certs/ca-certificates.crt",
+  "file:index.js",
+  "file:data/",
+  "file:challenge",
+  "file:challenge1",
+  "file:challenge2",
+  "file:challenge3",
+  "file:challenge4",
+  "file:challenge5",
+  "file:challenge6",
+  "file:challenge7",
+  "file:challenge8",
+  "file:challenge.verified.hash",
+  "file:response",
+  "file:response1",
+  "file:response2",
+  "file:response3",
+  "file:response4",
+  "file:response5",
+  "file:response6",
+  "file:response7",
+  "file:response8",
+  "file:response.hash",
+  "file:seed1",
+  "file:processed",
+  "file:phase1radix2m0",
+  "file:phase1radix2m1",
+  "file:phase1radix2m2",
+  "file:phase1radix2m3",
+  "file:phase1radix2m4",
+  "file:phase1radix2m5",
+  "file:phase1radix2m6",
+  "file:phase1radix2m7",
+  "file:phase1radix2m8",
+  "file:phase1radix2m9",
+  "file:phase1radix2m10",
+  "file:circom1.params",
+  "file:circom2.params",
+  "file:circom3.params",
+  "file:circom4.params",
+  "file:circom5.params",
+  "file:circom6.params",
+  "file:circom7.params",
+  "file:circom8.params",
+  "file:circuit.json",
+]

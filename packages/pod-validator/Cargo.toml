@@ -1,0 +1,54 @@
+[package]
+name = "pod_validator"
+version = "0.1.0"
+authors = ["Kevin Wang <wy721@qq.com>"]
+edition = "2021"
+
+[dependencies]
+ink = { version = "4.2.0", default-features = false }
+hex = { version = "0.4", default-features = false, features = ["alloc"] }
+hex_fmt = "0.3"
+
+[dependencies.pink]
+package = "pink-extension"
+version = "0.4.6"
+default-features = false
+features = ["dlmalloc"]
+
+[dependencies.scale]
+package = "parity-scale-codec"
+version = "3"
+default-features = false
+features = ["derive"]
+
+[dependencies.scale-info]
+version = "2.6"
+default-features = false
+features = ["derive"]
+optional = true
+
+[dependencies.sgx-attestation]
+# TODO.kevin, use crates.io once it's published
+git = "https://github.com/Phala-Network/phala-blockchain"
+default-features = false
+
+[dev-dependencies]
+ink_e2e = "4.2.0"
+
+[lib]
+path = "lib.rs"
+
+[features]
+default = ["std"]
+std = [
+    "ink/std",
+    "scale/std",
+    "scale-info/std",
+    "pink/std",
+    "sgx-attestation/std",
+]
+ink-as-dependency = []
+e2e-tests = []
+
+[patch.crates-io]
+ring = { git = "https://github.com/jasl/ring-xous", branch = "better-wasm32-support" }

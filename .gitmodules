@@ -1,0 +1,4 @@
+[submodule "phase2-bn254"]
+	path = packages/phase2-bn254
+	url = https://github.com/hack-a-chain-software/phase2-bn254.git
+	branch = feat/gramine
