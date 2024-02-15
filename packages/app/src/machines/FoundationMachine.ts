@@ -1,10 +1,10 @@
-import { assign, setup } from 'xstate'
-import { persistConnectionActor } from './hacka-connect/actors/persistConnection';
+import { assign, setup, spawnChild } from 'xstate'
+import { mockActor } from './actors/persistConnection';
 
 const foundationMachineTypes = {} as any;
 
 const foundationMachineActors = {
-  'startFoundation': persistConnectionActor
+  'startFoundation': mockActor
 };
 
 const foundationMachineActions = {};
@@ -41,5 +41,8 @@ export const FoundationMachine = setup({
     started: {
       //
     },
-  }
+  },
+
 })
+
+export default FoundationMachine

@@ -3,7 +3,7 @@ import { Keyring } from '@polkadot/ui-keyring'
 import { getAllAcountsForProvider } from "@/utils/providers";
 import { ProvidersBaseListInterface } from "@/utils/constants";
 
-export const requestConnectionActor = fromPromise(
+export const requestConnection = fromPromise(
   async ({ input }: { input: { provider: ProvidersBaseListInterface, keyring: Keyring } }) => {
     return {
       provider: input.provider,
@@ -12,4 +12,4 @@ export const requestConnectionActor = fromPromise(
   }
 )
 
-export default requestConnectionActor
+export default requestConnection

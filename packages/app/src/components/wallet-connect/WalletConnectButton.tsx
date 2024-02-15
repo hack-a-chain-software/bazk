@@ -14,6 +14,8 @@ export const ConnectWalletButton = () => {
   const provider = PhalaConnectContext.useSelector((state) => state.context.provider)
   const selectedAccount = PhalaConnectContext.useSelector((state) => state.context.account)
 
+  console.log('accounts', accounts)
+
   const isSignedOut = PhalaConnectContext.useSelector((state) => state.matches('signedOut'))
   const isRestoring = PhalaConnectContext.useSelector((state) => state.matches('restore'))
 
@@ -170,7 +172,7 @@ export const ConnectWalletButton = () => {
           >
             {accounts && accounts.map((account: any) => (
               <button
-                key={account.address}
+                key={account.address + account.balance}
                 onClick={() => PhalaConnectActorRef.send({ type: 'switch-account', value: account })}
                 className={
                   twMerge(
@@ -198,25 +200,33 @@ export const ConnectWalletButton = () => {
                 <div
                   className="relative flex justify-end "
                 >
-                  <div
-                    className="flex items-center"
-                  >
-                    <div
-                      className="flex items-center gap-1 relative "
-                    >
-                      <span
-                        className="text-sm text-[#475569] font-medium leading-[140%]"
-                      >
-                        900.34
-                      </span>
+                  {!account.balance && (
+                    <Spinner
+                      className="w-5 h-5 text-white animate-spin fill-[#64748B]"
+                    />
+                  )}
 
-                      <span
-                        className="text-xs text-[#64748B] leading-[140%]"
+                  {account.balance && (
+                    <div
+                      className="flex items-center"
+                    >
+                      <div
+                        className="flex items-center gap-1 relative "
                       >
-                        PHA
-                      </span>
+                        <span
+                          className="text-sm text-[#475569] font-medium leading-[140%]"
+                        >
+                          {account.balance}
+                        </span>
+
+                        <span
+                          className="text-xs text-[#64748B] leading-[140%]"
+                        >
+                          PHA
+                        </span>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               </button>
             ))}
