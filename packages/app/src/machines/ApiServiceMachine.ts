@@ -1,6 +1,5 @@
 import { assign, setup } from 'xstate'
-import webSocketConnection from './actors/websocketConnection';
-import contractConnection from './actors/contractConnection';
+import { webSocketConnection, contractConnection } from '@/machines/actors'
 
 const apiServicetMachineTypes = {} as any;
 
