@@ -7,14 +7,15 @@ export const Root = ({ children }: { children: ReactNode }) => {
   const HackaConnectActorRef = PhalaConnectContext.useActorRef()
 
   const connection = ApiServiceContext.useSelector((state) => state.context.connection)
+  const isSignedIn = PhalaConnectContext.useSelector((state) => state.matches('signedIn'))
 
   useEffect(() => {
-    if (!connection) {
+    if (!connection || !isSignedIn) {
       return
     }
 
     HackaConnectActorRef.send({ type: 'load-account-balance', value: connection })
-  }, [connection, HackaConnectActorRef])
+  }, [connection, HackaConnectActorRef, isSignedIn])
   return (
     <div
       className="flex flex-col max-h-full h-full overflow-y-hidden"
