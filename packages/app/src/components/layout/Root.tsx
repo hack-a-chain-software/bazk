@@ -21,7 +21,6 @@ export const Root = ({ children }: { children: ReactNode }) => {
       className="flex flex-col max-h-full h-full overflow-y-hidden"
     >
       {children}
-
       <ConnectWalletModal />
     </div>
   );

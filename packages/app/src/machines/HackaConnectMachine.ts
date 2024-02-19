@@ -1,4 +1,3 @@
-import { Keyring } from '@polkadot/ui-keyring'
 import { assign, setup } from "xstate"
 import { getAvailableProviders } from "@/utils/providers";
 import { mockActor, getAccountsBalance, persistConnection, restoreConnection, requestConnection } from '@/machines/actors';
@@ -16,18 +15,10 @@ const hackaConnectMachineActors = {
 }
 
 const hackaConnectMachineContext = () => {
-  const keyring = new Keyring()
-
-  try {
-    keyring.loadAll({ isDevelopment: false })
-  } catch (e) {
-    console.warn(e)
-  }
-
   return {
-    keyring,
     account: null,
     accounts: null,
+    instance: null,
     provider: null,
     showModal: false,
     providers: getAvailableProviders() || [],
@@ -68,7 +59,6 @@ export const HackaConnectMachine = setup({
       }
     },
     signedIn: {
-      guard: ({ context }: any) => context.account && context.provider,
       initial: "idle",
       states: {
         idle: {
@@ -183,7 +173,7 @@ export const HackaConnectMachine = setup({
             'sign-in': {
               target: 'signingIn',
               actions: assign({
-                provider: ({ event }) => event.value
+                provider: ({ event }) => event.value.provider
               })
             },
             'open-modal': {
@@ -203,13 +193,14 @@ export const HackaConnectMachine = setup({
           invoke: {
             src: 'requestConnection',
             id: `${hackaConnectMachineId}-signing-actor`,
-            input: ({ event, context }) => ({
-              provider: event.value,
-              keyring: context.keyring,
+            input: ({ event }: any) => ({
+              registry: event.value.registry,
+              provider: event.value.provider,
             }),
             onDone: {
               target: 'persist',
               actions: assign({
+                instance: ({ event }: any) => event.output.instance,
                 accounts: ({ event }: any) => event.output.accounts,
                 provider: ({ event }: any) => event.output.provider,
                 account: ({ event }: any) => event.output.accounts[0],
@@ -230,9 +221,9 @@ export const HackaConnectMachine = setup({
             id: `${hackaConnectMachineId}-persist-connection-actor`,
             src: 'persistConnection',
             input: ({ context }: any) => ({
+              account: context.account,
               provider: context.provider,
               accounts: context.accounts,
-              account: context.accounts[0],
             }),
             onDone: {
               target: 'signedOn',

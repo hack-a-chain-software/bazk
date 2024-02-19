@@ -14,8 +14,6 @@ export const ConnectWalletButton = () => {
   const provider = PhalaConnectContext.useSelector((state) => state.context.provider)
   const selectedAccount = PhalaConnectContext.useSelector((state) => state.context.account)
 
-  console.log('accounts', accounts)
-
   const isSignedOut = PhalaConnectContext.useSelector((state) => state.matches('signedOut'))
   const isRestoring = PhalaConnectContext.useSelector((state) => state.matches('restore'))
 

@@ -2,82 +2,14 @@ import { useParams } from 'react-router-dom';
 import Table from "@/components/Table";
 import Pagination from '@/components/Pagination'
 import PageTitle from "@/components/layout/Title";
-import NameColumn from "@/components/columns/Name";
-import Tag from "@/components/Tag";
-import { Link } from "react-router-dom";
 import Overview from "@/components/ceremony/Overview";
 import Specs from "@/components/ceremony/Spec";
-import OrderColumn from "@/components/columns/Order";
-import CreatedAtColumn from "@/components/columns/CreatedAt";
-import DownloadIcon from "@/components/icons/Download";
 import ContributionButton from "@/components/ContributionButton";
 import { useEffect, useState } from 'react';
 import { useFoundationContext } from '@/providers/foundation';
-import { shortenHash } from '@/utils/string';
 import usePaginate from '@/hooks/usePaginate';
 import { ApiServiceContext } from '@/App';
-
-const tableColumns = [
-  {
-    key: 'order',
-    label: 'Order',
-    classRoot: 'min-w-[48px]',
-    render: (row: any) => (
-      <OrderColumn
-        order={row.order}
-      />
-    )
-  },
-  {
-    key: 'hashes',
-    label: 'Hashes',
-    classRoot: 'min-w-[160px]',
-    render: (row: any) => (
-      <NameColumn
-        name={shortenHash(row.hash, 10)}
-      />
-    )
-  },
-  {
-    key: 'contribution-date',
-    label: 'Contribution Date',
-    classRoot: 'min-w-[140px]',
-    render: (row: any) => {
-      return (
-        <CreatedAtColumn
-          mask="dd MMM yyyy - HH:mm"
-          date={row.timestamp * 1000}
-        />
-      )
-    }
-  },
-  {
-    key: 'type',
-    label: 'Type',
-    render: () => {
-      return (
-        <Tag
-          status="external"
-        />
-      )
-    }
-  },
-  {
-    key: 'download',
-    label: '',
-    render: (row: any) => {
-      return (
-        <Link
-          target='__blank'
-          to={`https://ipfs.io/ipfs/${row.hash}/`}
-          className="text-bazk-blue-500 text-sm text-center block"
-        >
-          <DownloadIcon/>
-        </Link>
-      )
-    }
-  },
-]
+import { contributionsTableColumns } from '@/utils/tables';
 
 export const CeremonyPage = () => {
   const { id } = useParams()
@@ -163,8 +95,8 @@ export const CeremonyPage = () => {
               <Table
                 rows={page}
                 title="Contribuitons"
-                columns={tableColumns}
                 classRoot="min-h-[589.38px]"
+                columns={contributionsTableColumns}
               />
 
               <Pagination
