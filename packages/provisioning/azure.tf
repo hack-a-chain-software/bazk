@@ -2,6 +2,6 @@
 provider "azurerm" {
   features {}
 
-  tenant_id       = "${vars.tenant_id}"
-  subscription_id = "${vars.subscription_id}"
+  tenant_id       = "${var.azure_tenant_id}"
+  subscription_id = "${var.azure_subscription_id}"
 }

@@ -177,10 +177,10 @@ export IAS_API_KEY=YOUR_IAS_API_KEY_GOT_FROM_INTEL
 export SGX_ENABLED=false
 
 ./node ./app/index.js ./app/bin/new_constrained challenge 10 256 "my ceremony name" "my ceremony description" 1709221725
-./node ./app/index.js 1707244846 ./app/bin/compute_constrained challenge response 10 256
-./node ./app/index.js 1707244846 ./app/bin/verify_transform_constrained challenge response challenge2 10 256
-./node ./app/index.js 1707244846 ./app/bin/compute_constrained challenge2 response2 10 256
-./node ./app/index.js 1707244846 ./app/bin/prepare_phase2 response2 10 256
+./node ./app/index.js 1708380215 ./app/bin/compute_constrained challenge response 10 256
+./node ./app/index.js 1708380215 ./app/bin/verify_transform_constrained challenge response challenge2 10 256
+./node ./app/index.js 1708380215 ./app/bin/compute_constrained challenge2 response2 10 256
+./node ./app/index.js 1708380215 ./app/bin/prepare_phase2 response2 10 256
 ```	
 
 #### Run Phase 2 using SGX (Groth16)
@@ -194,7 +194,7 @@ export SGX_ENABLED=false
 #### Run Phase 2 using Node directly
 
 ```bash
-./node ./app/index.js ./app/bin/new circuit.json circom1.params ./app/ceremonies/p12 12 256 "my ceremony name" "my ceremony description" 1709221725
+./node ./app/index.js ./app/bin/new circuit.json circom1.params ./app/ceremonies/p12 12 256 "matt logs" "my ceremony description" 1709221725
 ./node ./app/index.js 1706736894 ./app/bin/contribute circom1.params circom2.params
 ./node ./app/index.js 1706736894 ./app/bin/contribute circom2.params circom3.params
 ./node ./app/index.js 1706736894 ./app/bin/verify_contribution circuit.json circom2.params circom3.params ./
