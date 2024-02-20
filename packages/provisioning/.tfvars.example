@@ -1,0 +1,4 @@
+// azure storage info to terraform state
+container_name=""
+resource_group_name=""
+storage_account_name=""
