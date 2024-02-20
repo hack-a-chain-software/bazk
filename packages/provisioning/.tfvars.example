@@ -1,4 +1,3 @@
-// azure storage info to terraform state
-container_name=""
-resource_group_name=""
-storage_account_name=""
+// azure acocunt info
+tenant_id="cb84bad5-bc00-4dbb-b576-4f91446cceb5"
+subscription_id="12942c46-20bd-4894-a01b-d18cce7d8326"
