@@ -59,8 +59,13 @@ resource "azurerm_virtual_machine" "bazk" {
       "sudo apt-get install -y docker-ce docker-ce-cli containerd.io",
       "sudo groupadd docker",
       "sudo usermod -aG docker root",
+      "export PINATA_API_KEY=${var.pinata_api_key}",
+      "export PINATA_API_SECRET=${var.pinata_api_secret}",
+      "export ACCOUNT_MNEMONIC=${var.phala_account_mnemonic}",
+      "export IAS_SPID=${var.ias_spid}",
+      "export IAS_API_KEY=${var.ias_api_key}",
       "cd bazk-build/",
-      "sudo docker run -d --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v`pwd`/dist:/dist -it gramineproject/gramine"
+      "sudo docker run -d --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v`pwd`/dist:/dist -it gramineproject/gramine",
     ]
   }
 }

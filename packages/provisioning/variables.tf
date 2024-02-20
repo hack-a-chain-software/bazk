@@ -37,3 +37,29 @@ variable "machine_admin_password" {
   type        = string
 }
 
+variable "pinata_api_key" {
+  description = "Bazk machine admin password"
+  type        = string
+}
+
+variable "pinata_api_secret" {
+  description = "Bazk machine admin password"
+  type        = string
+}
+
+variable "phala_account_mnemonic" {
+  description = "Bazk machine admin password"
+  type        = string
+}
+
+variable "ias_spid" {
+  description = "Bazk machine admin password"
+  type        = string
+}
+
+variable "ias_api_key" {
+  description = "Bazk machine admin password"
+  type        = string
+}
+
+
