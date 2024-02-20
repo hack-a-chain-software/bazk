@@ -16,6 +16,13 @@ resource "azurerm_subnet" "bazk" {
   address_prefixes     = ["10.0.1.0/24"]
 }
 
+resource "azurerm_public_ip" "bazk" {
+  allocation_method   = "Static"
+  name                = "bazk-publicip"
+  location            = "${var.azure_region}"
+  resource_group_name = azurerm_resource_group.bazk.name
+}
+
 # The "azurerm_network_interface" block defines a network interface with specified settings.
 # It is associated with a specific resource group and deployed in a particular location.
 resource "azurerm_network_interface" "bazk" {
@@ -24,8 +31,10 @@ resource "azurerm_network_interface" "bazk" {
   resource_group_name = azurerm_resource_group.bazk.name
 
   ip_configuration {
+    private_ip_address_allocation = "Dynamic"
     name                          = "internal"
     subnet_id                     = azurerm_subnet.bazk.id
-    private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.bazk.id
   }
 }
+
