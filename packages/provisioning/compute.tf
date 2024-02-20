@@ -1,10 +1,3 @@
-resource "azurerm_ssh_public_key" "bazk" {
-  name                = "bazk-ssh"
-  resource_group_name = azurerm_resource_group.bazk.name
-  location            = "${var.azure_region}"
-  public_key          = file(var.pub_key)
-}
-
 # This block defines a virtual machine in Azure.
 resource "azurerm_virtual_machine" "bazk" {
   name                  = "bazk"
@@ -50,15 +43,24 @@ resource "azurerm_virtual_machine" "bazk" {
 
   # Provisioner block for send file
   provisioner "file" {
-    source = "../indexer/chainweb-node"
+    source = "../gramine/bazk-build"
     destination = "."
   }
-
 
   # Provisioner block for remote-exec
   provisioner "remote-exec" {
     inline = [
-      "echo 'Remote execution successful!' >> ~/test.txt"
+      "sudo apt-get update",
+      "sudo apt-get remove docker docker-engine docker.io containerd runc",
+      "sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release",
+      "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg",
+      "echo \"deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null",
+      "sudo apt-get update",
+      "sudo apt-get install -y docker-ce docker-ce-cli containerd.io",
+      "sudo groupadd docker",
+      "sudo usermod -aG docker root",
+      "cd bazk-build/",
+      "sudo docker run -d --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v`pwd`/dist:/dist -it gramineproject/gramine"
     ]
   }
 }
