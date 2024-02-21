@@ -62,4 +62,10 @@ variable "ias_api_key" {
   type        = string
 }
 
+variable "sgx_enabled" {
+  description = "Bazk machine admin password"
+  type        = bool
+  default = true
+}
+
 

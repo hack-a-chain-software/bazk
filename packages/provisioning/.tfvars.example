@@ -11,3 +11,5 @@ ias_api_key=""
 pinata_api_key=""
 pinata_api_secret=""
 phala_account_mnemonic=""
+
+## Check all variables on ./varaibles.tf
