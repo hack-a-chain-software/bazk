@@ -67,7 +67,7 @@ pnpm provisioner destroy
 After the deployment is successful, you can acess your virtual machine with ssh:
 
 ```bash
-ssh adminuser@{YOUR_MACHINE_IP}
+ssh {YOUR_MACHINE_USARNAME_DEFAULT_=_adminuser}@{YOUR_MACHINE_IP}
 ```
 
 If necessary, enter the machine password.
@@ -76,13 +76,14 @@ After connecting, you can enter the already initialized Bazk App container by ex
 
 ```bash
 docker exec -it sad_goldstine /bin/bash
+cd /dist
 ```
 
 Or whenever you need to initialize a new one, you just need to execute this command:
 
 ```bash
 cd bazk-build/
-sudo docker run -e 'PINATA_API_SECRET' -e 'PINATA_API_KEY' -e 'ACCOUNT_MNEMONIC' -e 'IAS_SPID' -e 'IAS_API_KEY' -e 'SGX_ENABLED' -d --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v`pwd`/dist:/dist -it gramineproject/gramine
+sudo docker run --env-file .env --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v $(pwd)/dist:/dist -it gramineproject/gramine
 cd /dist
 ```
 
