@@ -83,8 +83,18 @@ Or whenever you need to initialize a new one, you just need to execute this comm
 
 ```bash
 cd bazk-build/
-sudo docker run --env-file .env --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v $(pwd)/dist:/dist -it gramineproject/gramine
+sudo docker run --privileged --env-file .env --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v $(pwd)/dist:/dist -it gramineproject/gramine
 cd /dist
+
+chmod +x *
+chmod +x /dist/cruntime/sgx/loader
+
+export ACCOUNT_MNEMONIC="miracle shallow spray still dentist gravity depend alert surface bar corn motor"
+export PINATA_API_KEY="3be2c45280f474982841"
+export PINATA_API_SECRET="d0ffa520be3309c3f34002d4a3717c162c03e381fb26814adc69b5934c895425"
+export SGX_ENABLED=true
+export IAS_SPID=2E0E3B2459C4AB70981163C09D4E1A59
+export IAS_API_KEY=bdc61911b9d84b1fb0d34414f29c66b2
 ```
 
 Within the app you can execute [basic bazk commands](../../README.md)

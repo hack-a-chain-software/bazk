@@ -4,7 +4,7 @@
 
 cp -r dist bazk-build/app
 # cp -L $(which node) bazk-build/ # should be node 16 to work with SGX
-cp -L $(which curl) bazk-build/
+# cp -L $(which curl) bazk-build/
 sudo docker run \
  -u $(id -u ${USER}):$(id -g ${USER}) \
  -it --rm \

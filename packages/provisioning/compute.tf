@@ -16,7 +16,7 @@ resource "azurerm_virtual_machine" "bazk" {
 
   # Defines the operating system profile for the virtual machine.
   os_profile {
-    computer_name  = "hostname"
+    computer_name  = "bazk"
     admin_username = "${var.machine_admin_username}"
     admin_password = "${var.machine_admin_password}"
   }
@@ -31,7 +31,7 @@ resource "azurerm_virtual_machine" "bazk" {
     name              = "osdisk"
     caching           = "ReadWrite"
     create_option     = "FromImage"
-    managed_disk_type = "Standard_LRS"
+    managed_disk_type = "Premium_LRS"
   }
 
   connection {
@@ -43,7 +43,7 @@ resource "azurerm_virtual_machine" "bazk" {
 
   # Provisioner block for send file
   provisioner "file" {
-    source = "../gramine/bazk-build"
+    source = "../gramine/bazk-build/dist"
     destination = "."
   }
 
@@ -58,18 +58,17 @@ resource "azurerm_virtual_machine" "bazk" {
       "sudo apt-get update",
       "sudo apt-get install -y docker-ce docker-ce-cli containerd.io",
       "sudo groupadd docker",
+      "sudo usermod -aG sgx ${var.machine_admin_username}",
       "sudo usermod -aG docker ${var.machine_admin_username}",
+      "sudo usermod -aG sgx_prv ${var.machine_admin_username}",
       "sudo apt-get install -y jq",
       "sudo groupadd docker",
-      "cd bazk-build/",
-      "chmod +x *",
       "echo 'PINATA_API_KEY=${var.pinata_api_key}' >> .env",
       "echo 'PINATA_API_SECRET=${var.pinata_api_secret}' >> .env",
       "echo 'ACCOUNT_MNEMONIC=${var.phala_account_mnemonic}' >> .env",
       "echo 'IAS_SPID=${var.ias_spid}' >> .env",
       "echo 'SGX_ENABLED=${var.sgx_enabled}' >> .env",
       "echo 'IAS_API_KEY=${var.ias_api_key}' >> .env",
-      "sudo docker run --env-file .env -d --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v`pwd`/dist:/dist -it gramineproject/gramine",
     ]
   }
 }

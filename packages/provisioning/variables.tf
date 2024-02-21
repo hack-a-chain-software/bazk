@@ -29,7 +29,7 @@ variable "azure_region" {
 variable "machine_admin_username" {
   description = "Bazk machine admin username"
   type        = string
-  default     = "adminuser"
+  default     = "ubuntu"
 }
 
 variable "machine_admin_password" {
