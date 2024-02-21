@@ -23,7 +23,7 @@ Follow the steps below to use this Terraform code:
 - Clone the repository: Clone this repository to your local machine.
 
 - Set up Terraform variables: Create a file named .tfvars in the root directory as the Terraform code. Add the following content to the file and replace the placeholder values with your own:
-```
+```bash
 pinata_api_key = "YOUR_PINATA_API_KEY"
 azure_tenant_id = "YOUR_AZURE_TENANT_ID"
 ias_spid = "YOUR_IAS_API_KEY_GOT_FROM_INTEL"
@@ -36,20 +36,20 @@ phala_account_mnemonic = "YOUR_ACCOUNT_MNEMONIC_WITH_ENOUGH_BALANCE"
 
 - Initialize Terraform: Open a terminal or command prompt, navigate to the cloned repository directory, and run the following command to initialize Terraform:
 
-```
+```bash
 pnpm provisioner start
 ```
 
 - Review the execution plan: Run the following command to see the execution plan and ensure that everything looks correct:
 
-```
+```bash
 pnpm provisioner plan
 ```
 Verify that the planned changes match your expectations.
 
 - Apply the Terraform configuration: Once you're ready to provision the infrastructure, run the following command:
 
-```
+```bash
 pnpm provisioner apply
 ```
 
@@ -59,9 +59,34 @@ pnpm provisioner apply
 
 - Cleanup and destroy: To clean up and destroy the created infrastructure, run the following command:
 
-```
+```bash
 pnpm provisioner destroy
 ```
+
+## Row to access BAZK App
+After the deployment is successful, you can acess your virtual machine with ssh:
+
+```bash
+ssh adminuser@{YOUR_MACHINE_IP}
+```
+
+If necessary, enter the machine password.
+
+After connecting, you can enter the already initialized Bazk App container by executing this command:
+
+```bash
+docker exec -it sad_goldstine /bin/bash
+```
+
+Or whenever you need to initialize a new one, you just need to execute this command:
+
+```bash
+cd bazk-build/
+sudo docker run -e 'PINATA_API_SECRET' -e 'PINATA_API_KEY' -e 'ACCOUNT_MNEMONIC' -e 'IAS_SPID' -e 'IAS_API_KEY' -e 'SGX_ENABLED' -d --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v`pwd`/dist:/dist -it gramineproject/gramine
+cd /dist
+```
+
+Within the app you can execute [basic bazk commands](../../README.md)
 
 ## Additional Information
 
