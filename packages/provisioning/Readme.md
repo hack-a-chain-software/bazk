@@ -63,7 +63,7 @@ pnpm provisioner apply
 pnpm provisioner destroy
 ```
 
-## Row to access BAZK App
+## How to access BAZK App
 After the deployment is successful, you can acess your virtual machine with ssh:
 
 ```bash
