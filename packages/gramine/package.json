@@ -14,6 +14,7 @@
     "build-ceremonies": "cpy \"ceremonies/**/*\" dist/ceremonies",
     "clean": "rm -rf dist && (cd bazk-build || true && rm -f *.manifest *.sgx *.sig && rm -rf cruntime app dist)",
     "deploy-azure": "ssh -i ${AZURE_SSH_PATH} azureuser@${AZURE_HOST_IP} 'rm -rf ~/bazk-build/*' && scp -r -i ${AZURE_SSH_PATH} $(pwd)/bazk-build/dist azureuser@${AZURE_HOST_IP}:~/bazk-build/",
+    "dev": "cd $(pwd)/bazk-build && eval $(cat ../.env | sed 's/^/export /') && ./node ./app/index.js",
     "deploy": "yarn deploy-azure"
   },
   "devDependencies": {

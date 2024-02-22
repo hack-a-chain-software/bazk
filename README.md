@@ -207,3 +207,42 @@ export SGX_ENABLED=false
 circom circuit.circom --r1cs
 snarkjs rej circuit.r1cs circuit.json
 ```
+
+#### Run App using dev mode
+
+1) Build the app:
+```bash
+$ pnpm gramine build
+```
+
+2) Check the gramine package and copy the .env.example file and edit it with your environment config:
+```bash
+$ cp ./packages/gramine/.env.example ./packages/gramine/.env
+```
+** Don't forget to update the SGX ENABLED variable to **false**
+
+4) Run the app using a initial command
+```bash
+# --------------------------------
+# Notes to use the app commands
+# --------------------------------
+# 1) New ceremony with new challenge
+# yarn gramine dev ./app/bin/new_constrained <challenge> <power> <bash> <ceremony name> <ceremony description> <deadline timestamp>
+#
+# 2) Contribute to the ceremony
+# yarn gramine dev <ceremony id> ./app/bin/compute_constrained <challenge> <response> <power> <bash>
+#
+# 3) Verify the ceremony and create new challange
+# yarn gramine dev <ceremony id> ./app/bin/verify_transform_constrained <existing challenge> <response> <new challenge> <power> <bash>
+#
+# 4) Finalize the ceremony and prepare for phase 2
+# yarn gramine dev <ceremony id> ./app/bin/prepare_phase2 <response> <power> <bash>
+# --------------------------------
+
+## Base example to create a new ceremony
+$ yarn gramine dev ./app/bin/new_constrained challenge 10 256 "my ceremony name" "my ceremony description" 1709221725
+$ yarn gramine dev 1708608454 ./app/bin/compute_constrained challenge response 10 256
+$ yarn gramine dev 1707244846 ./app/bin/verify_transform_constrained challenge response challenge2 10 256
+$ yarn gramine dev 1707244846 ./app/bin/compute_constrained challenge2 response2 10 256
+$ yarn gramine dev 1707244846 ./app/bin/prepare_phase2 response2 10 256
+```	
