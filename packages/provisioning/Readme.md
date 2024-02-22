@@ -72,24 +72,16 @@ ssh {YOUR_MACHINE_USARNAME_DEFAULT_=_adminuser}@{YOUR_MACHINE_IP}
 
 If necessary, enter the machine password.
 
-After connecting, you can enter the already initialized Bazk App container by executing this command:
+After connecting, you can start the bazk with:
 
 ```bash
-docker exec -it sad_goldstine /bin/bash
-cd /dist
+sh start.sh
 ```
 
-Or whenever you need to initialize a new one, you just need to execute this command:
+Or whenever you need update your version, you just need to execute this command:
 
 ```bash
-cd bazk-build/
-
-sudo docker run --privileged --env-file .env --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v $(pwd)/dist:/dist -it gramineproject/gramine
-
-cd /dist
-
-chmod +x *
-chmod +x /dist/cruntime/sgx/loader
+sh update.sh
 ```
 
 Within the app you can execute [basic bazk commands](../../README.md)
