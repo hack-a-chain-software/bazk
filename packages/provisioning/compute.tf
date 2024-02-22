@@ -43,7 +43,7 @@ resource "azurerm_virtual_machine" "bazk" {
 
   # Provisioner block for send file
   provisioner "file" {
-    source = "../gramine/bazk-build"
+    source = "../gramine/bazk-build/dist"
     destination = "."
   }
 
@@ -51,17 +51,9 @@ resource "azurerm_virtual_machine" "bazk" {
   provisioner "remote-exec" {
     inline = [
       "sudo apt-get update",
-      "sudo apt-get remove docker docker-engine docker.io containerd runc",
-      "sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release",
-      "curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg",
-      "echo \"deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable\" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null",
-      "sudo apt-get update",
-      "sudo apt-get install -y docker-ce docker-ce-cli containerd.io",
-      "sudo groupadd docker",
-      "sudo usermod -aG sgx ${var.machine_admin_username}",
-      "sudo usermod -aG docker ${var.machine_admin_username}",
-      "sudo usermod -aG sgx_prv ${var.machine_admin_username}",
-      "sudo apt-get install -y jq",
+      "sudo apt-get install -y curl",
+      "curl -fsSL https://get.docker.com -o get-docker.sh",
+      "sudo sh get-docker.sh",
       "echo 'PINATA_API_KEY=${var.pinata_api_key}' >> .env",
       "echo 'PINATA_API_SECRET=${var.pinata_api_secret}' >> .env",
       "echo 'ACCOUNT_MNEMONIC=${var.phala_account_mnemonic}' >> .env",
