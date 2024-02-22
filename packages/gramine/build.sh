@@ -1,11 +1,12 @@
 #!/bin/sh
-
 (cd bazk-build && rm *.manifest && rm *.sgx && rm *.sig && rm -r cruntime && rm -r app && rm -r dist)
 
-cp -r dist bazk-build/app
-# cp -L $(which node) bazk-build/ # should be node 16 to work with SGX
-# cp -L $(which curl) bazk-build/
-sudo docker run \
+mkdir -p bazk-build/app
+
+cp -r dist/* bazk-build/app/
+cp -L $(which curl) bazk-build/
+
+docker run \
  -u $(id -u ${USER}):$(id -g ${USER}) \
  -it --rm \
  -v $(pwd)/bazk-build:/bazk-build \

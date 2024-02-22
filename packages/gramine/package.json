@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "yarn clean && yarn build-dist && yarn build-manifest",
+    "build-app-dist": "yarn clean && yarn build-app",
     "build-and-deploy": "yarn && yarn build && yarn deploy",
     "build-manifest": "./build.sh",
     "build-dist": "yarn build-app",

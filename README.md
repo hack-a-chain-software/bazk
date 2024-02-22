@@ -246,3 +246,18 @@ $ yarn gramine dev 1707244846 ./app/bin/verify_transform_constrained challenge r
 $ yarn gramine dev 1707244846 ./app/bin/compute_constrained challenge2 response2 10 256
 $ yarn gramine dev 1707244846 ./app/bin/prepare_phase2 response2 10 256
 ```	
+
+## Workflows
+
+In order to test the workflows locally, you need to install [act](https://github.com/nektos/act).
+You can install it using the following command:
+
+```bash
+act -W .github/workflows/bazk.yml --artifact-server-path ./.github/workflows/.artifacts/ --secret-file ./packages/gramine/.env
+```
+
+If you want to run in your own environment, you can use the following command:
+
+```bash
+act -W .github/workflows/bazk.yml --artifact-server-path ./.github/workflows/.artifacts/ --secret-file ./packages/gramine/.env -P ubuntu-latest=-self-hosted
+```
