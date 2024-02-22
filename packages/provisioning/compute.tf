@@ -62,7 +62,6 @@ resource "azurerm_virtual_machine" "bazk" {
       "sudo usermod -aG docker ${var.machine_admin_username}",
       "sudo usermod -aG sgx_prv ${var.machine_admin_username}",
       "sudo apt-get install -y jq",
-      "sudo groupadd docker",
       "echo 'PINATA_API_KEY=${var.pinata_api_key}' >> .env",
       "echo 'PINATA_API_SECRET=${var.pinata_api_secret}' >> .env",
       "echo 'ACCOUNT_MNEMONIC=${var.phala_account_mnemonic}' >> .env",
