@@ -8,7 +8,7 @@ on:
 
 jobs:
   new-release:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       ACCOUNT_MNEMONIC: "miracle shallow spray still dentist gravity depend alert surface bar corn motor"
       PINATA_API_KEY: "3be2c45280f474982841"
@@ -73,7 +73,7 @@ jobs:
 
       - name: Zip the dist folder
         run: |
-          cd ./packages/gramine/bazk-build && zip -r ../../dist.zip dist
+          cd ./packages/gramine/bazk-build && zip -r ../../../dist.zip dist
 
       - name: Create new release
         id: create_release
