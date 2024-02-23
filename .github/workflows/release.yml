@@ -61,11 +61,11 @@ jobs:
       - name: Build manifest
         run: yarn gramine build-manifest
 
-      # - name: Upload artifact
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: app-dist
-      #     path: ./packages/gramine/dist
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-dist
+          path: ./packages/gramine/dist
 
       # - name: Zip the build
       #   run: zip -r dist.zip ./packages/gramine/dist
