@@ -62,7 +62,8 @@ jobs:
         run: yarn gramine build-manifest
 
       - name: Zip the dist folder
-        run: zip -r dist.zip ./packages/gramine/bazk-build/dist/
+        run: |
+          cd ./packages/gramine/bazk-build && zip -r ../../dist.zip dist
 
       - name: Create Release
         id: create_release
