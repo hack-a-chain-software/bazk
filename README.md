@@ -42,6 +42,7 @@ There are four subdirectories in this repo:
 - [Docker](https://docs.docker.com/get-docker/) installed and the docker daemon is running.
 - Current user is in the `docker` group.
 - [Node.js](https://nodejs.org/en/download/) installed. (Tested version : `v16.17.1`)
+- [Act](https://github.com/nektos/act) installed. (Tested version : `0.2.9`)
 - Intel IAS API key and SPID. (You can get it from [here](https://api.portal.trustedservices.intel.com/EPID-attestation))
 
 #### Initialize submodules
@@ -260,4 +261,9 @@ If you want to run in your own environment, you can use the following command:
 
 ```bash
 act -W .github/workflows/bazk.yml --artifact-server-path ./.github/workflows/.artifacts/ --secret-file ./packages/gramine/.env -P ubuntu-latest=-self-hosted
+```
+
+A sugar syntax to build back app with act and workflows locally is:
+```bash
+pnpm grmaine act-build
 ```
