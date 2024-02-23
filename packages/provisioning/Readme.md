@@ -84,7 +84,7 @@ Or whenever you need update your version, you just need to execute this command:
 sh update.sh
 ```
 
-Within the app you can execute [basic bazk commands](../../README.md)
+After you initialize the bazk app, you will be directed into the gramine console. Enter the **/dist** folder, and now you can [execute any command available](../../README.md)
 
 ## Additional Information
 
