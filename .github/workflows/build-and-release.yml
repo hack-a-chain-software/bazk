@@ -61,14 +61,23 @@ jobs:
       - name: Build manifest
         run: yarn gramine build-manifest
 
+      - name: List home
+        run: ls -la .
+
+      - name: List bazk-gramine
+        run: ls -la ./packages/gramine
+
+      - name: List bazk-build
+        run: ls -la ./packages/gramine/bazk-build
+
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: dist
-          path: ./packages/gramine/dist/
+          path: ./packages/gramine/bazk-build/dist/
 
   release:
-    needs: build
+    # needs: build
     runs-on: ubuntu-22.04
 
     steps:
@@ -79,9 +88,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: dist
-
-      - name: List home
-        run: ls -la .
+          path: ./dist
 
       - name: Prepare release
         run: zip -r dist.zip dist
@@ -108,6 +115,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist
           asset_name: dist.zip
+          asset_path: ./dist.zip
           asset_content_type: application/zip
