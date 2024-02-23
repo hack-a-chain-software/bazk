@@ -1,12 +1,10 @@
 #!/bin/sh
 (cd bazk-build && rm *.manifest && rm *.sgx && rm *.sig && rm -r cruntime && rm -r app && rm -r dist)
 
-mkdir -p bazk-build/app
-
-cp -r dist/* bazk-build/app/
+cp -r dist bazk-build/app
 cp -L $(which curl) bazk-build/
 
-docker run \
+sudo docker run \
  -u $(id -u ${USER}):$(id -g ${USER}) \
  -it --rm \
  -v $(pwd)/bazk-build:/bazk-build \
