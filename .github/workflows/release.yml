@@ -69,11 +69,10 @@ jobs:
 
       - name: Get the current date
         id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d %H:%M')"
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
       - name: Zip the dist folder
-        run: |
-          cd ./packages/gramine/bazk-build && zip -r ../../../dist.zip dist
+        run: cd ./packages/gramine/bazk-build && zip -r ../../../dist.zip dist
 
       - name: Create new release
         id: create_release
@@ -82,7 +81,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.date.outputs.date }}
-          release_name: "Release from ${{ steps.date.outputs.date }}"
+          release_name: "Release: ${{ steps.date.outputs.date }}"
           draft: false
           prerelease: false
           body: "Bazk new release at ${{ steps.date.outputs.date }}"
