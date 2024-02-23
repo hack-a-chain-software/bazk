@@ -1,7 +1,6 @@
 /app/
 /cruntime/
 /dist/
-/node
 /node.manifest
 /node.manifest.sgx
 /node.sig
