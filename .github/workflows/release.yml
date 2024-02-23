@@ -1,0 +1,98 @@
+name: Build bazk release
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: []
+
+jobs:
+  new-release:
+    runs-on: ubuntu-20.04
+    env:
+      ACCOUNT_MNEMONIC: "miracle shallow spray still dentist gravity depend alert surface bar corn motor"
+      PINATA_API_KEY: "3be2c45280f474982841"
+      PINATA_API_SECRET: "d0ffa520be3309c3f34002d4a3717c162c03e381fb26814adc69b5934c895425"
+      SGX_ENABLED: false
+      IAS_SPID: "2E0E3B2459C4AB70981163C09D4E1A59"
+      IAS_API_KEY: "bdc61911b9d84b1fb0d34414f29c66b2"
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'true'
+
+      - name: Install build-essential, curl, git, wget, and Docker
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential curl git wget
+          sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+          sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+          sudo apt-get update
+          sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+          echo "Installed build-essential, curl, git, wget, and Docker"
+
+      - name: Setup Rust and Cargo
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: 1.51.0
+          override: true
+          components: rustc, cargo
+
+      - name: Use Node.js 18
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18"
+
+      - name: Install Yarn
+        run: npm install -g yarn
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Update permissions
+        run: (cd ./packages/gramine/bazk-build && chmod +x *)
+
+      - name: Build app
+        run: yarn gramine build-app-dist
+
+      - name: Build manifest
+        run: yarn gramine build-manifest
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: ./packages/gramine/dist
+
+      - name: Get the current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d-%H-%M-%S')"
+
+      - name: Zip the dist folder
+        run: |
+          cd ./packages/gramine/bazk-build && zip -r ../../dist.zip dist
+
+      - name: Create new release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.date.outputs.date }}
+          release_name: "Release from ${{ steps.date.outputs.date }}"
+          draft: false
+          prerelease: false
+          body: "Bazk new release at ${{ steps.date.outputs.date }}"
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./dist.zip
+          asset_name: dist.zip
+          asset_content_type: application/zip
