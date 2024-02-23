@@ -61,15 +61,6 @@ jobs:
       - name: Build manifest
         run: yarn gramine build-manifest
 
-      - name: List home
-        run: ls -la .
-
-      - name: List bazk-gramine
-        run: ls -la ./packages/gramine
-
-      - name: List bazk-build
-        run: ls -la ./packages/gramine/bazk-build
-
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
