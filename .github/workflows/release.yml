@@ -53,8 +53,7 @@ jobs:
         run: yarn install
 
       - name: Update permissions
-        run: |
-          (cd ../packages/gramine/bazk-build && chmod +x *)
+        run: (cd ./packages/gramine/bazk-build && chmod +x *)
 
       - name: Build app
         run: yarn gramine build-app-dist
