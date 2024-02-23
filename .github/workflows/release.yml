@@ -8,7 +8,7 @@ on:
 
 jobs:
   setup-and-build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     env:
       ACCOUNT_MNEMONIC: "miracle shallow spray still dentist gravity depend alert surface bar corn motor"
       PINATA_API_KEY: "3be2c45280f474982841"
