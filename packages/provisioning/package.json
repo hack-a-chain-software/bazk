@@ -1,0 +1,14 @@
+{
+  "name": "@bazk/provisioning",
+  "version": "1.0.0",
+  "description": "cloud infrastructure",
+  "scripts": {
+    "start": "terraform init -var-file=.tfvars",
+    "plan": "terraform plan -var-file=.tfvars",
+    "apply": "terraform apply -var-file=.tfvars -auto-approve",
+    "destroy": "terraform destroy -var-file=.tfvars -auto-approve"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
