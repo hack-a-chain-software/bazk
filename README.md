@@ -254,16 +254,11 @@ In order to test the workflows locally, you need to install [act](https://github
 You can install it using the following command:
 
 ```bash
-act -W .github/workflows/bazk.yml --artifact-server-path ./.github/workflows/.artifacts/ --secret-file ./packages/gramine/.env
+act -W .github/workflows/bazk.yml --artifact-server-path ./.github/workflows/.artifacts/ --secret-file ./packages/gramine/.env --job build
 ```
 
 If you want to run in your own environment, you can use the following command:
 
 ```bash
-act -W .github/workflows/bazk.yml --artifact-server-path ./.github/workflows/.artifacts/ --secret-file ./packages/gramine/.env -P ubuntu-latest=-self-hosted
-```
-
-A sugar syntax to build back app with act and workflows locally is:
-```bash
-pnpm grmaine act-build
+act -W .github/workflows/bazk.yml --artifact-server-path ./.github/workflows/.artifacts/ --secret-file ./packages/gramine/.env -P ubuntu-latest=-self-hosted --job build
 ```
