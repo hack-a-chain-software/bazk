@@ -61,21 +61,31 @@ jobs:
       - name: Build manifest
         run: yarn gramine build-manifest
 
+      - name: Upload artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: ./packages/gramine/dist
+
+      - name: Get the current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d-%H-%M-%S')"
+
       - name: Zip the dist folder
         run: |
           cd ./packages/gramine/bazk-build && zip -r ../../dist.zip dist
 
-      - name: Create Release
+      - name: Create new release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref_name }}
-          release_name: Release ${{ github.ref_name }}
+          tag_name: ${{ steps.date.outputs.date }}
+          release_name: "Release from ${{ steps.date.outputs.date }}"
           draft: false
           prerelease: false
-          body: "Bazk new release"
+          body: "Bazk new release at ${{ steps.date.outputs.date }}"
 
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
