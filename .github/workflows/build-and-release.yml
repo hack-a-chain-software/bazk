@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     env:
       IAS_SPID: ${{ secrets.IAS_SPID }}
       SGX_ENABLED: ${{ secrets.SGX_ENABLED }}
@@ -25,14 +25,14 @@ jobs:
 
       - name: Install build-essential, curl, git, wget, and Docker
         run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential curl git wget
-          sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common
-          curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-          sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-          sudo apt-get update
-          sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-          echo "Installed build-essential, curl, git, wget, and Docker"
+          apt-get update
+          apt-get install -y build-essential curl git wget
+          apt-get install -y apt-transport-https ca-certificates curl gnupg2 software-properties-common
+          curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+          add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+          apt-get update
+          apt-get install -y docker-ce docker-ce-cli containerd.io
+          echo "Installed build-essential, curl, git, wget, and docker"
 
       - name: Setup Rust and Cargo
         uses: actions-rs/toolchain@v1
