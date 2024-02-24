@@ -32,7 +32,7 @@ jobs:
           sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
           sudo apt-get update
           sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-          echo "Installed build-essential, curl, git, wget, and docker"
+          echo "Installed build-essential, curl, git, wget, and Docker"
 
       - name: Setup Rust and Cargo
         uses: actions-rs/toolchain@v1
