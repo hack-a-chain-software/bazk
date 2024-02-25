@@ -48,12 +48,12 @@ RUN cargo build --release --bin new_constrained && \
     cargo build --release --bin prepare_phase2
 
 # # Copia os binários construídos para o local especificado
-RUN mkdir -p /app/gramine/dist/bin/ && \
-    cp target/release/new_constrained /app/gramine/dist/bin && \
-    cp target/release/compute_constrained /app/gramine/dist/bin && \
-    cp target/release/verify_transform_constrained /app/gramine/dist/bin && \
-    cp target/release/beacon_constrained /app/gramine/dist/bin && \
-    cp target/release/prepare_phase2 /app/gramine/dist/bin
+RUN mkdir -p /gramine/dist/bin/ && \
+    cp target/release/new_constrained /gramine/dist/bin/new_constrained && \
+    cp target/release/compute_constrained /gramine/dist/bin/compute_constrained && \
+    cp target/release/verify_transform_constrained /gramine/dist/bin/verify_transform_constrained && \
+    cp target/release/beacon_constrained /gramine/dist/bin/beacon_constrained && \
+    cp target/release/prepare_phase2 /gramine/dist/bin/prepare_phase2
 
 # Altera o diretório de trabalho para a próxima fase
 WORKDIR /phase2-bn254/phase2
@@ -64,9 +64,9 @@ RUN cargo build --release --bin new && \
     cargo build --release --bin verify_contribution
 
 # Copia os novos binários construídos
-RUN cp target/release/new /gramine/dist/bin && \
-    cp target/release/contribute /gramine/dist/bin && \
-    cp target/release/verify_contribution /gramine/dist/bin
+RUN cp target/release/new /gramine/dist/bin/new && \
+    cp target/release/contribute /gramine/dist/bin/contribute && \
+    cp target/release/verify_contribution /gramine/dist/bin/verify_contribution
 
 WORKDIR /gramine
 
