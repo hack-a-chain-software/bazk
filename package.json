@@ -7,7 +7,8 @@
   "license": "MIT",
   "scripts": {
     "app": "yarn workspace @bazk/app",
-    "gramine": "yarn workspace @bazk/gramine"
+    "gramine": "yarn workspace @bazk/gramine",
+    "provisioning": "yarn workspace @bazk/provisioning"
   },
   "workspaces": {
     "packages": [
