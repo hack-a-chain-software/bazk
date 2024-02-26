@@ -17,7 +17,6 @@ cp -L $(which curl) bazk-build/
 docker run \
     -u $(id -u ${USER}):$(id -g ${USER}) \
     --rm \
-    -v /var/run/docker.sock:/var/run/docker.sock \
     -v $(pwd)/bazk-build:/bazk-build \
     --env IAS_SPID=bdc61911b9d84b1fb0d34414f29c66b2 \
     kvin/gramine:1.0 \
