@@ -1,17 +1,17 @@
 #!/bin/bash
 echo "Starting the build"
 
-# yarn install
+yarn install
 
-# npx webpack --config webpack.config.js
+npx webpack --config webpack.config.js
 
-# (cd ./bazk-build && rm -f *.manifest *.sgx *.sig && rm -rf cruntime app dist)
+(cd ./bazk-build && rm -f *.manifest *.sgx *.sig && rm -rf cruntime app dist)
 
-# Copia os binários construídos para o local especificado
-# cp -r ./ceremonies ./dist/ceremonies
+Copia os binários construídos para o local especificado
+cp -r ./ceremonies ./dist/ceremonies
 
-# cp -r dist bazk-build/app
-# cp -L $(which curl) bazk-build/
+cp -r dist bazk-build/app
+cp -L $(which curl) bazk-build/
 
 # # Run Docker without TTY in a non-interactive environment
 docker run \
