@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-20.04
     env:
       IAS_SPID: ${{ secrets.IAS_SPID }}
       SGX_ENABLED: ${{ secrets.SGX_ENABLED }}
@@ -53,7 +53,7 @@ jobs:
         run: yarn install
 
       - name: Update permissions
-        run: (cd ./packages/gramine/bazk-build && chmod +x *)
+        run: chmod +x -R ./packages/gramine/bazk-build/*
 
       - name: Build app
         run: yarn gramine build-app-dist
