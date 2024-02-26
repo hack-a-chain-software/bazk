@@ -33,7 +33,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y docker-ce docker-ce-cli containerd.io
           echo "Installed build-essential, curl, git, wget, and Docker"
-
       - name: Setup Rust and Cargo
         uses: actions-rs/toolchain@v1
         with:
@@ -53,7 +52,7 @@ jobs:
         run: yarn install
 
       - name: Update permissions
-        run: chmod +x -R ./packages/gramine/bazk-build/*
+        run: (cd ./packages/gramine/bazk-build && chmod +x *)
 
       - name: Build app
         run: yarn gramine build-app-dist
@@ -65,29 +64,15 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: dist
-          path: ./packages/gramine/bazk-build/dist/
-
-  release:
-    needs: build
-    runs-on: ubuntu-22.04
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Download build artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: dist
-          path: ./dist
-
-      - name: Prepare release
-        run: zip -r dist.zip dist
+          path: ./packages/gramine/dist
 
       - name: Get the current date
         id: date
-        run: echo "::set-output name=date::$(date +'%Y-%m-%d-%H-%M')"
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d-%H-%M-%S')"
 
+      - name: Zip the dist folder
+        run: |
+          cd ./packages/gramine/bazk-build && zip -r ../../../dist.zip dist
       - name: Create new release
         id: create_release
         uses: actions/create-release@v1
@@ -95,7 +80,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.date.outputs.date }}
-          release_name: "Release: ${{ steps.date.outputs.date }}"
+          release_name: "Release from ${{ steps.date.outputs.date }}"
           draft: false
           prerelease: false
           body: "Bazk new release at ${{ steps.date.outputs.date }}"
@@ -106,6 +91,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_name: dist.zip
           asset_path: ./dist.zip
+          asset_name: dist.zip
           asset_content_type: application/zip
