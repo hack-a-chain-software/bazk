@@ -1,6 +1,8 @@
 #!/bin/sh
 (cd bazk-build && rm -f *.manifest *.sgx *.sig && rm -rf cruntime app dist)
 
+
+# TODO
 cp -r dist bazk-build/app
 cp -L $(which curl) bazk-build/
 
