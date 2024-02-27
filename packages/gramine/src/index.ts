@@ -645,11 +645,7 @@ const server = http.createServer((req: any, res: any) => {
       buffer += decoder.end();
 
       try {
-        const receivedData = JSON.parse(buffer);
-
-        console.log('receivedData', receivedData)
-
-        const { args } = receivedData;
+        const args = JSON.parse(buffer);
 
         console.log('args', args)
 
