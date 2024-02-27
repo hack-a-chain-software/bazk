@@ -7,7 +7,7 @@ FOLDER="./dist"
 API_URL="https://api.github.com/repos/hack-a-chain-software/bazk/releases/latest"
 
 # Docker command to run
-DOCKER_COMMAND="sudo docker run --env-file .env --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v $(pwd)/dist:/dist -it gramineproject/gramine"
+DOCKER_COMMAND="sudo docker run -p 3000:3000 --env-file .env --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v $(pwd)/dist:/dist -it gramineproject/gramine"
 
 # Function to parse JSON and get the ZIP download URL
 get_zip_url() {
