@@ -647,6 +647,8 @@ const server = http.createServer((req: any, res: any) => {
       try {
         const receivedData = JSON.parse(buffer);
 
+        console.log('receivedData', receivedData)
+
         const { args } = receivedData;
 
         console.log('args', args)
