@@ -1,9 +1,10 @@
 [libos]
-entrypoint = "./node"
+entrypoint = "{{ nodejs_dir }}/nodejs"
 
 [loader]
 entrypoint = "file:{{ libos }}"
 insecure__use_cmdline_argv = true
+insecure__use_host_env = true
 log_level = "trace"
 
 [sys]
@@ -12,13 +13,17 @@ stack.size = "2M"
 brk.max_size = "256M"
 
 [loader.env]
-LD_LIBRARY_PATH = "/lib:/lib/x86_64-linux-gnu"
+LD_LIBRARY_PATH = "/lib:{{ arch_libdir }}:/usr/{{ arch_libdir }}"
 MALLOC_ARENA_MAX = "1"
 IAS_API_KEY = { passthrough = true }
 PINATA_API_KEY = { passthrough = true }
 PINATA_API_SECRET = { passthrough = true }
 ACCOUNT_MNEMONIC = { passthrough = true }
 SGX_ENABLED = { passthrough = true }
+
+[[fs.mounts]]
+path = "{{ nodejs_dir }}/nodejs"
+uri = "file:{{ nodejs_dir }}/nodejs
 
 [[fs.mounts]]
 type = "chroot"
@@ -44,7 +49,7 @@ uri = "file:app"
 debug = true
 nonpie_binary = true
 enclave_size = "4G"
-max_threads = 16
+max_threads = 32
 remote_attestation = "{{ ra_method }}"
 
 {% if ra_method == "epid" %}
@@ -55,6 +60,8 @@ ra_client_spid = "{{ ra_client_spid }}"
 trusted_files = [
   "file:node",
   "file:curl",
+  "file:{{ gramine.libos }}",
+  "file:{{ nodejs_dir }}/nodejs",
   "file:/usr/bin/curl",
   "file:{{ libos }}",
   "file:{{ libdir }}",
