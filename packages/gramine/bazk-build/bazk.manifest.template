@@ -43,7 +43,7 @@ uri = "file:app"
 [sgx]
 debug = false
 nonpie_binary = true
-enclave_size = "4G"
+enclave_size = "6G"
 max_threads = 16
 remote_attestation = "{{ ra_method }}"
 
