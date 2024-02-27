@@ -172,6 +172,8 @@ async function main(args?: any) {
   try {
     console.log("[Enclave] Running command...: ", commandfileName, fileArgs);
 
+
+    console.log('HEY BRO')
     const { stdout, stderr } = await execFile(commandfileName, fileArgs);
 
     console.log("[Enclave] Command executed");
@@ -186,6 +188,7 @@ async function main(args?: any) {
     console.log("[Enclave] Command executed successfully");
     console.log("[Enclave] Getting input file name...");
 
+    console.log('getMetadatas')
     const metadataArray = await getMetadatas(
       commandfileName,
       power,
