@@ -1,24 +1,18 @@
-export const getPhase = (name: string) => {
+export const getPhase = (command: string) => {
   if (
-    [
-      'prepare_phase2',
-      'new_constrained',
-      'compute_constrained',
-      'verify_transform_constrained',
-    ].includes(name)
+    command.includes("new_constrained") ||
+    command.includes("compute_constrained") ||
+    command.includes("verify_transform_constrained") ||
+    command.includes("compute_constrained") ||
+    command.includes("prepare_phase2")
   ) {
     return 1;
-  }
-
-  if (
-    [
-      'new',
-      'contribute',
-      'verify_contribution',
-    ]
+  } else if (
+    command.includes("new") ||
+    command.includes("contribute") ||
+    command.includes("verify_contribution")
   ) {
-    return 2
+    return 2;
   }
-
   return 0;
 }
