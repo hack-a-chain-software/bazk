@@ -20,10 +20,6 @@ const { StringDecoder } = require('string_decoder');
 
 const execFile = promisify(execFileCallback);
 
-interface MainInterface {
-  //
-}
-
 async function main(args?: any) {
   console.log("[Enclave] Running the command!");
 
@@ -162,8 +158,6 @@ async function main(args?: any) {
   console.log("[Enclave] Getting validator public key...");
 
   const validatorPubkey = (await validatorContract.call("publicKey")) as any;
-
-  // console.log("Validator public key: ", validatorPubkey);
 
   if (sgxEnabled) {
     console.log("Verifying if enclave valid...");
