@@ -3,7 +3,7 @@
 
 # TODO: move this to another repos
 cp -r dist bazk-build/app
-cp -L $(which curl) bazk-build/
+# cp -L $(which curl) bazk-build/
 
 # Run Docker without TTY in a non-interactive environment
 sudo docker run \
