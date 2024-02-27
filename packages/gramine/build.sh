@@ -1,6 +1,7 @@
 #!/bin/sh
 (cd bazk-build && rm -f *.manifest *.sgx *.sig && rm -rf cruntime app dist)
 
+# TODO: move this to another repos
 cp -r dist bazk-build/app
 cp -L $(which curl) bazk-build/
 
