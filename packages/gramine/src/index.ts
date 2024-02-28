@@ -96,16 +96,16 @@ async function main(args?: string[]) {
   try {
     console.log("[Enclave] Running command...: ", commandfileName, fileArgs);
 
-    const { stdout, stderr } = await execFile(commandfileName, fileArgs);
+    // const { stdout, stderr } = await execFile(commandfileName, fileArgs);
 
     console.log("[Enclave] Command executed");
     console.log("[Enclave] Command stdout: \n");
-    console.log(stdout);
+    // console.log(stdout);
 
-    if (stderr) {
-      console.error("stderr:", stderr);
-      return;
-    }
+    // if (stderr) {
+    //   console.error("stderr:", stderr);
+    //   return;
+    // }
 
     console.log("[Enclave] Everything done, enjoy!");
   } catch (error) {
