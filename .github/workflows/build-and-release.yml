@@ -28,7 +28,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libssl-dev
           sudo apt-get install musl musl-dev musl-tools
-          sudo apt-get install libstdc++6 libcurl4 libssl1.1 libcrypto++ libnghttp2-14 libidn2-0 librtmp1 libssh-4 libpsl5 libgssapi-krb5-2 libldap-2.4-2 libbrotli1 libunistring2 libgnutls30 libhogweed5 libnettle7 libgmp10 libkrb5-3 libk5crypto3 libcom-err2 libkrb5support0 libsasl2-2 libbrotlicommon1 libp11-kit0 libtasn1-6 libkeyutils1 libffi7 libsqlite3-0 libcrypt1 libm6
+          sudo apt-get install libstdc++6 libcurl4 libssl1.1 libcrypto++ libnghttp2-14 libidn2-0 librtmp1 libssh-4 libpsl5 libgssapi-krb5-2 libldap-2.4-2 libbrotli1 libunistring2 libgnutls30 libhogweed5 libnettle7 libgmp10 libkrb5-3 libk5crypto3 libcom-err2 libkrb5support0 libsasl2-2 libp11-kit0 libtasn1-6 libkeyutils1 libffi7 libsqlite3-0 libcrypt1
           sudo apt-get install -y build-essential curl git wget
           sudo apt-get install -y apt-transport-https ca-certificates gnupg2 curl software-properties-common
           curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
