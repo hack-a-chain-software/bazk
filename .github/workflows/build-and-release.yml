@@ -39,7 +39,7 @@ jobs:
         with:
           toolchain: 1.51.0
           override: true
-          # target: x86_64-unknown-linux-musl
+          target: x86_64-unknown-linux-musl
           components: rustc, cargo
 
       - name: Use Node.js 18
