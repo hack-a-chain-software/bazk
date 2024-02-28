@@ -1,9 +1,12 @@
 (globalThis as any).WebAssembly = undefined;
+import "@polkadot/wasm-crypto/initOnlyAsm";
 import { Keyring } from "@polkadot/keyring";
 
 import * as ra from "@phala/ra-report";
 
 const IPFS = require("ipfs-only-hash");
+
+import { cryptoWaitReady } from "@polkadot/util-crypto";
 
 import { execFile as execFileCallback } from "child_process";
 import { promisify } from "util";
@@ -17,6 +20,8 @@ async function main(args?: string[]) {
   console.log("[Enclave] SGX enabled: ", sgxEnabled);
   console.log("[Enclave] Args provided: ", args);
   console.log("[Enclave] Waiting for crypto...");
+
+  await cryptoWaitReady();
 
   console.log("[Enclave] Getting key pair...");
 
