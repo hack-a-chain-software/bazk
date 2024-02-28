@@ -1,5 +1,5 @@
 SGX_SIGNER_KEY ?= ./private.dev.pem
-SGX ?= 1
+SGX = 1
 BUILD ?= release
 
 ARCH_LIBDIR ?= /lib/$(shell $(CC) -dumpmachine)
