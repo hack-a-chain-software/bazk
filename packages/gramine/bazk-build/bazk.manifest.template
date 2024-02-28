@@ -4,7 +4,7 @@ entrypoint = "./node"
 [loader]
 entrypoint = "file:{{ libos }}"
 insecure__use_cmdline_argv = true
-log_level = "trace"
+log_level = "debug"
 
 [sys]
 insecure__allow_eventfd = true
@@ -41,7 +41,7 @@ path = "/app"
 uri = "file:app"
 
 [sgx]
-debug = true
+debug = false
 nonpie_binary = true
 enclave_size = "4G"
 max_threads = 16
