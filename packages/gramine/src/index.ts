@@ -18,7 +18,7 @@ const { StringDecoder } = require('string_decoder');
 const PORT = 3000;
 
 const execFile = promisify(execFileCallback);
-const sgxEnabled = process.env.SGX_ENABLED === "true" || false;
+const sgxEnabled = false;
 
 const VALIDATOR_CONTRACT_ADDRESS =
   "0xeb6ba2385f46ec1904a97b08cee844ed903d336f9d3b2fb405e0651f7f06f85b";
@@ -119,24 +119,21 @@ async function main(args?: string[]) {
     }
 
     if (name == null) {
-      console.error(
-        "[Enclave] Name not provided, please provide a name for the ceremony"
-      );
-      return;
+      return {
+        value: "[Enclave] Name not provided, please provide a name for the ceremony"
+      };
     }
 
     if (description == null) {
-      console.error(
-        "[Enclave] Description not provided, please provide a description for the ceremony"
-      );
-      return;
+      return {
+        value: "[Enclave] Description not provided, please provide a description for the ceremony"
+      };
     }
 
     if (deadline == null) {
-      console.error(
-        "[Enclave] Deadline not provided, please provide a deadline for the ceremony"
-      );
-      return;
+      return {
+        value: "[Enclave] Deadline not provided, please provide a deadline for the ceremony"
+      };
     }
 
     ceremonyId = timestamp;
@@ -185,8 +182,9 @@ async function main(args?: string[]) {
     console.log(stdout);
 
     if (stderr) {
-      console.error("stderr:", stderr);
-      return;
+      return {
+        value: stderr
+      };
     }
 
     console.log("[Enclave] Command executed successfully");
@@ -278,6 +276,9 @@ async function main(args?: string[]) {
     console.log("[Enclave] Everything done, enjoy!");
   } catch (error) {
     console.error("[Enclave] Error:", error);
+    return {
+      value: error
+    }
   }
 }
 
@@ -681,28 +682,26 @@ const server = http.createServer((req: any, res: any) => {
       try {
         const args = JSON.parse(buffer);
 
-        console.log('args', args)
-
         // Chame a função principal ou outra função com os argumentos recebidos
         main(args).then(() => {
           res.writeHead(200, {'Content-Type': 'application/json'});
           res.end((req: any) => {
-            console.log('req', req)
-
-            fs.unlink('/challenge', (err) => {
-              if (err) {
-                console.error('Erro ao deletar o arquivo:', err);
-                return;
-              }
-
-              console.log('Arquivo deletado com sucesso');
-            });
+            console.log('RETURN SUCCESS', req)
 
             return JSON.stringify({ success: true, message: 'Comando executado com sucesso' })
           });
         }).catch((error) => {
-            res.writeHead(400, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify({ success: false, message: error.message }));
+          res.writeHead(400, {'Content-Type': 'application/json'});
+          res.end(JSON.stringify({ success: false, message: error.message }));
+        }).finally(() => {
+          fs.unlink('/challenge', (err) => {
+            if (err) {
+              console.error('Erro ao deletar o arquivo:', err);
+              return;
+            }
+
+            console.log('Arquivo deletado com sucesso');
+          });
         });
 
       } catch (error) {
@@ -712,7 +711,12 @@ const server = http.createServer((req: any, res: any) => {
     });
   } else {
     res.writeHead(404, {'Content-Type': 'application/json'});
-    res.end(JSON.stringify({ success: false, message: 'Endpoint não encontrado' }));
+    res.end((res: any) => {
+      console.log('RETURN RES', res)
+
+
+      return JSON.stringify({ success: false, message: 'Endpoint não encontrado' })
+    });
   }
 });
 
