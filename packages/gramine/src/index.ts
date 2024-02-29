@@ -675,7 +675,18 @@ const server = http.createServer((req: any, res: any) => {
         // Chame a função principal ou outra função com os argumentos recebidos
         main(args).then(() => {
             res.writeHead(200, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify({ success: true, message: 'Comando executado com sucesso' }));
+            res.end(() => {
+              fs.unlink('/challenge', (err) => {
+                if (err) {
+                  console.error('Erro ao deletar o arquivo:', err);
+                  return;
+                }
+
+                console.log('Arquivo deletado com sucesso');
+              });
+
+              return JSON.stringify({ success: true, message: 'Comando executado com sucesso' })
+            });
         }).catch((error) => {
             res.writeHead(400, {'Content-Type': 'application/json'});
             res.end(JSON.stringify({ success: false, message: error.message }));
