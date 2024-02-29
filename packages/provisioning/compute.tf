@@ -13,6 +13,16 @@ resource "azurerm_virtual_machine" "bazk" {
     sku       = "22_04-lts-gen2"
     version   = "latest"
   }
+  // 22.04.03 versions -
+  //22.04.202308140
+  //22.04.202309080
+  //22.04.202309190
+  //22.04.202310040
+  //22.04.202310210
+  //22.04.202310251
+  //22.04.202310260
+  //22.04.202311010
+  //22.04.202312060
 
   # Defines the operating system profile for the virtual machine.
   os_profile {
