@@ -18,7 +18,9 @@ const { StringDecoder } = require('string_decoder');
 const PORT = 3000;
 
 const execFile = promisify(execFileCallback);
-const sgxEnabled = process.env.SGX_ENABLED === "true" || false;
+const sgxEnabled = false;
+
+let isCommandExecuting = false
 
 let isCommandExecuting = false
 
