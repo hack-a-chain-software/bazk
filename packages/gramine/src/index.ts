@@ -675,7 +675,9 @@ const server = http.createServer((req: any, res: any) => {
         // Chame a função principal ou outra função com os argumentos recebidos
         main(args).then(() => {
             res.writeHead(200, {'Content-Type': 'application/json'});
-            res.end(JSON.stringify({ success: true, message: 'Comando executado com sucesso' }));
+            res.end(() => {
+              return JSON.stringify({ success: true, message: 'Comando executado com sucesso' })
+            });
         }).catch((error) => {
             res.writeHead(400, {'Content-Type': 'application/json'});
             res.end(JSON.stringify({ success: false, message: error.message }));
