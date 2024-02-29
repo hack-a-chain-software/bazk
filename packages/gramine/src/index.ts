@@ -685,26 +685,22 @@ const server = http.createServer((req: any, res: any) => {
       try {
         const args = JSON.parse(buffer);
 
-        // Chame a função principal ou outra função com os argumentos recebidos
         main(args).then((result: any) => {
           res.writeHead(200, {'Content-Type': 'application/json'});
-          res.end(() => {
-            console.log('RETURN SUCCESS', result)
-
-            if (result.error) {
-              return JSON.stringify({
-                success: false,
-                error: result.error,
-              })
-            }
-
-            return JSON.stringify({
+          if (result.error) {
+            res.end(JSON.stringify({
+              success: false,
+              error: result.error,
+            }));
+          } else {
+            res.end(JSON.stringify({
               success: true,
               message: result.data
-            })
-          });
+            }));
+          }
         }).catch((error) => {
           res.writeHead(400, {'Content-Type': 'application/json'});
+
           res.end(JSON.stringify({ success: false, message: error.message }));
         }).finally(() => {
           fs.unlink('/challenge', (err) => {
@@ -716,7 +712,6 @@ const server = http.createServer((req: any, res: any) => {
             console.log('Arquivo deletado com sucesso');
           });
         });
-
       } catch (error) {
         res.writeHead(400, {'Content-Type': 'application/json'});
         res.end(JSON.stringify({ success: false, message: 'Erro ao processar os dados recebidos' }));
@@ -724,10 +719,7 @@ const server = http.createServer((req: any, res: any) => {
     });
   } else {
     res.writeHead(404, {'Content-Type': 'application/json'});
-    res.end((res: any) => {
-      console.log('RETURN RES', res)
-
-
+    res.end(() => {
       return JSON.stringify({ success: false, message: 'Endpoint não encontrado' })
     });
   }
