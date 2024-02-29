@@ -49,13 +49,6 @@ resource "azurerm_virtual_machine" "bazk" {
   # Provisioner block for remote-exec
   provisioner "remote-exec" {
     inline = [
-        # "sudo swapoff -a",
-        # "sudo rm -f /swapfile",
-        # "sudo fallocate -l 16G /swapfile",
-        # "sudo chmod 600 /swapfile",
-        # "sudo mkswap /swapfile",
-        # "sudo swapon /swapfile",
-        # "echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab",
         "echo 'y' | sudo ufw enable",
         "sudo ufw allow 3000/tcp",
         "sudo ufw allow 22/tcp",
@@ -73,7 +66,7 @@ resource "azurerm_virtual_machine" "bazk" {
         "echo 'PINATA_API_SECRET=${var.pinata_api_secret}' >> .env",
         "echo 'ACCOUNT_MNEMONIC=${var.phala_account_mnemonic}' >> .env",
         "chmod +x start.sh",
-        "chmod +x update.sh",
+        "chmod +x start-dev.sh",
         "sh start.sh",
     ]
   }
