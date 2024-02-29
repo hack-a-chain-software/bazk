@@ -120,19 +120,19 @@ async function main(args?: string[]) {
 
     if (name == null) {
       return {
-        value: "[Enclave] Name not provided, please provide a name for the ceremony"
+        error: "[Enclave] Name not provided, please provide a name for the ceremony"
       };
     }
 
     if (description == null) {
       return {
-        value: "[Enclave] Description not provided, please provide a description for the ceremony"
+        error: "[Enclave] Description not provided, please provide a description for the ceremony"
       };
     }
 
     if (deadline == null) {
       return {
-        value: "[Enclave] Deadline not provided, please provide a deadline for the ceremony"
+        error: "[Enclave] Deadline not provided, please provide a deadline for the ceremony"
       };
     }
 
@@ -183,7 +183,7 @@ async function main(args?: string[]) {
 
     if (stderr) {
       return {
-        value: stderr
+        error: stderr
       };
     }
 
@@ -262,20 +262,23 @@ async function main(args?: string[]) {
       );
 
       return {
-        phase,
-        name,
-        deadline,
-        timestamp,
-        ceremonyId,
-        description,
-        metadataArray,
-        outputFilesArray
+        data: {
+          phase,
+          name,
+          deadline,
+          timestamp,
+          ceremonyId,
+          description,
+          metadataArray,
+          outputFilesArray,
+        }
       }
     }
 
     console.log("[Enclave] Everything done, enjoy!");
   } catch (error) {
     console.error("[Enclave] Error:", error);
+
     return {
       value: error
     }
@@ -683,12 +686,22 @@ const server = http.createServer((req: any, res: any) => {
         const args = JSON.parse(buffer);
 
         // Chame a função principal ou outra função com os argumentos recebidos
-        main(args).then(() => {
+        main(args).then((result: any) => {
           res.writeHead(200, {'Content-Type': 'application/json'});
-          res.end((req: any) => {
-            console.log('RETURN SUCCESS', req)
+          res.end(() => {
+            console.log('RETURN SUCCESS', result)
 
-            return JSON.stringify({ success: true, message: 'Comando executado com sucesso' })
+            if (result.error) {
+              return JSON.stringify({
+                success: false,
+                error: result.error,
+              })
+            }
+
+            return JSON.stringify({
+              success: true,
+              message: result.data
+            })
           });
         }).catch((error) => {
           res.writeHead(400, {'Content-Type': 'application/json'});
