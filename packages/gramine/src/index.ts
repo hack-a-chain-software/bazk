@@ -3,7 +3,6 @@ import "@polkadot/wasm-crypto/initOnlyAsm";
 import { Keyring } from "@polkadot/keyring";
 import { KeyringPair } from "@polkadot/keyring/types";
 import { cryptoWaitReady, signatureVerify } from "@polkadot/util-crypto";
-
 import * as ra from "@phala/ra-report";
 import { getClient, getContract, signCertificate } from "@phala/sdk";
 import fs from "fs";
@@ -12,6 +11,11 @@ const IPFS = require("ipfs-only-hash");
 
 import { execFile as execFileCallback } from "child_process";
 import { promisify } from "util";
+
+const http = require('http');
+const { StringDecoder } = require('string_decoder');
+
+const PORT = 3000;
 
 const execFile = promisify(execFileCallback);
 const sgxEnabled = process.env.SGX_ENABLED === "true" || false;
@@ -650,4 +654,46 @@ function pad64(data: Uint8Array): Uint8Array {
   return result;
 }
 
-main(process.argv.slice(2)).catch(console.error);
+const server = http.createServer((req: any, res: any) => {
+  if (req.method === 'POST' && req.url === '/execute') {
+    const decoder = new StringDecoder('utf-8');
+
+    let buffer = '';
+
+    req.on('data', (data: any) => {
+      buffer += decoder.write(data);
+    });
+
+    req.on('end', () => {
+      buffer += decoder.end();
+
+      try {
+        const args = JSON.parse(buffer);
+
+        console.log('args', args)
+
+        // Chame a função principal ou outra função com os argumentos recebidos
+        main(args).then(() => {
+            res.writeHead(200, {'Content-Type': 'application/json'});
+            res.end(() => {
+              return JSON.stringify({ success: true, message: 'Comando executado com sucesso' })
+            });
+        }).catch((error) => {
+            res.writeHead(400, {'Content-Type': 'application/json'});
+            res.end(JSON.stringify({ success: false, message: error.message }));
+        });
+
+      } catch (error) {
+        res.writeHead(400, {'Content-Type': 'application/json'});
+        res.end(JSON.stringify({ success: false, message: 'Erro ao processar os dados recebidos' }));
+      }
+    });
+  } else {
+    res.writeHead(404, {'Content-Type': 'application/json'});
+    res.end(JSON.stringify({ success: false, message: 'Endpoint não encontrado' }));
+  }
+});
+
+server.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
+});
