@@ -6,7 +6,7 @@ cp -L $(which curl) bazk-build/
 
 # Run Docker without TTY in a non-interactive environment
 sudo docker run \
-    -u $(id -u ${USER}):$(id -g ${USER}) \
+    --privileged \
     --rm \
     -v $(pwd)/bazk-build:/bazk-build \
     --env IAS_SPID=$IAS_SPID \
