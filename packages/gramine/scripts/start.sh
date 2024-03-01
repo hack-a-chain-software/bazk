@@ -41,3 +41,12 @@ fi
 
 # Executes the Docker command
 $DOCKER_COMMAND
+
+# Executes the Docker command
+CONTAINER_ID=$($DOCKER_COMMAND | cut -d' ' -f3)
+
+# Aguarda alguns segundos para garantir que o container esteja rodando
+sleep 5
+
+# Acessa o console do Docker criado e executa os comandos em sequência
+sudo docker exec -it $CONTAINER_ID /bin/bash -c "cd ./dist && mkdir ./data && chmod +x -R . && ./gramine-sgx bazk ./app/index.js"
