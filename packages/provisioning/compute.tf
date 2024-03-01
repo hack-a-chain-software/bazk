@@ -49,10 +49,6 @@ resource "azurerm_virtual_machine" "bazk" {
   # Provisioner block for remote-exec
   provisioner "remote-exec" {
     inline = [
-        "sudo mkswap /swapfile",
-        "sudo chmod 600 /swapfile",
-        "sudo fallocate -l 16G /swapfile",
-        "sudo swapon /swapfile",
         "echo 'y' | sudo ufw enable",
         "sudo ufw allow 3000/tcp",
         "sudo ufw allow 22/tcp",
@@ -72,10 +68,6 @@ resource "azurerm_virtual_machine" "bazk" {
         "chmod +x start.sh",
         "chmod +x update.sh",
         "sh start.sh",
-        "cd ./dist",
-        "mkdir ./data",
-        "chmod +x -R .",
-        "./gramine-sgx bazk ./app/index.js"
     ]
   }
 }
