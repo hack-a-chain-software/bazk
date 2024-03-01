@@ -49,6 +49,14 @@ resource "azurerm_virtual_machine" "bazk" {
   # Provisioner block for remote-exec
   provisioner "remote-exec" {
     inline = [
+        "sudo mkswap /swapfile",
+        "sudo chmod 600 /swapfile",
+        "sudo fallocate -l 16G /swapfile",
+        "sudo swapon /swapfile",
+        "echo 'y' | sudo ufw enable",
+        "sudo ufw allow 3000/tcp",
+        "sudo ufw allow 22/tcp",
+        "sudo ufw status",
         "sudo apt-get update",
         "sudo apt-get install -y curl",
         "curl -fsSL https://get.docker.com -o get-docker.sh",
@@ -63,6 +71,11 @@ resource "azurerm_virtual_machine" "bazk" {
         "echo 'ACCOUNT_MNEMONIC=${var.phala_account_mnemonic}' >> .env",
         "chmod +x start.sh",
         "chmod +x update.sh",
+        "sh start.sh",
+        "cd ./dist",
+        "mkdir ./data",
+        "chmod +x -R .",
+        "./gramine-sgx bazk ./app/index.js"
     ]
   }
 }
