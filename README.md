@@ -43,7 +43,7 @@ There are four subdirectories in this repo:
 - Current user is in the `docker` group.
 - [Node.js](https://nodejs.org/en/download/) installed. (Tested version : `v16.17.1`)
 - [Act](https://github.com/nektos/act) installed. (Tested version : `0.2.9`)
-- Intel IAS API key and SPID. (You can get it from [here](https://api.portal.trustedservices.intel.com/EPID-attestation))
+- Intel IAS API key and SPID. (You can get it from [here](https://api.portal.trustedservices.intel.com/products#product=dev-intel-software-guard-extensions-attestation-service-linkable). can subscribe to get immediate access to the development environment)
 
 #### Initialize submodules
 

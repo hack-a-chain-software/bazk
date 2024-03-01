@@ -24,15 +24,23 @@ Follow the steps below to use this Terraform code:
 
 - Set up Terraform variables: Create a file named .tfvars in the root directory as the Terraform code. Add the following content to the file and replace the placeholder values with your own:
 ```bash
-pinata_api_key = "YOUR_PINATA_API_KEY"
-azure_tenant_id = "YOUR_AZURE_TENANT_ID"
-ias_spid = "YOUR_IAS_API_KEY_GOT_FROM_INTEL"
-pinata_api_secret = "YOUR_PINATA_API_SECRET"
-ias_api_key = "YOUR_IAS_API_KEY_GOT_FROM_INTEL"
-azure_subscription_id = "YOUR_AZURE_SUBSCRIPTION_ID"
-machine_admin_password="YOUR_MACHINE_ADMIN_PASSWORD!"
-phala_account_mnemonic = "YOUR_ACCOUNT_MNEMONIC_WITH_ENOUGH_BALANCE"
+# Required variables
+IAS_SPID="YOUR_INTEL_IAS_SPID"
+IAS_API_KEY="YOUR_INTEL_IAS_API_KEY"
+PINATA_API_KEY="YOUR_PINATA_API_KEY"
+PINATA_API_SECRET="YOUR_PINATA_SECRET"
+azure_tenant_id="YOUR_AZURE_TENANT_ID"
+ACCOUNT_MNEMONIC="VALIDATOR_CONTRACT_ACCOUNT"
+azure_subscription_id="AZURE_SUBSCRIPTION_ID"
+
+# Variables with defaults
+SGX_ENABLED=true
+azure_region="East US"
+machine_admin_username="ubuntu"
+pvt_key="~/.ssh/id_rsa" # Path to your private SSH key
+pub_key="~/.ssh/id_rsa.pub" # Path to your public SSH key
 ```
+** You can configure your SSH heres: [macOS](https://mdl.library.utoronto.ca/technology/tutorials/generating-ssh-key-pairs-mac) [linux](https://docs.oracle.com/en/cloud/cloud-at-customer/occ-get-started/generate-ssh-key-pair.html#GUID-8B9E7FCB-CEA3-4FB3-BF1A-FD3406A2432F)
 
 - Initialize Terraform: Open a terminal or command prompt, navigate to the cloned repository directory, and run the following command to initialize Terraform:
 
