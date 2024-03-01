@@ -3,7 +3,6 @@ import "@polkadot/wasm-crypto/initOnlyAsm";
 import { Keyring } from "@polkadot/keyring";
 import { KeyringPair } from "@polkadot/keyring/types";
 import { cryptoWaitReady, signatureVerify } from "@polkadot/util-crypto";
-
 import * as ra from "@phala/ra-report";
 import { getClient, getContract, signCertificate } from "@phala/sdk";
 import fs from "fs";
@@ -13,8 +12,15 @@ const IPFS = require("ipfs-only-hash");
 import { execFile as execFileCallback } from "child_process";
 import { promisify } from "util";
 
+const http = require('http');
+const { StringDecoder } = require('string_decoder');
+
+const PORT = 3000;
+
 const execFile = promisify(execFileCallback);
-const sgxEnabled = process.env.SGX_ENABLED === "true" || false;
+const sgxEnabled = false;
+
+let isCommandExecuting = false
 
 const VALIDATOR_CONTRACT_ADDRESS =
   "0xeb6ba2385f46ec1904a97b08cee844ed903d336f9d3b2fb405e0651f7f06f85b";
@@ -115,24 +121,21 @@ async function main(args?: string[]) {
     }
 
     if (name == null) {
-      console.error(
-        "[Enclave] Name not provided, please provide a name for the ceremony"
-      );
-      return;
+      return {
+        error: "[Enclave] Name not provided, please provide a name for the ceremony"
+      };
     }
 
     if (description == null) {
-      console.error(
-        "[Enclave] Description not provided, please provide a description for the ceremony"
-      );
-      return;
+      return {
+        error: "[Enclave] Description not provided, please provide a description for the ceremony"
+      };
     }
 
     if (deadline == null) {
-      console.error(
-        "[Enclave] Deadline not provided, please provide a deadline for the ceremony"
-      );
-      return;
+      return {
+        error: "[Enclave] Deadline not provided, please provide a deadline for the ceremony"
+      };
     }
 
     ceremonyId = timestamp;
@@ -181,8 +184,9 @@ async function main(args?: string[]) {
     console.log(stdout);
 
     if (stderr) {
-      console.error("stderr:", stderr);
-      return;
+      return {
+        error: stderr
+      };
     }
 
     console.log("[Enclave] Command executed successfully");
@@ -258,11 +262,28 @@ async function main(args?: string[]) {
           blocks: 50,
         }
       );
+
+      return {
+        data: {
+          phase,
+          name,
+          deadline,
+          timestamp,
+          ceremonyId,
+          description,
+          metadataArray,
+          outputFilesArray,
+        }
+      }
     }
 
     console.log("[Enclave] Everything done, enjoy!");
   } catch (error) {
     console.error("[Enclave] Error:", error);
+
+    return {
+      value: error
+    }
   }
 }
 
@@ -650,4 +671,74 @@ function pad64(data: Uint8Array): Uint8Array {
   return result;
 }
 
-main(process.argv.slice(2)).catch(console.error);
+const server = http.createServer((req: any, res: any) => {
+  if (req.method === 'POST' && req.url === '/execute') {
+    if (isCommandExecuting) {
+      res.writeHead(429, {'Content-Type': 'application/json'});
+      res.end(JSON.stringify({ success: false, message: 'Um comando já está sendo executado. Tente novamente mais tarde.' }));
+      return;
+    }
+
+    isCommandExecuting = true
+
+    const decoder = new StringDecoder('utf-8');
+
+    let buffer = '';
+
+    req.on('data', (data: any) => {
+      buffer += decoder.write(data);
+    });
+
+    req.on('end', () => {
+      buffer += decoder.end();
+
+      try {
+        const args = JSON.parse(buffer);
+
+        main(args).then((result: any) => {
+          res.writeHead(200, {'Content-Type': 'application/json'});
+          if (result.error) {
+            res.end(JSON.stringify({
+              success: false,
+              error: result.error,
+            }));
+          } else {
+            res.end(JSON.stringify({
+              success: true,
+              message: result.data
+            }));
+          }
+        }).catch((error) => {
+          res.writeHead(400, {'Content-Type': 'application/json'});
+
+          res.end(JSON.stringify({ success: false, message: error.message }));
+        }).finally(() => {
+          isCommandExecuting = false
+
+          fs.unlink('/challenge', (err) => {
+            if (err) {
+              console.error('Erro ao deletar o arquivo:', err);
+              return;
+            }
+
+            console.log('Arquivo deletado com sucesso');
+          });
+        });
+      } catch (error) {
+        isCommandExecuting = false
+
+        res.writeHead(400, {'Content-Type': 'application/json'});
+        res.end(JSON.stringify({ success: false, message: 'Erro ao processar os dados recebidos' }));
+      }
+    });
+  } else {
+    res.writeHead(404, {'Content-Type': 'application/json'});
+    res.end(() => {
+      return JSON.stringify({ success: false, message: 'Endpoint não encontrado' })
+    });
+  }
+});
+
+server.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
+});
