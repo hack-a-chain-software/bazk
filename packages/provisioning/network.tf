@@ -38,3 +38,6 @@ resource "azurerm_network_interface" "bazk" {
   }
 }
 
+output "instance_ip_addr" {
+  value = azurerm_public_ip.bazk.ip_address
+}
