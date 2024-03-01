@@ -64,10 +64,10 @@ pnpm provisioner destroy
 ```
 
 ## How to access BAZK App
-After the deployment is successful, you can acess your virtual machine with ssh:
+After the deployment is successful, the provisioning will download the latest version of BAZK and start the server automatically, you can interact with the API using any [command available](../../README.md):
 
 ```bash
-ssh {YOUR_MACHINE_USARNAME_DEFAULT_=_adminuser}@{YOUR_MACHINE_IP}
+curl -X POST http://${YOUR_MACHINE_PUBLIC_IP}:3000/execute -H "Content-Type: application/json" -d '["/app/bin/new_constrained", "challenge", 10, 256, "my ceremony name", "my ceremony description", 1709221725]'
 ```
 
 If necessary, enter the machine password.
