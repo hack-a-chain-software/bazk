@@ -49,4 +49,4 @@ CONTAINER_ID=$($DOCKER_COMMAND | cut -d' ' -f3)
 sleep 5
 
 # Acessa o console do Docker criado e executa os comandos em sequência
-sudo docker exec -it $CONTAINER_ID /bin/bash -c "cd ./dist && mkdir ./data && chmod +x -R . && ./gramine-sgx bazk ./app/index.js"
+sudo docker exec -it $CONTAINER_ID /bin/bash
