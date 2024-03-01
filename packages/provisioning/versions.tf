@@ -10,12 +10,12 @@ terraform {
     }
   }
 
-  # The "backend" block configures the backend to store the Terraform state. In this case, it is configured to use the azurerm backend.
-  # docs: https://developer.hashicorp.com/terraform/language/settings/backends/azurerm
-  backend "azurerm" {
-    resource_group_name  = "bazk"
-    storage_account_name = "bazkinfra"
-    key                  = "bazk.terraform.tfstate"
-    container_name       = "bazk-terraform-container"
-  }
+#   # The "backend" block configures the backend to store the Terraform state. In this case, it is configured to use the azurerm backend.
+#   # docs: https://developer.hashicorp.com/terraform/language/settings/backends/azurerm
+#   backend "azurerm" {
+#     resource_group_name  = "bazk"
+#     storage_account_name = "bazkinfra"
+#     key                  = "bazk.terraform.tfstate"
+#     container_name       = "bazk-terraform-container"
+#   }
 }
