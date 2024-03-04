@@ -228,7 +228,7 @@ curl -X POST http://localhost:3000/execute \
 ```bash
 curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
      -H "Content-Type: application/json" \
-     -d '["./app/bin/new", "circuit.json", "circom1.params", "./app/ceremonies/p12", 12, 256, "fpx returns", "doinb will go back", 1709221725]'
+     -d '["./app/bin/new", "circuit.json", "circom1.params", "./app/ceremonies/p12", 12, 256, "my ceremony name", "my ceremony description", 1709221725]'
 
 curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
      -H "Content-Type: application/json" \
