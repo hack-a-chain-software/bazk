@@ -167,6 +167,8 @@ async function main(args?: string[]) {
     console.log("[Enclave] Command executed");
     console.log("[Enclave] Command stdout: \n");
     console.log(stdout);
+    console.log("[Enclave] Command stderr: \n");
+    console.log(stderr);
 
     if (stderr) {
       return {
