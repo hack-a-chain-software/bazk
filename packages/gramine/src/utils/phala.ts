@@ -1,5 +1,3 @@
-
-
 import { KeyringPair } from "@polkadot/keyring/types";
 import { Keyring } from "@polkadot/keyring";
 import { mnemonic } from "../constants/env";
@@ -24,7 +22,6 @@ export const pad64 = (data: Uint8Array): Uint8Array => {
 
   return result;
 }
-
 
 export const validateLastHash = async(
   ceremonyId: number,
@@ -114,4 +111,61 @@ export const validateLastHash = async(
       }
     }
   }
+}
+
+export const validadeDeadline = async (
+  ceremonyId: number,
+  validatorContract: ra.Contract
+) => {
+  console.log(
+    "[Phala] getCeremonyDeadline - Calling method with args:",
+    ceremonyId
+  );
+
+  const txCeremonyDeadline = (await validatorContract.call(
+    "getCeremonyDeadline",
+    ceremonyId
+  )) as any;
+
+  if (txCeremonyDeadline?.isErr) {
+    throw new Error(
+      `[Phala] getCeremonyDeadline - Failed to get ceremony deadline: ${txCeremonyDeadline.asErr}`
+    );
+  }
+
+  const ceremonyDeadline = txCeremonyDeadline.asOk.toNumber();
+
+  console.log(
+    "[Phala] getCeremonyDeadline - Ceremony deadline: ",
+    ceremonyDeadline
+  );
+
+  const currentTime = Math.floor(Date.now() / 1000);
+
+  console.log("[Enclave] Current time: ", currentTime);
+
+  if (currentTime > ceremonyDeadline) {
+    throw new Error(
+      "[Enclave] Ceremony deadline expired, please create a new ceremony"
+    );
+  }
+}
+
+export const getPhase = (command: string) => {
+  if (
+    command.includes("new_constrained") ||
+    command.includes("compute_constrained") ||
+    command.includes("verify_transform_constrained") ||
+    command.includes("compute_constrained") ||
+    command.includes("prepare_phase2")
+  ) {
+    return 1;
+  } else if (
+    command.includes("new") ||
+    command.includes("contribute") ||
+    command.includes("verify_contribution")
+  ) {
+    return 2;
+  }
+  return 0;
 }
