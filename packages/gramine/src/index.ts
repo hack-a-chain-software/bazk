@@ -1,13 +1,9 @@
 (globalThis as any).WebAssembly = undefined;
 import "@polkadot/wasm-crypto/initOnlyAsm";
-import { Keyring } from "@polkadot/keyring";
-import { KeyringPair } from "@polkadot/keyring/types";
 import { cryptoWaitReady, signatureVerify } from "@polkadot/util-crypto";
 import * as ra from "@phala/ra-report";
 import { getClient, getContract, signCertificate } from "@phala/sdk";
 import fs from "fs";
-
-const IPFS = require("ipfs-only-hash");
 
 import { execFile as execFileCallback } from "child_process";
 import { promisify } from "util";
@@ -15,7 +11,8 @@ import { iasApiKey, mnemonic, pinataKey, pinataSecret, sgxEnabled } from "./cons
 import { VALIDATOR_ABI, VALIDATOR_CONTRACT_ADDRESS } from "./constants/contract";
 import { PORT } from "./constants/server";
 import { RPC } from "./constants/phala";
-import { uploadToPinata } from "./utils/pinata";
+import { generateKeyPair, pad64, validateLastHash } from "./utils/phala";
+import { getInputFilename, getOutputFiles } from "./utils/file";
 
 const http = require('http');
 const { StringDecoder } = require('string_decoder');
@@ -25,12 +22,6 @@ const execFile = promisify(execFileCallback);
 let isCommandExecuting = false
 
 async function main(args?: string[]) {
-  console.log("[Enclave] Welcome to PoC Enclave, fasten your seat belt!");
-  console.log("[Enclave] Starting...");
-  console.log("[Enclave] SGX enabled: ", sgxEnabled);
-  console.log("[Enclave] Args provided: ", args);
-  console.log("[Enclave] Waiting for crypto...");
-
   await cryptoWaitReady();
 
   console.log("[Enclave] Getting key pair...");
@@ -355,150 +346,13 @@ async function getMetadatas(
   return metadataArray;
 }
 
-async function getOutputFiles(
-  commandfileName: string,
-  fileArgs: string[],
-  power: number
-) {
-  console.log("[Enclave] Getting output file name...");
-  var outputFileNames = getOutputFilename(commandfileName, fileArgs, power);
-  var outputFileHashes = new Array<string>();
-  let fileArray: File[] = [];
-
-  if (outputFileNames != null) {
-    console.log("[Enclave] Output file count: ", outputFileNames?.length);
-
-    for (let i = 0; i < outputFileNames.length; i++) {
-      let outputFileName = outputFileNames[i];
-      const timestamp = Math.floor(Date.now() / 1000);
-      console.log("[IPFS] Uploading output file to IPFS...", outputFileName);
-      const ipfsHash = await uploadToPinata(outputFileName);
-      outputFileHashes.push(ipfsHash);
-
-      console.log(`[IPFS] Output file uploaded to IPFS with hash: `, ipfsHash);
-
-      console.log("[Enclave] Adding file object to array...");
-
-      fileArray.push(
-        createFileObject(
-          ipfsHash,
-          outputFileName,
-          Math.floor(Date.now() / 1000)
-        )
-      );
-    }
-  }
-
-  return fileArray;
-}
-
-interface File {
-  hash: string;
-  name: string;
-  timestamp: number;
-}
-
 interface Metadata {
   name: string;
   value: string;
 }
 
-function createFileObject(hash: string, name: string, timestamp: number): File {
-  return { hash, name, timestamp };
-}
-
 function createMetadata(name: string, value: string): Metadata {
   return { name, value };
-}
-
-async function validateLastHash(
-  ceremonyId: number,
-  validatorContract: ra.Contract,
-  commandfileName: string,
-  fileArgs: string[] | undefined
-) {
-  console.log(
-    "[Phala] getCeremonyHashesCount - Calling method with args:",
-    ceremonyId
-  );
-
-  const txCeremonyHashesCount = (await validatorContract.call(
-    "getCeremonyHashesCount",
-    ceremonyId
-  )) as any;
-
-  if (txCeremonyHashesCount?.isErr) {
-    throw new Error(
-      `[Phala] getCeremonyHashesCount - Failed to get ceremony hashes count: ${txCeremonyHashesCount.asErr}`
-    );
-  }
-
-  const ceremonyHashesCount = txCeremonyHashesCount.asOk.toNumber();
-
-  console.log(
-    "[Phala] getCeremonyHashesCount - Ceremony hashes count: ",
-    ceremonyHashesCount
-  );
-
-  if (ceremonyHashesCount > 0) {
-    console.log("[Enclave] Ceremony hashes found, continuing ceremony...");
-
-    if (commandfileName.includes("new")) {
-      throw new Error(
-        "[Enclave] This ceremony must be continued from the last hash, but you are trying to create a new one. Please, remove the ceremony id from the command if you want to create a new ceremony."
-      );
-    }
-
-    console.log(
-      "[Enclave] Getting input file name with args: ",
-      commandfileName,
-      fileArgs
-    );
-    const inputfileName = getInputFilename(commandfileName, fileArgs);
-    if (inputfileName != null) {
-      console.log("[Enclave] Input file name found: ", inputfileName);
-
-      console.log("[Enclave] Getting input file hash...");
-
-      const inputFileHash = await getIpfsHash(inputfileName);
-
-      console.log("[Enclave] Input file hash: ", inputFileHash);
-
-      console.log(
-        "[Enclave] Checking if this hash is the last hash sent to the contract..."
-      );
-
-      console.log(
-        `[Phala] isLastHash - Calling method with args: ${ceremonyId}, ${inputFileHash}`
-      );
-
-      const txIsLastHash = (await validatorContract.call(
-        "isLastHash",
-        ceremonyId,
-        inputFileHash
-      )) as any;
-
-      if (txIsLastHash?.isErr) {
-        throw new Error(
-          `[Phala] isLastHash - Failed to get isLastHash: ${txIsLastHash.asErr}`
-        );
-      }
-
-      const lastHash = txIsLastHash.asOk.toString();
-
-      console.log("[Phala] isLastHash - Last hash: ", lastHash);
-
-      const isLastHash = lastHash == "true";
-
-      console.log("[Enclave] Is last hash: ", isLastHash);
-
-      if (!isLastHash) {
-        throw new Error(
-          `[Enclave] Ceremony must be continued from the last hash`
-        );
-      }
-    }
-  }
 }
 
 async function validadeDeadline(
@@ -539,12 +393,6 @@ async function validadeDeadline(
   }
 }
 
-async function getIpfsHash(filePath: string) {
-  const fileContent = fs.readFileSync(filePath);
-  const hash = await IPFS.of(fileContent);
-  return hash;
-}
-
 function getPhase(command: string) {
   if (
     command.includes("new_constrained") ||
@@ -562,61 +410,6 @@ function getPhase(command: string) {
     return 2;
   }
   return 0;
-}
-
-function getInputFilename(command: string, fileArgs: string[] | undefined) {
-  let fileName = null;
-  if (
-    command.includes("compute_constrained") ||
-    command.includes("prepare_phase2") ||
-    command.includes("contribute") ||
-    command.includes("new")
-  ) {
-    fileName = fileArgs?.[0];
-  } else if (command.includes("verify_transform_constrained")) {
-    fileName = fileArgs?.[1];
-  }
-  return fileName;
-}
-
-function getOutputFilename(command: string, fileArgs: string[], power: number) {
-  let fileName = new Array<string>();
-  if (command.includes("new_constrained")) {
-    fileName.push(fileArgs?.[0]);
-  } else if (
-    command.includes("new") ||
-    command.includes("contribute") ||
-    command.includes("compute_constrained") ||
-    command.includes("beacon_constrained")
-  ) {
-    fileName.push(fileArgs?.[1]);
-  } else if (command.includes("verify_transform_constrained")) {
-    fileName.push(fileArgs?.[2]);
-  } else if (command.includes("prepare_phase2")) {
-    for (let i = 0; i <= power; i++) {
-      fileName.push(`phase1radix2m${i}`);
-    }
-  }
-
-  return fileName;
-}
-
-
-
-function generateKeyPair(): KeyringPair {
-  const keyring = new Keyring({ type: "sr25519" });
-
-  if (mnemonic == null) {
-    throw new Error("ACCOUNT_MNEMONIC env var not set");
-  }
-
-  return keyring.addFromMnemonic(mnemonic);
-}
-
-function pad64(data: Uint8Array): Uint8Array {
-  const result = new Uint8Array(64);
-  result.set(data);
-  return result;
 }
 
 const server = http.createServer((req: any, res: any) => {
