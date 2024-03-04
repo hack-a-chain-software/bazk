@@ -4,11 +4,11 @@ entrypoint = "./node"
 [loader]
 entrypoint = "file:{{ libos }}"
 insecure__use_cmdline_argv = true
-log_level = "debug"
+log_level = "trace"
 
 [sys]
 insecure__allow_eventfd = true
-stack.size = "2M"
+stack.size = "2G"
 brk.max_size = "256M"
 
 [loader.env]
