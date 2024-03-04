@@ -128,12 +128,19 @@ ssh -i ~/gramine-vm_key.pem azureuser@172.190.7.62
 
 ### Run the pod app
 
+When you initialize our pod, whether on an Azure virtual machine or locally in dev mode, our pod launches an API. This API is designed to receive a request on the /execute route, and can receive any base commands
 To run the pod app, you need a machine with at least Linux kernel v5.13 and SGX enabled.
 
+Run to production:
 ```bash
 cd bazk-build/
 sudo docker run --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v`pwd`/dist:/dist -it gramineproject/gramine
 cd /dist
+```
+
+Run dev:
+```bash
+yarn gramine dev
 ```
 
 #### Apply the environment variables
@@ -146,15 +153,31 @@ export SGX_ENABLED=true
 export IAS_API_KEY=YOUR_IAS_API_KEY_GOT_FROM_INTEL
 ```
 
-####  Run Phase 1 using SGX (KZG)
+####  Run Phase 1 using SGX (KZG) or Node
 
 ```bash
-./gramine-sgx bazk ./app/index.js ./app/bin/new_constrained challenge 10 256 "my ceremony name" "my ceremony description" 1709221725
-./gramine-sgx bazk ./app/index.js ./app/bin/compute_constrained challenge1 response1 10 256
-./gramine-sgx bazk ./app/index.js ./app/bin/verify_transform_constrained challenge1 response1 challenge2 10 256
-./gramine-sgx bazk ./app/index.js ./app/bin/compute_constrained challenge2 response2 10 256
-./gramine-sgx bazk ./app/index.js ./app/bin/prepare_phase2 response2 10 256
+curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '["./app/bin/new_constrained", "challenge", 10, 256, "my ceremony name", "my ceremony description", 1709221725]'
+
+curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '["./app/bin/compute_constrained", "challenge1", "response1", 10, 256]'
+
+curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '["./app/bin/verify_transform_constrained", "challenge1", "response1", "challenge2", 10, 256]'
+
+curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '["./app/bin/compute_constrained", "challenge2", "response2", 10, 256]'
+
+curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '["./app/bin/prepare_phase2", "response2", 10, 256]'
 ```
+
+** For this version of the API, we have temporarily copied a circom.json so that anyone can test the commands. This will be updated in the next versions
 
 #### Run Phase 1 using Node directly
 
@@ -175,7 +198,8 @@ export IAS_API_KEY=YOUR_IAS_API_KEY_GOT_FROM_INTEL
 # index.js <ceremony id> ./app/bin/prepare_phase2 <response> <power> <bash>
 # --------------------------------
 
-export SGX_ENABLED=false
+## Env file
+SGX_ENABLED=false
 
 ./node ./app/index.js ./app/bin/new_constrained challenge 10 256 "my ceremony name" "my ceremony description" 1709221725
 ./node ./app/index.js 1707244846 ./app/bin/compute_constrained challenge response 10 256
@@ -187,10 +211,20 @@ export SGX_ENABLED=false
 #### Run Phase 2 using SGX (Groth16)
 
 ```bash
-./gramine-sgx bazk ./app/index.js ./app/bin/new circuit.json circom1.params ./
-./gramine-sgx bazk ./app/index.js ./app/bin/contribute circom1.params circom2.params
-./gramine-sgx bazk ./app/index.js ./app/bin/verify_contribution circuit.json circom1.params circom2.params ./
+curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '["./app/bin/new", "circuit.json", "circom1.params", "./app/ceremonies/p12", 12, 256, "my ceremony name", "my ceremony description", 1709221725]'
+
+curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '["./app/bin/contribute", "circom1.params", "circom2.params"]'
+
+curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '["./app/bin/verify_contribution", "circuit.json", "circom1.params", "circom2.params", "./"]'
 ```
+
+** For this version of the API, we have temporarily copied a circom.json so that anyone can test the commands. This will be updated in the next versions
 
 #### Run Phase 2 using Node directly
 
