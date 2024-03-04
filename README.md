@@ -128,12 +128,23 @@ ssh -i ~/gramine-vm_key.pem azureuser@172.190.7.62
 
 ### Run the pod app
 
+When you initialize our pod, whether on an Azure virtual machine or locally in dev mode, our pod launches an API. This API is designed to receive a request on the /execute route, and can receive any base commands
 To run the pod app, you need a machine with at least Linux kernel v5.13 and SGX enabled.
 
+Run to production:
 ```bash
+## Don't forget to create the .env file
 cd bazk-build/
 sudo docker run --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v`pwd`/dist:/dist -it gramineproject/gramine
 cd /dist
+```
+
+Run dev:
+```bash
+## Gramine env file
+SGX_ENABLED=false
+
+yarn gramine dev
 ```
 
 #### Apply the environment variables
@@ -149,12 +160,28 @@ export IAS_API_KEY=YOUR_IAS_API_KEY_GOT_FROM_INTEL
 ####  Run Phase 1 using SGX (KZG)
 
 ```bash
-./gramine-sgx bazk ./app/index.js ./app/bin/new_constrained challenge 10 256 "my ceremony name" "my ceremony description" 1709221725
-./gramine-sgx bazk ./app/index.js ./app/bin/compute_constrained challenge1 response1 10 256
-./gramine-sgx bazk ./app/index.js ./app/bin/verify_transform_constrained challenge1 response1 challenge2 10 256
-./gramine-sgx bazk ./app/index.js ./app/bin/compute_constrained challenge2 response2 10 256
-./gramine-sgx bazk ./app/index.js ./app/bin/prepare_phase2 response2 10 256
+curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '["./app/bin/new_constrained", "challenge", 10, 256, "my ceremony name", "my ceremony description", 1709221725]'
+
+curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '["./app/bin/compute_constrained", "challenge1", "response1", 10, 256]'
+
+curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '["./app/bin/verify_transform_constrained", "challenge1", "response1", "challenge2", 10, 256]'
+
+curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '["./app/bin/compute_constrained", "challenge2", "response2", 10, 256]'
+
+curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '["./app/bin/prepare_phase2", "response2", 10, 256]'
 ```
+
+** For this version of the API, we have temporarily copied a circom.json so that anyone can test the commands. This will be updated in the next versions
 
 #### Run Phase 1 using Node directly
 
@@ -175,31 +202,67 @@ export IAS_API_KEY=YOUR_IAS_API_KEY_GOT_FROM_INTEL
 # index.js <ceremony id> ./app/bin/prepare_phase2 <response> <power> <bash>
 # --------------------------------
 
-export SGX_ENABLED=false
+curl -X POST http://localhost:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '["./app/bin/new_constrained", "challenge", 10, 256, "my ceremony name", "my ceremony description", 1709221725]'
+     
+curl -X POST http://localhost:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '[1707244846, "./app/bin/compute_constrained", "challenge", "response", 10, 256]'
+     
+curl -X POST http://localhost:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '[1707244846, "./app/bin/verify_transform_constrained", "challenge", "response", "challenge2", 10, 256]'
+     
+curl -X POST http://localhost:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '[1707244846, "./app/bin/compute_constrained", "challenge2", "response2", 10, 256]'
 
-./node ./app/index.js ./app/bin/new_constrained challenge 10 256 "my ceremony name" "my ceremony description" 1709221725
-./node ./app/index.js 1707244846 ./app/bin/compute_constrained challenge response 10 256
-./node ./app/index.js 1707244846 ./app/bin/verify_transform_constrained challenge response challenge2 10 256
-./node ./app/index.js 1707244846 ./app/bin/compute_constrained challenge2 response2 10 256
-./node ./app/index.js 1707244846 ./app/bin/prepare_phase2 response2 10 256
+curl -X POST http://localhost:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '[1707244846, "./app/bin/prepare_phase2", "response2", 10, 256]'
 ```	
 
 #### Run Phase 2 using SGX (Groth16)
 
 ```bash
-./gramine-sgx bazk ./app/index.js ./app/bin/new circuit.json circom1.params ./
-./gramine-sgx bazk ./app/index.js ./app/bin/contribute circom1.params circom2.params
-./gramine-sgx bazk ./app/index.js ./app/bin/verify_contribution circuit.json circom1.params circom2.params ./
+curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '["./app/bin/new", "circuit.json", "circom1.params", "./app/ceremonies/p12", 12, 256, "fpx returns", "doinb will go back", 1709221725]'
+
+curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '["./app/bin/contribute", "circom1.params", "circom2.params"]'
+
+curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '["./app/bin/verify_contribution", "circuit.json", "circom1.params", "circom2.params", "./"]'
 ```
+
+** For this version of the API, we have temporarily copied a circom.json so that anyone can test the commands. This will be updated in the next versions
 
 #### Run Phase 2 using Node directly
 
 ```bash
-./node ./app/index.js ./app/bin/new circuit.json circom1.params ./app/ceremonies/p12 12 256 "my ceremony name" "my ceremony description" 1709221725
-./node ./app/index.js 1706736894 ./app/bin/contribute circom1.params circom2.params
-./node ./app/index.js 1706736894 ./app/bin/contribute circom2.params circom3.params
-./node ./app/index.js 1706736894 ./app/bin/verify_contribution circuit.json circom2.params circom3.params ./
-./node ./app/index.js 1706736894 ./app/bin/contribute circom3.params circom4.params
+curl -X POST http://localhost:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '["./app/bin/new", "circuit.json", "circom1.params", "./app/ceremonies/p12", 12, 256, "my ceremony name", "my ceremony description", 1709221725]'
+
+curl -X POST http://localhost:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '[1706736894, "./app/bin/contribute", "circom1.params", "circom2.params"]'
+
+curl -X POST http://localhost:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '[1706736894, "./app/bin/contribute", "circom2.params", "circom3.params"]'
+
+curl -X POST http://localhost:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '[1706736894, "./app/bin/verify_contribution", "circuit.json", "circom2.params", "circom3.params", "./"]'
+
+curl -X POST http://localhost:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '[1706736894, "./app/bin/contribute", "circom3.params", "circom4.params"]'
 ```
 
 ## Generate circuit files
@@ -208,45 +271,6 @@ export SGX_ENABLED=false
 circom circuit.circom --r1cs
 snarkjs rej circuit.r1cs circuit.json
 ```
-
-#### Run App using dev mode
-
-1) Build the app:
-```bash
-$ pnpm gramine build
-```
-
-2) Check the gramine package and copy the .env.example file and edit it with your environment config:
-```bash
-$ cp ./packages/gramine/.env.example ./packages/gramine/.env
-```
-** Don't forget to update the SGX ENABLED variable to **false**
-
-4) Run the app using a initial command
-```bash
-# --------------------------------
-# Notes to use the app commands
-# --------------------------------
-# 1) New ceremony with new challenge
-# yarn gramine dev ./app/bin/new_constrained <challenge> <power> <bash> <ceremony name> <ceremony description> <deadline timestamp>
-#
-# 2) Contribute to the ceremony
-# yarn gramine dev <ceremony id> ./app/bin/compute_constrained <challenge> <response> <power> <bash>
-#
-# 3) Verify the ceremony and create new challange
-# yarn gramine dev <ceremony id> ./app/bin/verify_transform_constrained <existing challenge> <response> <new challenge> <power> <bash>
-#
-# 4) Finalize the ceremony and prepare for phase 2
-# yarn gramine dev <ceremony id> ./app/bin/prepare_phase2 <response> <power> <bash>
-# --------------------------------
-
-## Base example to create a new ceremony
-$ yarn gramine dev ./app/bin/new_constrained challenge 10 256 "my ceremony name" "my ceremony description" 1709221725
-$ yarn gramine dev 1708608454 ./app/bin/compute_constrained challenge response 10 256
-$ yarn gramine dev 1707244846 ./app/bin/verify_transform_constrained challenge response challenge2 10 256
-$ yarn gramine dev 1707244846 ./app/bin/compute_constrained challenge2 response2 10 256
-$ yarn gramine dev 1707244846 ./app/bin/prepare_phase2 response2 10 256
-```	
 
 ## Workflows
 
