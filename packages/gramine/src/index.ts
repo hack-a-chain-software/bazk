@@ -267,7 +267,7 @@ async function main(args?: string[]) {
     console.error("[Enclave] Error:", error);
 
     return {
-      value: error
+      error: error
     }
   }
 }

@@ -12,3 +12,5 @@ sudo docker run \
     --env IAS_SPID=$IAS_SPID \
     kvin/gramine:1.0 \
     "make dist -C /bazk-build"
+
+cp ./bazk-build/circuit.json ./bazk-build/dist

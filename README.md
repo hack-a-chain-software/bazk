@@ -232,11 +232,11 @@ curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
 
 curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
      -H "Content-Type: application/json" \
-     -d '["./app/bin/contribute", "circom1.params", "circom2.params"]'
+     -d '[1707244846, "./app/bin/contribute", "circom1.params", "circom2.params"]'
 
 curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
      -H "Content-Type: application/json" \
-     -d '["./app/bin/verify_contribution", "circuit.json", "circom1.params", "circom2.params", "./"]'
+     -d '[1707244846, "./app/bin/verify_contribution", "circuit.json", "circom1.params", "circom2.params", "./"]'
 ```
 
 ** For this version of the API, we have temporarily copied a circom.json so that anyone can test the commands. This will be updated in the next versions
