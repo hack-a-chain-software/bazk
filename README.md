@@ -128,12 +128,19 @@ ssh -i ~/gramine-vm_key.pem azureuser@172.190.7.62
 
 ### Run the pod app
 
+When you initialize our pod, whether on an Azure virtual machine or locally in dev mode, our pod launches an API. This API is designed to receive a request on the /execute route, and can receive any base commands
 To run the pod app, you need a machine with at least Linux kernel v5.13 and SGX enabled.
 
+Run to production:
 ```bash
 cd bazk-build/
 sudo docker run --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v`pwd`/dist:/dist -it gramineproject/gramine
 cd /dist
+```
+
+Run dev:
+```bash
+yarn gramine dev
 ```
 
 #### Apply the environment variables
@@ -149,11 +156,25 @@ export IAS_API_KEY=YOUR_IAS_API_KEY_GOT_FROM_INTEL
 ####  Run Phase 1 using SGX (KZG)
 
 ```bash
-./gramine-sgx bazk ./app/index.js ./app/bin/new_constrained challenge 10 256 "my ceremony name" "my ceremony description" 1709221725
-./gramine-sgx bazk ./app/index.js ./app/bin/compute_constrained challenge1 response1 10 256
-./gramine-sgx bazk ./app/index.js ./app/bin/verify_transform_constrained challenge1 response1 challenge2 10 256
-./gramine-sgx bazk ./app/index.js ./app/bin/compute_constrained challenge2 response2 10 256
-./gramine-sgx bazk ./app/index.js ./app/bin/prepare_phase2 response2 10 256
+curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '["./app/bin/new_constrained", "challenge", 10, 256, "my ceremony name", "my ceremony description", 1709221725]'
+
+curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '["./app/bin/compute_constrained", "challenge1", "response1", 10, 256]'
+
+curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '["./app/bin/verify_transform_constrained", "challenge1", "response1", "challenge2", 10, 256]'
+
+curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '["./app/bin/compute_constrained", "challenge2", "response2", 10, 256]'
+
+curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '["./app/bin/prepare_phase2", "response2", 10, 256]'
 ```
 
 #### Run Phase 1 using Node directly
@@ -263,3 +284,7 @@ If you want to run in your own environment, you can use the following command:
 ```bash
 act -W .github/workflows/build-and-release.yml --artifact-server-path ./.github/workflows/.artifacts/ --secret-file ./packages/gramine/.env -P ubuntu-latest=-self-hosted --job build
 ```
+
+## Pod API
+
+Whenever you utilize our 'Provisioning' package, it will set up the entire base infrastructure and deploy a direct interaction API with the Pod. This API is designed to receive a request on the /execute route, and can receive any base commands 
