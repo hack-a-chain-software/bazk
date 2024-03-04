@@ -11,8 +11,9 @@ import { iasApiKey, mnemonic, pinataKey, pinataSecret, sgxEnabled } from "./cons
 import { VALIDATOR_ABI, VALIDATOR_CONTRACT_ADDRESS } from "./constants/contract";
 import { PORT } from "./constants/server";
 import { RPC } from "./constants/phala";
-import { generateKeyPair, pad64, validateLastHash } from "./utils/phala";
-import { getInputFilename, getOutputFiles } from "./utils/file";
+import { generateKeyPair, getPhase, pad64, validadeDeadline, validateLastHash } from "./utils/phala";
+import { getOutputFiles } from "./utils/file";
+import { getMetadatas } from "./utils/metadata";
 
 const http = require('http');
 const { StringDecoder } = require('string_decoder');
@@ -148,8 +149,6 @@ async function main(args?: string[]) {
 
   const validatorPubkey = (await validatorContract.call("publicKey")) as any;
 
-  // console.log("Validator public key: ", validatorPubkey);
-
   if (sgxEnabled) {
     console.log("Verifying if enclave valid...");
     const publicKeyValid = signatureVerify(
@@ -271,145 +270,6 @@ async function main(args?: string[]) {
       value: error
     }
   }
-}
-
-async function getMetadatas(
-  commandfileName: string,
-  power: number,
-  bash: number,
-  fileArgs: string[]
-) {
-  let metadataArray: Metadata[] = [];
-
-  console.log("[Enclave] Getting metadatas...");
-  console.log("[Enclave] Command file name: ", commandfileName);
-
-  if (
-    commandfileName.endsWith("new_constrained") ||
-    commandfileName.endsWith("new")
-  ) {
-    metadataArray.push(createMetadata("power", power.toString()));
-
-    console.log("[Enclave] Power: ", power);
-
-    metadataArray.push(createMetadata("bash", bash.toString()));
-
-    console.log("[Enclave] Bash: ", bash);
-  }
-
-  if (commandfileName.endsWith("new")) {
-    var inputFileName = getInputFilename(commandfileName, fileArgs);
-
-    console.log(`[Enclave] Reading input file ${inputFileName}...`);
-
-    const json = JSON.parse(fs.readFileSync(inputFileName as string, "utf8"));
-
-    console.log("[Enclave] Input file read successfully");
-
-    const nPrvInputs = json.nPrvInputs;
-
-    console.log("[Enclave] nPrvInputs: ", nPrvInputs);
-
-    const nPubInputs = json.nPubInputs;
-
-    console.log("[Enclave] nPubInputs: ", nPubInputs);
-
-    const nInputs = json.nInputs;
-
-    console.log("[Enclave] nInputs: ", nInputs);
-
-    const nOutputs = json.nOutputs;
-
-    console.log("[Enclave] nOutputs: ", nOutputs);
-
-    const nVars = json.nVars;
-
-    console.log("[Enclave] nVars: ", nVars);
-
-    const nConstants = json.nConstants;
-
-    console.log("[Enclave] nConstants: ", nConstants);
-
-    const nSignals = json.nSignals;
-
-    console.log("[Enclave] nSignals: ", nSignals);
-
-    metadataArray.push(createMetadata("nPrvInputs", nPrvInputs.toString()));
-    metadataArray.push(createMetadata("nPubInputs", nPubInputs.toString()));
-    metadataArray.push(createMetadata("nInputs", nInputs.toString()));
-    metadataArray.push(createMetadata("nOutputs", nOutputs.toString()));
-    metadataArray.push(createMetadata("nVars", nVars.toString()));
-    metadataArray.push(createMetadata("nConstants", nConstants.toString()));
-    metadataArray.push(createMetadata("nSignals", nSignals.toString()));
-  }
-
-  return metadataArray;
-}
-
-interface Metadata {
-  name: string;
-  value: string;
-}
-
-function createMetadata(name: string, value: string): Metadata {
-  return { name, value };
-}
-
-async function validadeDeadline(
-  ceremonyId: number,
-  validatorContract: ra.Contract
-) {
-  console.log(
-    "[Phala] getCeremonyDeadline - Calling method with args:",
-    ceremonyId
-  );
-
-  const txCeremonyDeadline = (await validatorContract.call(
-    "getCeremonyDeadline",
-    ceremonyId
-  )) as any;
-
-  if (txCeremonyDeadline?.isErr) {
-    throw new Error(
-      `[Phala] getCeremonyDeadline - Failed to get ceremony deadline: ${txCeremonyDeadline.asErr}`
-    );
-  }
-
-  const ceremonyDeadline = txCeremonyDeadline.asOk.toNumber();
-
-  console.log(
-    "[Phala] getCeremonyDeadline - Ceremony deadline: ",
-    ceremonyDeadline
-  );
-
-  const currentTime = Math.floor(Date.now() / 1000);
-
-  console.log("[Enclave] Current time: ", currentTime);
-
-  if (currentTime > ceremonyDeadline) {
-    throw new Error(
-      "[Enclave] Ceremony deadline expired, please create a new ceremony"
-    );
-  }
-}
-
-function getPhase(command: string) {
-  if (
-    command.includes("new_constrained") ||
-    command.includes("compute_constrained") ||
-    command.includes("verify_transform_constrained") ||
-    command.includes("compute_constrained") ||
-    command.includes("prepare_phase2")
-  ) {
-    return 1;
-  } else if (
-    command.includes("new") ||
-    command.includes("contribute") ||
-    command.includes("verify_contribution")
-  ) {
-    return 2;
-  }
-  return 0;
 }
 
 const server = http.createServer((req: any, res: any) => {
