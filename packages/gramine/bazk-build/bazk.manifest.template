@@ -4,7 +4,7 @@ entrypoint = "./node"
 [loader]
 entrypoint = "file:{{ libos }}"
 insecure__use_cmdline_argv = true
-log_level = "trace"
+log_level = "error"
 
 [sys]
 insecure__allow_eventfd = true
