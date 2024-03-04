@@ -263,11 +263,11 @@ async function main(args?: string[]) {
     }
 
     console.log("[Enclave] Everything done, enjoy!");
-  } catch (error) {
+  } catch (error: any) {
     console.error("[Enclave] Error:", error);
 
     return {
-      error: error
+      error: error.message
     }
   }
 }
@@ -321,11 +321,19 @@ const server = http.createServer((req: any, res: any) => {
         }).finally(() => {
           isCommandExecuting = false
 
-          fs.unlink('/challenge', (err) => {
+          fs.access('/challenge', fs.constants.F_OK, (err) => {
             if (err) {
-              console.error('Error deleting the file:', err);
               return;
             }
+
+            fs.unlink('/challenge', (err) => {
+              if (err) {
+                console.error('Error deleting the file:', err);
+                return;
+              }
+
+              console.log('File deleted successfully');
+            });
           });
         });
       } catch (error) {
