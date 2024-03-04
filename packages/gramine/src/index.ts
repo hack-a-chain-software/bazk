@@ -323,7 +323,6 @@ const server = http.createServer((req: any, res: any) => {
 
           fs.access('/challenge', fs.constants.F_OK, (err) => {
             if (err) {
-              console.error('File does not exist:', err);
               return;
             }
 
