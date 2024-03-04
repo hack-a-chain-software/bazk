@@ -8,7 +8,7 @@ log_level = "trace"
 
 [sys]
 insecure__allow_eventfd = true
-stack.size = "4G"
+stack.size = "2G"
 brk.max_size = "256M"
 
 [loader.env]
@@ -41,9 +41,9 @@ path = "/app"
 uri = "file:app"
 
 [sgx]
-debug = true
+debug = false
 nonpie_binary = true
-enclave_size = "2G"
+enclave_size = "4G"
 max_threads = 16
 remote_attestation = "{{ ra_method }}"
 
