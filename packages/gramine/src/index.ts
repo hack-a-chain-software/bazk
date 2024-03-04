@@ -57,7 +57,7 @@ async function main(args?: string[]) {
   if (sgxEnabled) {
     console.log("Getting report...");
     const report = await ra.createRemoteAttestationReport({
-      iasKey: iasApiKey,
+      iasKey: iasApiKey ?? "",
       userReportData: Buffer.from(publicKey),
     });
     console.log("Report: ", report);
