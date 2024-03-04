@@ -228,15 +228,15 @@ curl -X POST http://localhost:3000/execute \
 ```bash
 curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
      -H "Content-Type: application/json" \
-     -d '["./app/bin/new", "circuit.json", "circom1.params", "./app/ceremonies/p12", 12, 256, "fpx returns", "doinb will go back", 1709221725]'
+     -d '["./app/bin/new", "circuit.json", "circom1.params", "./app/ceremonies/p12", 12, 256, "my ceremony name", "my ceremony description", 1709221725]'
 
 curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
      -H "Content-Type: application/json" \
-     -d '["./app/bin/contribute", "circom1.params", "circom2.params"]'
+     -d '[1707244846, "./app/bin/contribute", "circom1.params", "circom2.params"]'
 
 curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
      -H "Content-Type: application/json" \
-     -d '["./app/bin/verify_contribution", "circuit.json", "circom1.params", "circom2.params", "./"]'
+     -d '[1707244846, "./app/bin/verify_contribution", "circuit.json", "circom1.params", "circom2.params", "./"]'
 ```
 
 ** For this version of the API, we have temporarily copied a circom.json so that anyone can test the commands. This will be updated in the next versions
