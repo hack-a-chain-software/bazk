@@ -321,11 +321,20 @@ const server = http.createServer((req: any, res: any) => {
         }).finally(() => {
           isCommandExecuting = false
 
-          fs.unlink('/challenge', (err) => {
+          fs.access('/challenge', fs.constants.F_OK, (err) => {
             if (err) {
-              console.error('Error deleting the file:', err);
+              console.error('File does not exist:', err);
               return;
             }
+
+            fs.unlink('/challenge', (err) => {
+              if (err) {
+                console.error('Error deleting the file:', err);
+                return;
+              }
+
+              console.log('File deleted successfully');
+            });
           });
         });
       } catch (error) {
