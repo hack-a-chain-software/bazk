@@ -34,6 +34,8 @@ const FoundationContextProvider = ({ children }: any) => {
 
     const rawCeremonies = output.toJSON().ok.ok
 
+    console.log('rawCeremonies', rawCeremonies.map(([ceremony]: any) => ceremony))
+
     return rawCeremonies
       .filter(([ceremony]: any) => ceremony.phase !== 1)
       .map(([ceremony, contributions]: any) => {
