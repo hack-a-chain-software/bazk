@@ -72,6 +72,8 @@ trusted_files = [
 ]
 
 allowed_files = [
+  "file:/usr/",
+  "file:/var/",
   "file:/tmp/",
   "file:/etc/",
   "file:/etc/hosts",
