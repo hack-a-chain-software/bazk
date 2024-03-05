@@ -4,7 +4,7 @@ entrypoint = "./node"
 [loader]
 entrypoint = "file:{{ libos }}"
 insecure__use_cmdline_argv = true
-log_level = "debug"
+log_level = "trace"
 
 [sys]
 insecure__allow_eventfd = true
@@ -41,7 +41,7 @@ path = "/app"
 uri = "file:app"
 
 [sgx]
-debug = false
+debug = true
 nonpie_binary = true
 enclave_size = "2G"
 max_threads = 16
@@ -53,24 +53,35 @@ ra_client_spid = "{{ ra_client_spid }}"
 {% endif %}
 
 trusted_files = [
+  "file:app/",
   "file:node",
   "file:curl",
   "file:/usr/bin/curl",
   "file:{{ libos }}",
   "file:{{ libdir }}",
-  "file:app/",
-  "file:app/bin/contribute",
   "file:app/bin/new",
+  "file:app/circuit.json",
+  "file:app/bin/contribute",
   "file:app/bin/verify_contribution",
   "file:app/bin/new_constrained",
   "file:app/bin/compute_constrained",
   "file:app/bin/verify_transform_constrained",
   "file:app/bin/prepare_phase2",
   "file:app/ceremonies/",
+  "file:app/ceremonies/p10/",
 ]
 
 allowed_files = [
+  "file:/usr/",
+  "file:/var/",
+  "file:/tmp/",
+  "file:/proc/",
+  "file:/proc/self/",
+  "file:/proc/self/cgroup",
+  "file:/etc/",
+  "file:/etc/",
   "file:/etc/hosts",
+  "file:/etc/localtime",
   "file:/etc/resolv.conf",
   "file:/etc/ssl/openssl.cnf",
   "file:/etc/nsswitch.conf",
@@ -80,6 +91,7 @@ allowed_files = [
   "file:/etc/ssl/certs/ca-certificates.crt",
   "file:index.js",
   "file:data/",
+  "file:dist/",
   "file:challenge",
   "file:challenge1",
   "file:challenge2",
