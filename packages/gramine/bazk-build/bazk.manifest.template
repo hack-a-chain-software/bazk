@@ -59,6 +59,7 @@ trusted_files = [
   "file:{{ libos }}",
   "file:{{ libdir }}",
   "file:app/",
+  "file:circuit.json",
   "file:app/bin/contribute",
   "file:app/bin/new",
   "file:app/bin/verify_contribution",
@@ -123,5 +124,4 @@ allowed_files = [
   "file:circom6.params",
   "file:circom7.params",
   "file:circom8.params",
-  "file:circuit.json",
 ]
