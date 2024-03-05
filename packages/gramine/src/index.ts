@@ -162,7 +162,7 @@ async function main(args?: string[]) {
   try {
     console.log("[Enclave] Running command...: ", commandfileName, fileArgs);
 
-    const { stdout, stderr } = await execFile(commandfileName, fileArgs);
+    const { stdout, stderr } = await execFile(commandfileName, ['RUST_BACKTRACE=1', ...fileArgs]);
 
     console.log("[Enclave] Command executed");
     console.log("[Enclave] Command stdout: \n");
