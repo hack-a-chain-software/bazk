@@ -37,6 +37,11 @@ uri = "file:data"
 
 [[fs.mounts]]
 type = "chroot"
+path = "/proc"
+uri = "file:proc"
+
+[[fs.mounts]]
+type = "chroot"
 path = "/app"
 uri = "file:app"
 
