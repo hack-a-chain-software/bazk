@@ -44,9 +44,10 @@ uri = "file:app"
 
 [sgx]
 debug = true
+edmm_enable= true
 nonpie_binary = true
 enclave_size = "12G"
-max_threads = 16
+max_threads = 32
 remote_attestation = "{{ ra_method }}"
 
 {% if ra_method == "epid" %}
