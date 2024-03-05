@@ -58,7 +58,6 @@ ra_client_spid = "{{ ra_client_spid }}"
 trusted_files = [
   "file:node",
   "file:curl",
-  "file:/etc/localtime",
   "file:/usr/bin/curl",
   "file:{{ libos }}",
   "file:{{ libdir }}",
@@ -115,4 +114,5 @@ allowed_files = [
   "file:circom8.params",
   "file:circuit.json",
   "file:app/ceremonies/",
+  "file:/etc/localtime",
 ]
