@@ -47,7 +47,6 @@ uri = "file:app"
 debug = true
 nonpie_binary = true
 enclave_size = "4G"
-thread_num = 128
 max_threads = 32
 remote_attestation = "{{ ra_method }}"
 
@@ -59,6 +58,7 @@ ra_client_spid = "{{ ra_client_spid }}"
 trusted_files = [
   "file:node",
   "file:curl",
+  "file:/etc/localtime",
   "file:/usr/bin/curl",
   "file:{{ libos }}",
   "file:{{ libdir }}",
