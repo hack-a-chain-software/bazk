@@ -44,7 +44,6 @@ uri = "file:app"
 
 [sgx]
 debug = true
-edmm_enable= true
 nonpie_binary = true
 enclave_size = "8G"
 max_threads = 32
