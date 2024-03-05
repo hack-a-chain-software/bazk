@@ -43,7 +43,7 @@ uri = "file:app"
 [sgx]
 debug = true
 nonpie_binary = true
-enclave_size = "4G"
+enclave_size = "2G"
 max_threads = 16
 remote_attestation = "{{ ra_method }}"
 
@@ -59,9 +59,8 @@ trusted_files = [
   "file:{{ libos }}",
   "file:{{ libdir }}",
   "file:app/",
-  "file:circuit.json",
   "file:app/bin/contribute",
-  "file:app/bin/new",
+  "file:/app/bin/new",
   "file:app/bin/verify_contribution",
   "file:app/bin/new_constrained",
   "file:app/bin/compute_constrained",
@@ -124,4 +123,5 @@ allowed_files = [
   "file:circom6.params",
   "file:circom7.params",
   "file:circom8.params",
+  "file:circuit.json",
 ]
