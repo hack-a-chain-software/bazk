@@ -76,6 +76,7 @@ allowed_files = [
   "file:/var/",
   "file:/tmp/",
   "file:/proc/",
+  "file:/proc/self/",
   "file:/proc/self/cgroup",
   "file:/etc/",
   "file:/etc/",
