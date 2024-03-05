@@ -75,6 +75,8 @@ allowed_files = [
   "file:/usr/",
   "file:/var/",
   "file:/tmp/",
+  "/proc/",
+  "/proc/self/cgroup",
   "file:/etc/",
   "file:/etc/",
   "file:/etc/hosts",
