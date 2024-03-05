@@ -1,5 +1,6 @@
 [libos]
 entrypoint = "./node"
+check_invalid_pointers = false
 
 [loader]
 entrypoint = "file:{{ libos }}"
@@ -51,8 +52,6 @@ remote_attestation = "{{ ra_method }}"
 ra_client_linkable = true
 ra_client_spid = "{{ ra_client_spid }}"
 {% endif %}
-
-libos.check_invalid_pointers = false
 
 trusted_files = [
   "file:node",
