@@ -7,7 +7,6 @@ check_invalid_pointers = false
 entrypoint = "file:{{ libos }}"
 insecure__use_cmdline_argv = true
 log_level = "debug"
-pal_internal_mem_size = "512M"
 
 [sys]
 insecure__allow_eventfd = true
