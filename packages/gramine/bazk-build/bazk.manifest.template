@@ -52,7 +52,8 @@ ra_client_linkable = true
 ra_client_spid = "{{ ra_client_spid }}"
 {% endif %}
 
-libos.check_invalid_pointers = false
+[libos]
+check_invalid_pointers = false
 
 trusted_files = [
   "file:node",
