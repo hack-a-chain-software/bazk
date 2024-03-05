@@ -1,5 +1,6 @@
 [libos]
 entrypoint = "./node"
+check_invalid_pointers = false
 
 [loader]
 entrypoint = "file:{{ libos }}"
@@ -41,7 +42,7 @@ path = "/app"
 uri = "file:app"
 
 [sgx]
-debug = false
+debug = true
 nonpie_binary = true
 enclave_size = "2G"
 max_threads = 16
@@ -59,6 +60,7 @@ trusted_files = [
   "file:{{ libos }}",
   "file:{{ libdir }}",
   "file:app/",
+  "file:app/circuit.json",
   "file:app/bin/contribute",
   "file:app/bin/new",
   "file:app/bin/verify_contribution",
@@ -67,6 +69,8 @@ trusted_files = [
   "file:app/bin/verify_transform_constrained",
   "file:app/bin/prepare_phase2",
   "file:app/ceremonies/",
+  "file:app/ceremonies/p10/",
+  "file:app/ceremonies/p10/phase1radix2m10",
 ]
 
 allowed_files = [
