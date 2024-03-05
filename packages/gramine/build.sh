@@ -2,6 +2,8 @@
 (cd bazk-build && rm -f *.manifest *.sgx *.sig && rm -rf cruntime app dist)
 
 cp -r dist bazk-build/app
+cp ./bazk-build/circuit.json bazk-build/app
+
 cp -L $(which curl) bazk-build/
 
 # Run Docker without TTY in a non-interactive environment
