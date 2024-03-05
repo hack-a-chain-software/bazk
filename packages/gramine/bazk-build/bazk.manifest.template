@@ -46,7 +46,7 @@ uri = "file:app"
 debug = true
 edmm_enable= true
 nonpie_binary = true
-enclave_size = "12G"
+enclave_size = "8G"
 max_threads = 32
 remote_attestation = "{{ ra_method }}"
 
