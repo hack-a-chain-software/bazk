@@ -1,10 +1,13 @@
 [libos]
 entrypoint = "./node"
+log_file = "gramine.log"
+check_invalid_pointers = false
 
 [loader]
 entrypoint = "file:{{ libos }}"
 insecure__use_cmdline_argv = true
 log_level = "debug"
+pal_internal_mem_size = "512M"
 
 [sys]
 insecure__allow_eventfd = true
@@ -41,10 +44,11 @@ path = "/app"
 uri = "file:app"
 
 [sgx]
-debug = false
+debug = true
 nonpie_binary = true
-enclave_size = "2G"
-max_threads = 16
+enclave_size = "4G"
+thread_num = 128
+max_threads = 32
 remote_attestation = "{{ ra_method }}"
 
 {% if ra_method == "epid" %}
@@ -58,15 +62,14 @@ trusted_files = [
   "file:/usr/bin/curl",
   "file:{{ libos }}",
   "file:{{ libdir }}",
-  "file:app/",
-  "file:app/bin/contribute",
   "file:app/bin/new",
+  "file:app/circuit.json",
+  "file:app/bin/contribute",
   "file:app/bin/verify_contribution",
   "file:app/bin/new_constrained",
   "file:app/bin/compute_constrained",
   "file:app/bin/verify_transform_constrained",
   "file:app/bin/prepare_phase2",
-  "file:app/ceremonies/",
 ]
 
 allowed_files = [
@@ -102,17 +105,6 @@ allowed_files = [
   "file:response.hash",
   "file:seed1",
   "file:processed",
-  "file:phase1radix2m0",
-  "file:phase1radix2m1",
-  "file:phase1radix2m2",
-  "file:phase1radix2m3",
-  "file:phase1radix2m4",
-  "file:phase1radix2m5",
-  "file:phase1radix2m6",
-  "file:phase1radix2m7",
-  "file:phase1radix2m8",
-  "file:phase1radix2m9",
-  "file:phase1radix2m10",
   "file:circom1.params",
   "file:circom2.params",
   "file:circom3.params",
@@ -122,4 +114,5 @@ allowed_files = [
   "file:circom7.params",
   "file:circom8.params",
   "file:circuit.json",
+  "file:app/ceremonies/",
 ]
