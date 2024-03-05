@@ -162,6 +162,16 @@ async function main(args?: string[]) {
   try {
     console.log("[Enclave] Running command...: ", commandfileName, fileArgs);
 
+    fs.access(commandfileName, fs.constants.F_OK, (err) => {
+      if (err) {
+        console.log('NO SUCH FILE YOUR MERDA BRO')
+
+        return;
+      }
+
+      console.log('allgood')
+    });
+
     const { stdout, stderr } = await execFile(commandfileName, fileArgs);
 
     console.log("[Enclave] Command executed");
