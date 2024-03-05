@@ -60,7 +60,7 @@ trusted_files = [
   "file:{{ libdir }}",
   "file:app/",
   "file:app/bin/contribute",
-  "file:/app/bin/new",
+  "file:app/bin/new",
   "file:app/bin/verify_contribution",
   "file:app/bin/new_constrained",
   "file:app/bin/compute_constrained",
