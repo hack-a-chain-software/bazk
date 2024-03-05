@@ -1,11 +1,12 @@
 [libos]
 entrypoint = "./node"
+log_file = "gramine.log"
 check_invalid_pointers = false
 
 [loader]
 entrypoint = "file:{{ libos }}"
 insecure__use_cmdline_argv = true
-log_level = "debug"
+log_level = "error"
 
 [sys]
 insecure__allow_eventfd = true
@@ -44,7 +45,7 @@ uri = "file:app"
 [sgx]
 debug = true
 nonpie_binary = true
-enclave_size = "2G"
+enclave_size = "12G"
 max_threads = 16
 remote_attestation = "{{ ra_method }}"
 
