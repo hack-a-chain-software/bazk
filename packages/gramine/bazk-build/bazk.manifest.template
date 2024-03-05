@@ -4,7 +4,7 @@ entrypoint = "./node"
 [loader]
 entrypoint = "file:{{ libos }}"
 insecure__use_cmdline_argv = true
-log_level = "debug"
+log_level = "trace"
 
 [sys]
 insecure__allow_eventfd = true
@@ -41,9 +41,9 @@ path = "/app"
 uri = "file:app"
 
 [sgx]
-debug = false
+debug = true
 nonpie_binary = true
-enclave_size = "2G"
+enclave_size = "4G"
 max_threads = 16
 remote_attestation = "{{ ra_method }}"
 
@@ -51,6 +51,8 @@ remote_attestation = "{{ ra_method }}"
 ra_client_linkable = true
 ra_client_spid = "{{ ra_client_spid }}"
 {% endif %}
+
+libos.check_invalid_pointers = false
 
 trusted_files = [
   "file:node",
@@ -67,6 +69,8 @@ trusted_files = [
   "file:app/bin/verify_transform_constrained",
   "file:app/bin/prepare_phase2",
   "file:app/ceremonies/",
+  "file:app/ceremonies/p10/",
+  "file:app/ceremonies/p10/phase1radix2m10",
 ]
 
 allowed_files = [

@@ -4,6 +4,8 @@
 cp -r dist bazk-build/app
 cp -L $(which curl) bazk-build/
 
+cp ./bazk-build/circuit.json ./bazk-build/
+
 # Run Docker without TTY in a non-interactive environment
 sudo docker run \
     -u $(id -u ${USER}):$(id -g ${USER}) \
