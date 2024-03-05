@@ -6,7 +6,7 @@ check_invalid_pointers = false
 [loader]
 entrypoint = "file:{{ libos }}"
 insecure__use_cmdline_argv = true
-log_level = "error"
+log_level = "debug"
 
 [sys]
 insecure__allow_eventfd = true
@@ -62,6 +62,7 @@ trusted_files = [
   "file:{{ libos }}",
   "file:{{ libdir }}",
   "file:app/",
+  "file:circom1.params",
   "file:app/circuit.json",
   "file:app/bin/contribute",
   "file:app/bin/new",
@@ -71,7 +72,7 @@ trusted_files = [
   "file:app/bin/verify_transform_constrained",
   "file:app/bin/prepare_phase2",
   "file:app/ceremonies/",
-  "file:app/ceremonies/p10/",
+  "file:app/ceremonies/p10/phase1radix2m10",
 ]
 
 allowed_files = [
@@ -107,18 +108,6 @@ allowed_files = [
   "file:response.hash",
   "file:seed1",
   "file:processed",
-  "file:phase1radix2m0",
-  "file:phase1radix2m1",
-  "file:phase1radix2m2",
-  "file:phase1radix2m3",
-  "file:phase1radix2m4",
-  "file:phase1radix2m5",
-  "file:phase1radix2m6",
-  "file:phase1radix2m7",
-  "file:phase1radix2m8",
-  "file:phase1radix2m9",
-  "file:phase1radix2m10",
-  "file:circom1.params",
   "file:circom2.params",
   "file:circom3.params",
   "file:circom4.params",
