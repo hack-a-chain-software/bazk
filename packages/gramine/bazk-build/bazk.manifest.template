@@ -59,13 +59,9 @@ trusted_files = [
   "file:{{ libos }}",
   "file:{{ libdir }}",
   "file:app/",
-  "file:app/bin/contribute",
   "file:app/bin/new",
+  "file:app/bin/contribute",
   "file:app/bin/verify_contribution",
-  "file:app/bin/new_constrained",
-  "file:app/bin/compute_constrained",
-  "file:app/bin/verify_transform_constrained",
-  "file:app/bin/prepare_phase2",
   "file:app/ceremonies/",
 ]
 
