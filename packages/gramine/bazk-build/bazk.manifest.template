@@ -19,6 +19,7 @@ PINATA_API_KEY = { passthrough = true }
 PINATA_API_SECRET = { passthrough = true }
 ACCOUNT_MNEMONIC = { passthrough = true }
 SGX_ENABLED = { passthrough = true }
+OMP_NUM_THREADS = "8"
 
 [[fs.mounts]]
 type = "chroot"
@@ -53,14 +54,6 @@ ra_client_spid = "{{ ra_client_spid }}"
 {% endif %}
 
 trusted_files = [
-  "file:/etc/apt/apt.conf.d",
-  "file:/etc/apt/apt.conf",
-  "file:/etc/default/apport",
-  "file:/etc/nsswitch.conf",
-  "file:/etc/host.conf",
-  "file:/etc/passwd",
-  "file:/etc/group",
-  "file:/etc/hosts",
   "file:app/",
   "file:node",
   "file:curl",
@@ -91,6 +84,13 @@ trusted_files = [
 ]
 
 allowed_files = [
+  "file:/etc/apt/apt.conf.d",
+  "file:/etc/apt/apt.conf",
+  "file:/etc/default/apport",
+  "file:/etc/nsswitch.conf",
+  "file:/etc/host.conf",
+  "file:/etc/passwd",
+  "file:/etc/group",
   "file:/etc/hosts",
   "file:/etc/resolv.conf",
   "file:/etc/ssl/openssl.cnf",
