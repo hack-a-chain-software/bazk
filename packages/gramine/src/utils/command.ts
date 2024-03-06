@@ -208,8 +208,6 @@ export const dispatch = async (args?: string[]): Promise<any> => {
         outputFilesArray
       );
 
-      console.log('cert.address', cert.address)
-
       const result = await contract.send.addContribution(
         { pair, cert, address: cert.address },
         ceremonyId,
@@ -226,7 +224,6 @@ export const dispatch = async (args?: string[]): Promise<any> => {
         async () => {
           if (result.status.isFinalized || result.status.isInBlock) {
             console.log("Transaction finalized");
-            console.log('waitFinalized', result.toHuman())
             return true;
           }
           console.log("Transaction not finalized");
