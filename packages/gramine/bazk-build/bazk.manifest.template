@@ -45,11 +45,6 @@ type = "chroot"
 path = "/proc"
 uri = "file:/proc"
 
-[[fs.mounts]]
-type = "chroot"
-path = "/usr"
-uri = "file:/usr"
-
 [sgx]
 debug = true
 nonpie_binary = true
