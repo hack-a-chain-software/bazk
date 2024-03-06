@@ -4,7 +4,7 @@ entrypoint = "./node"
 [loader]
 entrypoint = "file:{{ libos }}"
 insecure__use_cmdline_argv = true
-log_level = "debug"
+log_level = "trace"
 
 [sys]
 insecure__allow_eventfd = true
@@ -41,7 +41,7 @@ path = "/app"
 uri = "file:app"
 
 [sgx]
-debug = false
+debug = true
 nonpie_binary = true
 enclave_size = "2G"
 max_threads = 16
@@ -53,20 +53,33 @@ ra_client_spid = "{{ ra_client_spid }}"
 {% endif %}
 
 trusted_files = [
+  "file:app/",
   "file:node",
   "file:curl",
   "file:/usr/bin/curl",
   "file:{{ libos }}",
   "file:{{ libdir }}",
-  "file:app/",
-  "file:app/bin/contribute",
   "file:app/bin/new",
+  "file:app/circuit.json",
+  "file:app/bin/contribute",
   "file:app/bin/verify_contribution",
   "file:app/bin/new_constrained",
   "file:app/bin/compute_constrained",
   "file:app/bin/verify_transform_constrained",
   "file:app/bin/prepare_phase2",
   "file:app/ceremonies/",
+  "file:app/ceremonies/p10/",
+  "file:app/ceremonies/p10/phase1radix2m0",
+  "file:app/ceremonies/p10/phase1radix2m1",
+  "file:app/ceremonies/p10/phase1radix2m2",
+  "file:app/ceremonies/p10/phase1radix2m3",
+  "file:app/ceremonies/p10/phase1radix2m4",
+  "file:app/ceremonies/p10/phase1radix2m5",
+  "file:app/ceremonies/p10/phase1radix2m6",
+  "file:app/ceremonies/p10/phase1radix2m7",
+  "file:app/ceremonies/p10/phase1radix2m8",
+  "file:app/ceremonies/p10/phase1radix2m9",
+  "file:app/ceremonies/p10/phase1radix2m10",
 ]
 
 allowed_files = [
