@@ -226,7 +226,7 @@ export const dispatch = async (args?: string[]): Promise<any> => {
         async () => {
           if (result.status.isFinalized || result.status.isInBlock) {
             console.log("Transaction finalized");
-            console.log('waitFinalized', result)
+            console.log('waitFinalized', result.status.toJSON())
             return true;
           }
           console.log("Transaction not finalized");
