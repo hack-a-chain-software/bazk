@@ -29,27 +29,18 @@ async function main(args?: string[]) {
 const server = http.createServer((req: any, res: any) => {
   if (req.method === 'GET' && req.url === '/output') {
     res.writeHead(200, {'Content-Type': 'application/json'});
-
     res.end(JSON.stringify({
       success: true,
       message: output
     }));
-
-    return
-  }
-
-  if (isCommandExecuting) {
+  } else if (isCommandExecuting) {
     res.writeHead(429, {'Content-Type': 'application/json'});
 
     res.end(JSON.stringify({
       success: false,
       message: 'A command is already being executed. Please try again later.',
     }));
-
-    return
-  }
-
-  if (req.method === 'POST' && req.url === '/execute') {
+  } else if (req.method === 'POST' && req.url === '/execute') {
     isCommandExecuting = true
 
     const decoder = new StringDecoder('utf-8');
