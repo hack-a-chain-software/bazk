@@ -42,6 +42,15 @@ async function main(args?: string[]) {
 }
 
 const server = http.createServer((req: any, res: any) => {
+  if (isCommandExecuting) {
+    res.writeHead(429, {'Content-Type': 'application/json'});
+
+    res.end(JSON.stringify({
+      success: false,
+      message: 'A command is already being executed. Please try again later.',
+    }));
+  }
+
   if (req.method === 'GET' && req.url === '/ouput') {
     res.writeHead(200, {'Content-Type': 'application/json'});
 
@@ -52,16 +61,6 @@ const server = http.createServer((req: any, res: any) => {
   }
 
   if (req.method === 'POST' && req.url === '/execute') {
-    if (isCommandExecuting) {
-      res.writeHead(429, {'Content-Type': 'application/json'});
-
-      res.end(JSON.stringify({
-        success: false,
-        message: 'A command is already being executed. Please try again later.',
-      }));
-
-      return;
-    }
 
     isCommandExecuting = true
 
