@@ -9,7 +9,7 @@ log_level = "trace"
 [sys]
 insecure__allow_eventfd = true
 stack.size = "2M"
-brk.max_size = "1G"
+brk.max_size = "512M"
 
 [loader.env]
 LD_LIBRARY_PATH = "/lib:/lib/x86_64-linux-gnu"
