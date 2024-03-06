@@ -1,5 +1,5 @@
-import { pinataKey, pinataSecret } from "../constants/env";
 import { execFile } from "./exec";
+import { pinataKey, pinataSecret } from "../constants/env";
 
 export const uploadToPinata = async (filePath: string): Promise<string> => {
   if (pinataKey == null) {
