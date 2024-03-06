@@ -40,6 +40,11 @@ type = "chroot"
 path = "/app"
 uri = "file:app"
 
+[[fs.mounts]]
+type = "chroot"
+path = "/proc"
+uri = "file:/proc"
+
 [sgx]
 debug = true
 nonpie_binary = true
