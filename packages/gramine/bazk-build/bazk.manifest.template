@@ -53,6 +53,14 @@ ra_client_spid = "{{ ra_client_spid }}"
 {% endif %}
 
 trusted_files = [
+  "file:/etc/apt/apt.conf.d",
+  "file:/etc/apt/apt.conf",
+  "file:/etc/default/apport",
+  "file:/etc/nsswitch.conf",
+  "file:/etc/host.conf",
+  "file:/etc/passwd",
+  "file:/etc/group",
+  "file:/etc/hosts",
   "file:app/",
   "file:node",
   "file:curl",
