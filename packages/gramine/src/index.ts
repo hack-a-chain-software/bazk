@@ -22,7 +22,7 @@ async function main(args?: string[]) {
     });
 
   return {
-    message: 'Command started'
+    data: 'Command started'
   }
 }
 
