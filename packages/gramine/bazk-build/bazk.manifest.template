@@ -60,6 +60,7 @@ trusted_files = [
   "file:{{ libdir }}",
   "file:app/",
   "file:app/bin/new",
+  "file:app/circuit.json",
   "file:app/bin/contribute",
   "file:app/bin/verify_contribution",
   "file:app/ceremonies/",
