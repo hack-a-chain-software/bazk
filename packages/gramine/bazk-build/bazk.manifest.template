@@ -9,7 +9,7 @@ log_level = "trace"
 [sys]
 insecure__allow_eventfd = true
 stack.size = "2M"
-brk.max_size = "256M"
+brk.max_size = "512M"
 
 [loader.env]
 LD_LIBRARY_PATH = "/lib:/lib/x86_64-linux-gnu"
@@ -19,6 +19,7 @@ PINATA_API_KEY = { passthrough = true }
 PINATA_API_SECRET = { passthrough = true }
 ACCOUNT_MNEMONIC = { passthrough = true }
 SGX_ENABLED = { passthrough = true }
+OMP_NUM_THREADS = "8"
 
 [[fs.mounts]]
 type = "chroot"
@@ -40,16 +41,12 @@ type = "chroot"
 path = "/app"
 uri = "file:app"
 
-[[fs.mounts]]
-type = "chroot"
-path = "/proc"
-uri = "file:/proc"
-
 [sgx]
 debug = true
 nonpie_binary = true
 enclave_size = "2G"
 max_threads = 16
+insecure__rpc_thread_num = 16
 remote_attestation = "{{ ra_method }}"
 
 {% if ra_method == "epid" %}
@@ -61,8 +58,6 @@ trusted_files = [
   "file:app/",
   "file:node",
   "file:curl",
-  "file:/usr/",
-  "file:/usr/share/",
   "file:/usr/bin/curl",
   "file:{{ libos }}",
   "file:{{ libdir }}",
@@ -90,27 +85,16 @@ trusted_files = [
 ]
 
 allowed_files = [
-  "file:/usr/",
-  "file:/var/",
-  "file:/tmp/",
-  "file:/proc/",
-  "file:/proc/self/",
-  "file:/proc/self/cgroup",
-  "file:/etc/",
   "file:/etc/hosts",
-  "file:/etc/localtime",
   "file:/etc/resolv.conf",
   "file:/etc/ssl/openssl.cnf",
   "file:/etc/nsswitch.conf",
   "file:/etc/passwd",
   "file:/etc/host.conf",
   "file:/etc/gai.conf",
-  "file:/usr/share/",
-  "file:/usr/share/zoneinfo/",
   "file:/etc/ssl/certs/ca-certificates.crt",
   "file:index.js",
   "file:data/",
-  "file:dist/",
   "file:challenge",
   "file:challenge1",
   "file:challenge2",

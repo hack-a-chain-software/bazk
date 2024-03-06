@@ -4,9 +4,7 @@ import { cryptoWaitReady, signatureVerify } from "@polkadot/util-crypto";
 import * as ra from "@phala/ra-report";
 import { getClient, getContract, signCertificate } from "@phala/sdk";
 import fs from "fs";
-
-import { execFile as execFileCallback } from "child_process";
-import { promisify } from "util";
+import { execFile  } from "./utils/exec";
 import { iasApiKey, sgxEnabled } from "./constants/env";
 import { VALIDATOR_ABI, VALIDATOR_CONTRACT_ADDRESS } from "./constants/contract";
 import { PORT } from "./constants/server";
@@ -17,8 +15,6 @@ import { getMetadatas } from "./utils/metadata";
 
 const http = require('http');
 const { StringDecoder } = require('string_decoder');
-
-const execFile = promisify(execFileCallback);
 
 let isCommandExecuting = false
 
