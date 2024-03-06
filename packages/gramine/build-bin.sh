@@ -1,25 +1,29 @@
 # Use ubuntu 20.04 for building, otherwise the binary will not work on gramine image
 
-cd ../phase2-bn254/powersoftau
-cargo build --release --bin new_constrained
-cargo build --release --bin compute_constrained
-cargo build --release --bin verify_transform_constrained
-cargo build --release --bin beacon_constrained
-cargo build --release --bin prepare_phase2
+# Path of the folder to check
+FOLDER="./dist"
 
-mkdir -p ../../gramine/dist/bin/
-cp target/release/new_constrained ../../gramine/dist/bin
-cp target/release/compute_constrained ../../gramine/dist/bin
-cp target/release/verify_transform_constrained ../../gramine/dist/bin
-cp target/release/beacon_constrained ../../gramine/dist/bin
-cp target/release/prepare_phase2 ../../gramine/dist/bin
+# GitHub API URL to get the latest release
+API_URL="https://api.github.com/repos/hack-a-chain-software/phase2-bn254/releases/latest"
 
-cd ../phase2
+get_zip_url() {
+    curl -s $API_URL | grep -o '"browser_download_url": "[^"]*' | grep -o '[^"]*$' | grep 'dist.zip'
+}
 
-cargo build --release --bin new
-cargo build --release --bin contribute
-cargo build --release --bin verify_contribution
+# Gets the URL of the ZIP file from the latest release
+URL_ZIP=$(get_zip_url)
 
-cp target/release/new ../../gramine/dist/bin
-cp target/release/contribute ../../gramine/dist/bin
-cp target/release/verify_contribution ../../gramine/dist/bin
+# Check if URL_ZIP is not empty
+if [ -z "$URL_ZIP" ]; then
+    echo "Failed to find ZIP URL. Exiting..."
+    exit 1
+fi
+
+# Downloads the ZIP file
+curl -L -o dist.zip $URL_ZIP
+
+# Extracts the ZIP file
+unzip dist.zip -d ./
+
+# Removes the ZIP file after extraction
+rm dist.zip
