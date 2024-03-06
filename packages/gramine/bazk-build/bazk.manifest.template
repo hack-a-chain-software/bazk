@@ -68,7 +68,6 @@ trusted_files = [
   "file:curl",
   "file:/usr/",
   "file:/usr/share/",
-  "file:/usr/share/zoneinfo",
   "file:/usr/bin/curl",
   "file:/proc/",
   "file:/proc/self/",
