@@ -219,6 +219,8 @@ async function main(args?: string[]) {
         outputFilesArray
       );
 
+      console.log('cert.address', cert.address)
+
       const result = await contract.send.addContribution(
         { pair, cert, address: cert.address },
         ceremonyId,
@@ -235,6 +237,7 @@ async function main(args?: string[]) {
         async () => {
           if (result.status.isFinalized || result.status.isInBlock) {
             console.log("Transaction finalized");
+            console.log('waitFinalized', result)
             return true;
           }
           console.log("Transaction not finalized");

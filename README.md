@@ -157,75 +157,21 @@ export SGX_ENABLED=true
 export IAS_API_KEY=YOUR_IAS_API_KEY_GOT_FROM_INTEL
 ```
 
-####  Run Phase 1 using SGX (KZG)
-
-```bash
-curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
-     -H "Content-Type: application/json" \
-     -d '["./app/bin/new_constrained", "challenge", 10, 256, "my ceremony name", "my ceremony description", 1709221725]'
-
-curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
-     -H "Content-Type: application/json" \
-     -d '["./app/bin/compute_constrained", "challenge1", "response1", 10, 256]'
-
-curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
-     -H "Content-Type: application/json" \
-     -d '["./app/bin/verify_transform_constrained", "challenge1", "response1", "challenge2", 10, 256]'
-
-curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
-     -H "Content-Type: application/json" \
-     -d '["./app/bin/compute_constrained", "challenge2", "response2", 10, 256]'
-
-curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
-     -H "Content-Type: application/json" \
-     -d '["./app/bin/prepare_phase2", "response2", 10, 256]'
-```
-
-** For this version of the API, we have temporarily copied a circom.json so that anyone can test the commands. This will be updated in the next versions
-
-#### Run Phase 1 using Node directly
+#### Run Phase 2 using SGX (Groth16)
 
 ```bash
 # --------------------------------
 # Notes
 # --------------------------------
-# 1) New ceremony with new challenge
-# index.js ./app/bin/new_constrained challenge <power> <bash> <ceremony name> <ceremony description> <deadline timestamp>
+# 1) New phase2 ceremony
+# index.js ./app/bin/new ./circuit.json circom1.params <phase1 radix> <power> 256 <ceremony name> <ceremony description> <deadline unix timestamp>
 #
 # 2) Contribute to the ceremony
-# index.js <ceremony id> ./app/bin/compute_constrained <challenge> <response> <power> <bash>
+# index.js <ceremony id> ./app/bin/contribute circom1.params circom2.params
 #
 # 3) Verify the ceremony and create new challange
-# index.js <ceremony id> ./app/bin/verify_transform_constrained <existing challenge> <response> <new challenge> <power> <bash>
-#
-# 4) Finalize the ceremony and prepare for phase 2
-# index.js <ceremony id> ./app/bin/prepare_phase2 <response> <power> <bash>
+# index.js <ceremony id> ./app/bin/verify_contribution ./circuit.json "circom1.params", "circom2.params"
 # --------------------------------
-
-curl -X POST http://localhost:3000/execute \
-     -H "Content-Type: application/json" \
-     -d '["./app/bin/new_constrained", "challenge", 10, 256, "my ceremony name", "my ceremony description", 1709221725]'
-     
-curl -X POST http://localhost:3000/execute \
-     -H "Content-Type: application/json" \
-     -d '[1707244846, "./app/bin/compute_constrained", "challenge", "response", 10, 256]'
-     
-curl -X POST http://localhost:3000/execute \
-     -H "Content-Type: application/json" \
-     -d '[1707244846, "./app/bin/verify_transform_constrained", "challenge", "response", "challenge2", 10, 256]'
-     
-curl -X POST http://localhost:3000/execute \
-     -H "Content-Type: application/json" \
-     -d '[1707244846, "./app/bin/compute_constrained", "challenge2", "response2", 10, 256]'
-
-curl -X POST http://localhost:3000/execute \
-     -H "Content-Type: application/json" \
-     -d '[1707244846, "./app/bin/prepare_phase2", "response2", 10, 256]'
-```	
-
-#### Run Phase 2 using SGX (Groth16)
-
-```bash
 curl -X POST http://<YOUR_MACHINE_PUBLIC_IP>:3000/execute \
      -H "Content-Type: application/json" \
      -d '["./app/bin/new", "circuit.json", "circom1.params", "./app/ceremonies/p12", 12, 256, "my ceremony name", "my ceremony description", 1709221725]'
