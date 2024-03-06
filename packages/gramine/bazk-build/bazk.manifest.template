@@ -4,7 +4,7 @@ entrypoint = "./node"
 [loader]
 entrypoint = "file:{{ libos }}"
 insecure__use_cmdline_argv = true
-log_level = "trace"
+log_level = "debug"
 
 [sys]
 insecure__allow_eventfd = true
@@ -40,11 +40,6 @@ type = "chroot"
 path = "/app"
 uri = "file:app"
 
-[[fs.mounts]]
-type = "chroot"
-path = "/proc"
-uri = "file:/proc"
-
 [sgx]
 debug = true
 nonpie_binary = true
@@ -61,8 +56,6 @@ trusted_files = [
   "file:app/",
   "file:node",
   "file:curl",
-  "file:/usr/",
-  "file:/usr/share/",
   "file:/usr/bin/curl",
   "file:{{ libos }}",
   "file:{{ libdir }}",
@@ -90,27 +83,16 @@ trusted_files = [
 ]
 
 allowed_files = [
-  "file:/usr/",
-  "file:/var/",
-  "file:/tmp/",
-  "file:/proc/",
-  "file:/proc/self/",
-  "file:/proc/self/cgroup",
-  "file:/etc/",
   "file:/etc/hosts",
-  "file:/etc/localtime",
   "file:/etc/resolv.conf",
   "file:/etc/ssl/openssl.cnf",
   "file:/etc/nsswitch.conf",
   "file:/etc/passwd",
   "file:/etc/host.conf",
   "file:/etc/gai.conf",
-  "file:/usr/share/",
-  "file:/usr/share/zoneinfo/",
   "file:/etc/ssl/certs/ca-certificates.crt",
   "file:index.js",
   "file:data/",
-  "file:dist/",
   "file:challenge",
   "file:challenge1",
   "file:challenge2",
