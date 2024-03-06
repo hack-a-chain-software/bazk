@@ -45,6 +45,11 @@ type = "chroot"
 path = "/proc"
 uri = "file:/proc"
 
+[[fs.mounts]]
+type = "chroot"
+path = "/usr"
+uri = "file:/usr"
+
 [sgx]
 debug = true
 nonpie_binary = true
@@ -93,6 +98,9 @@ allowed_files = [
   "file:/etc/passwd",
   "file:/etc/host.conf",
   "file:/etc/gai.conf",
+  "file:/usr/",
+  "file:/usr/share/",
+  "file:/usr/share/zoneinfo/",
   "file:/etc/ssl/certs/ca-certificates.crt",
   "file:index.js",
   "file:data/",
