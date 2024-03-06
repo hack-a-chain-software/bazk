@@ -34,6 +34,8 @@ const server = http.createServer((req: any, res: any) => {
       success: true,
       message: output
     }));
+
+    return
   }
 
   if (isCommandExecuting) {
@@ -43,6 +45,8 @@ const server = http.createServer((req: any, res: any) => {
       success: false,
       message: 'A command is already being executed. Please try again later.',
     }));
+
+    return
   }
 
   if (req.method === 'POST' && req.url === '/execute') {
