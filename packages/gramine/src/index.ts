@@ -19,21 +19,6 @@ async function main(args?: string[]) {
     .then(res => output = res)
     .finally(() => {
       isCommandExecuting = false
-
-      fs.access('/challenge', fs.constants.F_OK, (err) => {
-        if (err) {
-          return;
-        }
-
-        fs.unlink('/challenge', (err) => {
-          if (err) {
-            console.error('Error deleting the file:', err);
-            return;
-          }
-
-          console.log('File deleted successfully');
-        });
-      });
     });
 
   return {
@@ -42,6 +27,15 @@ async function main(args?: string[]) {
 }
 
 const server = http.createServer((req: any, res: any) => {
+  if (req.method === 'GET' && req.url === '/output') {
+    res.writeHead(200, {'Content-Type': 'application/json'});
+
+    res.end(JSON.stringify({
+      success: true,
+      message: output
+    }));
+  }
+
   if (isCommandExecuting) {
     res.writeHead(429, {'Content-Type': 'application/json'});
 
@@ -51,17 +45,7 @@ const server = http.createServer((req: any, res: any) => {
     }));
   }
 
-  if (req.method === 'GET' && req.url === '/ouput') {
-    res.writeHead(200, {'Content-Type': 'application/json'});
-
-    res.end(JSON.stringify({
-      success: true,
-      message: output
-    }));
-  }
-
   if (req.method === 'POST' && req.url === '/execute') {
-
     isCommandExecuting = true
 
     const decoder = new StringDecoder('utf-8');
