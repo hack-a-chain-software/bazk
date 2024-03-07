@@ -4,7 +4,7 @@ entrypoint = "./node"
 [loader]
 entrypoint = "file:{{ libos }}"
 insecure__use_cmdline_argv = true
-log_level = "debug"
+log_level = "trace"
 
 [sys]
 insecure__allow_eventfd = true
@@ -12,8 +12,8 @@ stack.size = "2M"
 brk.max_size = "256M"
 
 [loader.env]
-LD_LIBRARY_PATH = "/lib:/lib/x86_64-linux-gnu"
 MALLOC_ARENA_MAX = "1"
+LD_LIBRARY_PATH = "/lib:/lib/x86_64-linux-gnu"
 IAS_API_KEY = { passthrough = true }
 PINATA_API_KEY = { passthrough = true }
 PINATA_API_SECRET = { passthrough = true }
@@ -32,6 +32,11 @@ uri = "file:/etc"
 
 [[fs.mounts]]
 type = "chroot"
+path = "/usrc"
+uri = "file:/usr"
+
+[[fs.mounts]]
+type = "chroot"
 path = "/data"
 uri = "file:data"
 
@@ -42,6 +47,7 @@ uri = "file:app"
 
 [sgx]
 debug = false
+file_check_policy = "allow_all_but_log"
 nonpie_binary = true
 enclave_size = "2G"
 max_threads = 16
@@ -59,17 +65,14 @@ trusted_files = [
   "file:{{ libos }}",
   "file:{{ libdir }}",
   "file:app/",
-  "file:app/bin/contribute",
   "file:app/bin/new",
+  "file:app/bin/contribute",
   "file:app/bin/verify_contribution",
-  "file:app/bin/new_constrained",
-  "file:app/bin/compute_constrained",
-  "file:app/bin/verify_transform_constrained",
-  "file:app/bin/prepare_phase2",
   "file:app/ceremonies/",
 ]
 
 allowed_files = [
+  "file:/etc/",
   "file:/etc/hosts",
   "file:/etc/resolv.conf",
   "file:/etc/ssl/openssl.cnf",
