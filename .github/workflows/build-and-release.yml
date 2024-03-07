@@ -32,6 +32,7 @@ jobs:
           sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
           sudo apt-get update
           sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+          sudo usermod -aG docker $USER
           echo "Installed build-essential, curl, git, wget, and Docker"
 
       - name: Setup Rust and Cargo
@@ -41,16 +42,16 @@ jobs:
           override: true
           components: rustc, cargo
 
-      - name: Use Node.js 16
+      - name: Use Node.js 18
         uses: actions/setup-node@v2
         with:
-          node-version: "16.17.1"
+          node-version: "18"
 
       - name: Install Yarn
         run: npm install -g yarn
 
       - name: Install dependencies
-        run: yarn install
+        run: yarn gramine install
 
       - name: Update permissions
         run: (cd ./packages/gramine/bazk-build && chmod +x *)

@@ -50,11 +50,9 @@ path = "/app"
 uri = "file:app"
 
 [sgx]
-isvprodid = 1
-isvsvn    = 1
 debug = true
 nonpie_binary = true
-enclave_size = "2G"
+enclave_size = "4G"
 max_threads = 24
 remote_attestation = "{{ ra_method }}"
 
@@ -64,11 +62,6 @@ ra_client_spid = "{{ ra_client_spid }}"
 {% endif %}
 
 trusted_files = [
-  "file:/usr/share/zoneinfo/",
-  "file:/usr/share/zoneinfo-icu/",
-  "file:/etc/os-release",
-  "file:/etc/localtime",
-  "file:/proc/self/cgroup",
   "file:app/",
   "file:node",
   "file:curl",
