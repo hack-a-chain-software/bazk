@@ -4,11 +4,11 @@ entrypoint = "./node"
 [loader]
 entrypoint = "file:{{ libos }}"
 insecure__use_cmdline_argv = true
-log_level = "debug"
+log_level = "all"
 
 [sys]
 insecure__allow_eventfd = true
-stack.size = "2M"
+stack.size = "24M"
 brk.max_size = "256M"
 
 [loader.env]
@@ -76,8 +76,8 @@ allowed_files = [
   "file:/etc/ssl/certs/ca-certificates.crt",
   "file:index.js",
   "file:data/",
-  "file:challenge1",
   "file:challenge",
+  "file:challenge1",
   "file:challenge2",
   "file:challenge3",
   "file:challenge4",
