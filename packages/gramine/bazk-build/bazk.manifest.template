@@ -14,6 +14,7 @@ brk.max_size = "256M"
 [loader.env]
 LD_LIBRARY_PATH = "/lib:/lib/x86_64-linux-gnu"
 MALLOC_ARENA_MAX = "1"
+RUST_BACKTRACE = "full"
 IAS_API_KEY = { passthrough = true }
 PINATA_API_KEY = { passthrough = true }
 PINATA_API_SECRET = { passthrough = true }
@@ -44,7 +45,8 @@ uri = "file:app"
 debug = false
 nonpie_binary = true
 enclave_size = "2G"
-max_threads = 16
+max_threads = 64
+file_check_policy = "allow_all_but_log"
 remote_attestation = "{{ ra_method }}"
 
 {% if ra_method == "epid" %}
