@@ -13,6 +13,7 @@ sudo docker run \
     -v /usr/share/zoneinfo/:/usr/share/zoneinfo/ \
     -v /usr/share/zoneinfo-icu/:/usr/share/zoneinfo-icu/ \
     -v /etc/localtime:/etc/localtime \
+    -v /proc/self/cgroup:/proc/self/cgroup \
     --env IAS_SPID=$IAS_SPID \
     kvin/gramine:1.0 \
     "make dist -C /bazk-build"
