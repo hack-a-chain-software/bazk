@@ -47,6 +47,7 @@ uri = "file:app"
 
 [sgx]
 debug = false
+file_check_policy = "allow_all_but_log"
 nonpie_binary = true
 enclave_size = "2G"
 max_threads = 16
@@ -72,7 +73,6 @@ trusted_files = [
 
 allowed_files = [
   "file:/etc/",
-  "file:/usr/",
   "file:/etc/hosts",
   "file:/etc/resolv.conf",
   "file:/etc/ssl/openssl.cnf",
