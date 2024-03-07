@@ -54,8 +54,8 @@ isvprodid = 1
 isvsvn    = 1
 debug = true
 nonpie_binary = true
-enclave_size = "2G"
-max_threads = 24
+enclave_size = "4G"
+max_threads = 32
 remote_attestation = "{{ ra_method }}"
 
 {% if ra_method == "epid" %}
