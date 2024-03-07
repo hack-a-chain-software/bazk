@@ -5,7 +5,7 @@ import * as ra from "@phala/ra-report";
 import { getClient, getContract, signCertificate } from "@phala/sdk";
 import fs from "fs";
 import { execFile  } from "./utils/exec";
-import { iasApiKey, sgxEnabled } from "./constants/env";
+import { iasApiKey, sgxEnabled, testMode } from "./constants/env";
 import { VALIDATOR_ABI, VALIDATOR_CONTRACT_ADDRESS } from "./constants/contract";
 import { PORT } from "./constants/server";
 import { RPC } from "./constants/phala";
@@ -42,7 +42,7 @@ async function main(args?: string[]) {
   });
 
   let sigOfPubkey = "";
-  if (sgxEnabled) {
+  if (sgxEnabled && !testMode) {
     console.log("Getting report...");
     const report = await ra.createRemoteAttestationReport({
       iasKey: iasApiKey ?? "",
@@ -130,13 +130,16 @@ async function main(args?: string[]) {
     bash = Number(args?.[args.length - 1]);
     power = Number(args?.[args.length - 2]);
 
-    await validadeDeadline(ceremonyId, validatorContract);
-    await validateLastHash(
-      ceremonyId,
-      validatorContract,
-      commandfileName,
-      fileArgs
-    );
+
+    if (!testMode) {
+      await validadeDeadline(ceremonyId, validatorContract);
+      await validateLastHash(
+        ceremonyId,
+        validatorContract,
+        commandfileName,
+        fileArgs
+      );
+    }
   }
 
   console.log("[Enclave] Phase: ", phase);
@@ -145,7 +148,7 @@ async function main(args?: string[]) {
 
   const validatorPubkey = (await validatorContract.call("publicKey")) as any;
 
-  if (sgxEnabled) {
+  if (sgxEnabled && !testMode) {
     console.log("Verifying if enclave valid...");
     const publicKeyValid = signatureVerify(
       pad64(publicKey),
@@ -163,8 +166,6 @@ async function main(args?: string[]) {
     console.log("[Enclave] Command executed");
     console.log("[Enclave] Command stdout: \n");
     console.log(stdout);
-    console.log("[Enclave] Command stderr: \n");
-    console.log(stderr);
 
     if (stderr) {
       return {
@@ -221,33 +222,35 @@ async function main(args?: string[]) {
 
       console.log('cert.address', cert.address)
 
-      const result = await contract.send.addContribution(
-        { pair, cert, address: cert.address },
-        ceremonyId,
-        phase,
-        name,
-        description,
-        deadline,
-        timestamp,
-        metadataArray,
-        outputFilesArray
-      );
+      if (!testMode) {
+        const result = await contract.send.addContribution(
+          { pair, cert, address: cert.address },
+          ceremonyId,
+          phase,
+          name,
+          description,
+          deadline,
+          timestamp,
+          metadataArray,
+          outputFilesArray
+        );
 
-      await result.waitFinalized(
-        async () => {
-          if (result.status.isFinalized || result.status.isInBlock) {
-            console.log("Transaction finalized");
-            console.log('waitFinalized', result)
-            return true;
+        await result.waitFinalized(
+          async () => {
+            if (result.status.isFinalized || result.status.isInBlock) {
+              console.log("Transaction finalized");
+              console.log('waitFinalized', result)
+              return true;
+            }
+            console.log("Transaction not finalized");
+            return false;
+          },
+          {
+            timeout: 1000 * 60 * 5, // 5 minutes
+            blocks: 50,
           }
-          console.log("Transaction not finalized");
-          return false;
-        },
-        {
-          timeout: 1000 * 60 * 5, // 5 minutes
-          blocks: 50,
-        }
-      );
+        );
+      }
 
       return {
         data: {
