@@ -12,7 +12,6 @@ stack.size = "2M"
 brk.max_size = "256M"
 
 [loader.env]
-RUST_BACKTRACE=1
 MALLOC_ARENA_MAX = "1"
 LD_LIBRARY_PATH = "/lib:/lib/x86_64-linux-gnu"
 IAS_API_KEY = { passthrough = true }
@@ -33,6 +32,11 @@ uri = "file:/etc"
 
 [[fs.mounts]]
 type = "chroot"
+path = "/usr"
+uri = "file:/usr"
+
+[[fs.mounts]]
+type = "chroot"
 path = "/data"
 uri = "file:data"
 
@@ -43,9 +47,10 @@ uri = "file:app"
 
 [sgx]
 debug = false
+enable_stats = true
 nonpie_binary = true
-enclave_size = "4G"
-max_threads = 128
+enclave_size = "2G"
+max_threads = 16
 remote_attestation = "{{ ra_method }}"
 
 {% if ra_method == "epid" %}
@@ -56,6 +61,9 @@ ra_client_spid = "{{ ra_client_spid }}"
 trusted_files = [
   "file:node",
   "file:curl",
+  "file:/usr/",
+  "file:/etc/",
+  "file:/lib/",
   "file:/usr/bin/curl",
   "file:{{ libos }}",
   "file:{{ libdir }}",
