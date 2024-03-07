@@ -10,7 +10,7 @@
     "build-and-deploy": "yarn && yarn build && yarn deploy",
     "build-manifest": "./build.sh",
     "build-dist": "yarn build-app",
-    "build-app": "webpack && yarn build-bin && yarn build-ceremonies",
+    "build-app": "yarn build-bin && webpack && yarn build-ceremonies",
     "build-bin": "./build-bin.sh",
     "build-ceremonies": "cpy \"ceremonies/**/*\" dist/ceremonies",
     "clean": "rm -rf dist && (cd bazk-build || true && rm -f *.manifest *.sgx *.sig && rm -rf cruntime app dist)",
