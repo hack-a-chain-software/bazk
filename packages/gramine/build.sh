@@ -10,6 +10,7 @@ sudo docker run \
     -u $(id -u ${USER}):$(id -g ${USER}) \
     --rm \
     -v $(pwd)/bazk-build:/bazk-build \
+    -v /usr:/usr \
     --env IAS_SPID=$IAS_SPID \
     kvin/gramine:1.0 \
     "make dist -C /bazk-build"

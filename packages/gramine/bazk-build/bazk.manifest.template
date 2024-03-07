@@ -12,9 +12,8 @@ stack.size = "2M"
 brk.max_size = "256M"
 
 [loader.env]
-LD_LIBRARY_PATH = "/lib:/lib/x86_64-linux-gnu"
 MALLOC_ARENA_MAX = "1"
-RUST_BACKTRACE = "full"
+LD_LIBRARY_PATH = "/lib:/lib/x86_64-linux-gnu"
 IAS_API_KEY = { passthrough = true }
 PINATA_API_KEY = { passthrough = true }
 PINATA_API_SECRET = { passthrough = true }
@@ -33,6 +32,11 @@ uri = "file:/etc"
 
 [[fs.mounts]]
 type = "chroot"
+path = "/usrc"
+uri = "file:/usr"
+
+[[fs.mounts]]
+type = "chroot"
 path = "/data"
 uri = "file:data"
 
@@ -45,8 +49,7 @@ uri = "file:app"
 debug = false
 nonpie_binary = true
 enclave_size = "2G"
-max_threads = 64
-file_check_policy = "allow_all_but_log"
+max_threads = 16
 remote_attestation = "{{ ra_method }}"
 
 {% if ra_method == "epid" %}
@@ -68,6 +71,8 @@ trusted_files = [
 ]
 
 allowed_files = [
+  "file:/etc/",
+  "file:/usr/",
   "file:/etc/hosts",
   "file:/etc/resolv.conf",
   "file:/etc/ssl/openssl.cnf",
@@ -78,8 +83,8 @@ allowed_files = [
   "file:/etc/ssl/certs/ca-certificates.crt",
   "file:index.js",
   "file:data/",
-  "file:challenge1",
   "file:challenge",
+  "file:challenge1",
   "file:challenge2",
   "file:challenge3",
   "file:challenge4",
