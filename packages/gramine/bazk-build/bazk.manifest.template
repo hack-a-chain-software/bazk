@@ -64,7 +64,6 @@ ra_client_spid = "{{ ra_client_spid }}"
 {% endif %}
 
 trusted_files = [
-  "file:/etc/localtime",
   "file:app/",
   "file:node",
   "file:curl",
