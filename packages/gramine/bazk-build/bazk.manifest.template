@@ -4,7 +4,7 @@ entrypoint = "./node"
 [loader]
 entrypoint = "file:{{ libos }}"
 insecure__use_cmdline_argv = true
-log_level = "debug"
+log_level = "trace"
 
 [sys]
 insecure__allow_eventfd = true
@@ -43,8 +43,8 @@ uri = "file:app"
 [sgx]
 debug = false
 nonpie_binary = true
-enclave_size = "4G"
-max_threads = 24
+enclave_size = "2G"
+max_threads = 16
 remote_attestation = "{{ ra_method }}"
 
 {% if ra_method == "epid" %}
