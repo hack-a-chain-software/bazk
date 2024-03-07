@@ -50,6 +50,8 @@ path = "/app"
 uri = "file:app"
 
 [sgx]
+isvprodid = 1
+isvsvn    = 1
 debug = true
 nonpie_binary = true
 enclave_size = "2G"
