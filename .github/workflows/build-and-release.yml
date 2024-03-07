@@ -56,11 +56,6 @@ jobs:
       - name: Update permissions
         run: (cd ./packages/gramine/bazk-build && chmod +x *)
 
-      - name: Use Node.js 16
-        uses: actions/setup-node@v2
-        with:
-          node-version: "16.17.1"
-
       - name: Build app
         run: yarn gramine build-app-dist
 
