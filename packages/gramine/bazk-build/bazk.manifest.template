@@ -54,7 +54,7 @@ isvprodid = 1
 isvsvn    = 1
 debug = true
 nonpie_binary = true
-enclave_size = "4G"
+enclave_size = "8G"
 max_threads = 32
 remote_attestation = "{{ ra_method }}"
 
