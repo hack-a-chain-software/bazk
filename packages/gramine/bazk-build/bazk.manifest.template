@@ -64,11 +64,7 @@ ra_client_spid = "{{ ra_client_spid }}"
 {% endif %}
 
 trusted_files = [
-  "file:/usr/share/zoneinfo/",
-  "file:/usr/share/zoneinfo-icu/",
-  "file:/etc/os-release",
   "file:/etc/localtime",
-  "file:/proc/self/cgroup",
   "file:app/",
   "file:node",
   "file:curl",
