@@ -8,6 +8,7 @@ import { RPC } from "../constants/phala";
 import { generateKeyPair, getPhase, pad64, validadeDeadline, validateLastHash } from "../utils/phala";
 import { getOutputFiles } from "../utils/file";
 import { getMetadatas } from "../utils/metadata";
+import { BN } from "@polkadot/util";
 
 export const dispatch = async (args?: string[]): Promise<any> => {
   console.log("[Enclave] Getting key pair...");
@@ -119,13 +120,13 @@ export const dispatch = async (args?: string[]): Promise<any> => {
     bash = Number(args?.[args.length - 1]);
     power = Number(args?.[args.length - 2]);
 
-    await validadeDeadline(ceremonyId, validatorContract);
-    await validateLastHash(
-      ceremonyId,
-      validatorContract,
-      commandfileName,
-      fileArgs
-    );
+    // await validadeDeadline(ceremonyId, validatorContract);
+    // await validateLastHash(
+    //   ceremonyId,
+    //   validatorContract,
+    //   commandfileName,
+    //   fileArgs
+    // );
   }
 
   console.log("[Enclave] Phase: ", phase);
@@ -152,8 +153,6 @@ export const dispatch = async (args?: string[]): Promise<any> => {
     console.log("[Enclave] Command executed");
     console.log("[Enclave] Command stdout: \n");
     console.log(stdout);
-    console.log("[Enclave] Command stderr: \n");
-    console.log(stderr);
 
     if (stderr) {
       return {
@@ -208,32 +207,38 @@ export const dispatch = async (args?: string[]): Promise<any> => {
         outputFilesArray
       );
 
-      const result = await contract.send.addContribution(
-        { pair, cert, address: cert.address },
-        ceremonyId,
-        phase,
-        name,
-        description,
-        deadline,
-        timestamp,
-        metadataArray,
-        outputFilesArray
-      );
+      // const incValue = [
+      //   ceremonyId,
+      //   phase,
+      //   name,
+      //   description,
+      //   deadline,
+      //   timestamp,
+      //   metadataArray,
+      //   outputFilesArray,
+      // ]
 
-      await result.waitFinalized(
-        async () => {
-          if (result.status.isFinalized || result.status.isInBlock) {
-            console.log("Transaction finalized");
-            return true;
-          }
-          console.log("Transaction not finalized");
-          return false;
-        },
-        {
-          timeout: 1000 * 60 * 5, // 5 minutes
-          blocks: 50,
-        }
-      );
+      // const { storageDeposit } = await contract.query.addContribution(pair.address, { cert }, ...incValue)
+
+      // const storageDepositLimit = storageDeposit.asCharge
+
+      // console.log('preview: storageDepositLimit', storageDepositLimit)
+
+      // const result = await contract.send.addContribution(
+      //   { pair, cert, address: cert.address, },
+      //   ceremonyId,
+      //   phase,
+      //   name,
+      //   description,
+      //   deadline,
+      //   timestamp,
+      //   metadataArray,
+      //   outputFilesArray
+      // );
+
+      // await result.waitFinalized();
+
+      console.log('00 - Finished - 00')
 
       return {
         data: {
