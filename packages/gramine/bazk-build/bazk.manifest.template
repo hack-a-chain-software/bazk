@@ -21,6 +21,15 @@ ACCOUNT_MNEMONIC = { passthrough = true }
 SGX_ENABLED = { passthrough = true }
 
 [[fs.mounts]]
+path = "/tmp"
+type = "tmpfs"
+uri = "file:/tmp"
+
+[[fs.mounts]]
+path = "/usr"
+uri = "file:/usr"
+
+[[fs.mounts]]
 type = "chroot"
 path = "/lib"
 uri = "file:{{ libdir }}"
@@ -41,10 +50,10 @@ path = "/app"
 uri = "file:app"
 
 [sgx]
-debug = false
+debug = true
 nonpie_binary = true
-enclave_size = "2G"
-max_threads = 16
+enclave_size = "4G"
+max_threads = 32
 remote_attestation = "{{ ra_method }}"
 
 {% if ra_method == "epid" %}
@@ -53,19 +62,15 @@ ra_client_spid = "{{ ra_client_spid }}"
 {% endif %}
 
 trusted_files = [
+  "file:app/",
   "file:node",
   "file:curl",
   "file:/usr/bin/curl",
   "file:{{ libos }}",
   "file:{{ libdir }}",
-  "file:app/",
-  "file:app/bin/contribute",
   "file:app/bin/new",
+  "file:app/bin/contribute",
   "file:app/bin/verify_contribution",
-  "file:app/bin/new_constrained",
-  "file:app/bin/compute_constrained",
-  "file:app/bin/verify_transform_constrained",
-  "file:app/bin/prepare_phase2",
   "file:app/ceremonies/",
 ]
 
