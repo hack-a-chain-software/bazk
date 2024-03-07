@@ -44,7 +44,7 @@ uri = "file:app"
 debug = false
 nonpie_binary = true
 enclave_size = "2G"
-max_threads = 16
+max_threads = 64
 remote_attestation = "{{ ra_method }}"
 
 {% if ra_method == "epid" %}
