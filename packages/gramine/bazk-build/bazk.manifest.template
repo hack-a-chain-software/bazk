@@ -42,6 +42,7 @@ uri = "file:app"
 
 [sgx]
 debug = false
+enable_stats = true
 nonpie_binary = true
 enclave_size = "2G"
 max_threads = 16
