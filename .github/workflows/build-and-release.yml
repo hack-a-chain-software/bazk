@@ -50,7 +50,7 @@ jobs:
         run: npm install -g yarn
 
       - name: Install dependencies
-        run: yarn install
+        run: yarn gramine install
 
       - name: Update permissions
         run: (cd ./packages/gramine/bazk-build && chmod +x *)
