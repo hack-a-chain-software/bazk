@@ -45,7 +45,7 @@ uri = "file:app"
 debug = false
 nonpie_binary = true
 enclave_size = "2G"
-max_threads = 64
+max_threads = 128
 file_check_policy = "allow_all_but_log"
 remote_attestation = "{{ ra_method }}"
 
