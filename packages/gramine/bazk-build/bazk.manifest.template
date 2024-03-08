@@ -8,7 +8,7 @@ log_level = "debug"
 
 [sys]
 insecure__allow_eventfd = true
-stack.size = "16M"
+stack.size = "1G"
 brk.max_size = "256M"
 
 [loader.env]
@@ -44,7 +44,7 @@ uri = "file:app"
 debug = false
 nonpie_binary = true
 enclave_size = "2G"
-max_threads = 16
+max_threads = 32
 remote_attestation = "{{ ra_method }}"
 
 {% if ra_method == "epid" %}
