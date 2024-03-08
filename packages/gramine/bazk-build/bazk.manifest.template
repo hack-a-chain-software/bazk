@@ -8,8 +8,8 @@ log_level = "debug"
 
 [sys]
 insecure__allow_eventfd = true
-stack.size = "256M"
-brk.max_size = "256M"
+stack.size = "100M"
+brk.max_size = "1G"
 
 [loader.env]
 MALLOC_ARENA_MAX = "1"
