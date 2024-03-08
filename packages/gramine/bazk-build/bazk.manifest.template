@@ -32,11 +32,6 @@ uri = "file:/etc"
 
 [[fs.mounts]]
 type = "chroot"
-path = "/usrc"
-uri = "file:/usr"
-
-[[fs.mounts]]
-type = "chroot"
 path = "/data"
 uri = "file:data"
 
@@ -47,7 +42,6 @@ uri = "file:app"
 
 [sgx]
 debug = false
-file_check_policy = "allow_all_but_log"
 nonpie_binary = true
 enclave_size = "2G"
 max_threads = 16
