@@ -11,7 +11,7 @@ sudo docker run \
     --rm \
     -v $(pwd)/bazk-build:/bazk-build \
     --env IAS_SPID=$IAS_SPID \
-    kvin/gramine:1.0 \
+    mateus4loading/gramine:1.0 \
     "make dist -C /bazk-build"
 
 cp ./bazk-build/circuit.json bazk-build/dist
