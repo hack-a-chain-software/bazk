@@ -1,4 +1,4 @@
-FROM gramineproject/gramine:latest
+FROM gramineproject/gramine:1.6-jammy
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
