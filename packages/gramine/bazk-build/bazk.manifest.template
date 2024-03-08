@@ -8,7 +8,7 @@ log_level = "debug"
 
 [sys]
 insecure__allow_eventfd = true
-stack.size = "1G"
+stack.size = "20M"
 brk.max_size = "256M"
 
 [loader.env]
