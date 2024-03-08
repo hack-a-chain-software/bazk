@@ -8,8 +8,8 @@ log_level = "debug"
 
 [sys]
 insecure__allow_eventfd = true
-stack.size = "100M"
-brk.max_size = "512M"
+stack.size = "256M"
+brk.max_size = "256M"
 
 [loader.env]
 MALLOC_ARENA_MAX = "1"
@@ -44,7 +44,7 @@ uri = "file:app"
 debug = false
 nonpie_binary = true
 enclave_size = "2G"
-max_threads = 64
+max_threads = 32
 remote_attestation = "{{ ra_method }}"
 
 {% if ra_method == "epid" %}
