@@ -4,12 +4,12 @@ entrypoint = "./node"
 [loader]
 entrypoint = "file:{{ libos }}"
 insecure__use_cmdline_argv = true
-log_level = "debug"
+log_level = "trace"
 
 [sys]
 insecure__allow_eventfd = true
 stack.size = "256M"
-brk.max_size = "256M"
+brk.max_size = "512M"
 
 [loader.env]
 MALLOC_ARENA_MAX = "1"
