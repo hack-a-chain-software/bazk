@@ -4,11 +4,11 @@ entrypoint = "./node"
 [loader]
 entrypoint = "file:{{ libos }}"
 insecure__use_cmdline_argv = true
-log_level = "debug"
+log_level = "all"
 
 [sys]
 insecure__allow_eventfd = true
-stack.size = "2M"
+stack.size = "24M"
 brk.max_size = "256M"
 
 [loader.env]
@@ -59,13 +59,9 @@ trusted_files = [
   "file:{{ libos }}",
   "file:{{ libdir }}",
   "file:app/",
-  "file:app/bin/contribute",
   "file:app/bin/new",
+  "file:app/bin/contribute",
   "file:app/bin/verify_contribution",
-  "file:app/bin/new_constrained",
-  "file:app/bin/compute_constrained",
-  "file:app/bin/verify_transform_constrained",
-  "file:app/bin/prepare_phase2",
   "file:app/ceremonies/",
 ]
 
