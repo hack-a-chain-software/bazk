@@ -8,7 +8,7 @@ log_level = "trace"
 
 [sys]
 insecure__allow_eventfd = true
-stack.size = "24M"
+stack.size = "48M"
 brk.max_size = "512M"
 
 [loader.env]
