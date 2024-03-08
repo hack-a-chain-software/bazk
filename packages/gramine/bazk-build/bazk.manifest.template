@@ -45,7 +45,6 @@ debug = false
 nonpie_binary = true
 enclave_size = "2G"
 max_threads = 16
-require_exinfo = true
 remote_attestation = "{{ ra_method }}"
 
 {% if ra_method == "epid" %}
