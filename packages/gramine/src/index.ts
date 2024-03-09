@@ -266,6 +266,10 @@ async function main(args?: string[]) {
       }
     }
 
+    return {
+      data: `Contribution ${fileArgs.at(-2)} verified`
+    }
+
     console.log("[Enclave] Everything done, enjoy!");
   } catch (error: any) {
     console.error("[Enclave] Error:", error);
