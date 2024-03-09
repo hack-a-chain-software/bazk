@@ -4,7 +4,7 @@ entrypoint = "./node"
 [loader]
 entrypoint = "file:{{ libos }}"
 insecure__use_cmdline_argv = true
-log_level = "all"
+log_level = "error"
 
 [sys]
 insecure__allow_eventfd = true
@@ -66,6 +66,7 @@ trusted_files = [
 ]
 
 allowed_files = [
+  "file:/etc/ld.so.cache",
   "file:/etc/hosts",
   "file:/etc/resolv.conf",
   "file:/etc/ssl/openssl.cnf",
