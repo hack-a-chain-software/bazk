@@ -6,7 +6,7 @@ import { options, OnChainRegistry, signCertificate, PinkContractPromise } from '
 
 const RPC_TESTNET_URL = 'wss://poc6.phala.network/ws'
 
-const BAZK_CONTRACT_ID = '0xeb6ba2385f46ec1904a97b08cee844ed903d336f9d3b2fb405e0651f7f06f85b'
+const BAZK_CONTRACT_ID = '0x8786e9a5497cbedff7c8887d56930faadd29ff14b104fa180a45f4c043948a4c'
 
 interface FoundationContextValue {
   booting: boolean
