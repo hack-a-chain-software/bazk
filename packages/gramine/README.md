@@ -1,4 +1,141 @@
-# zkSnark Execution using Gramine
+# Gramine
+This repository is based on the [pod validator](https://github.com/Phala-Network/phat-pod-tools) repository of the Phala Network.
+
+The code is responsible for managing a Node.js server integrated with Gramine that offers commands for the creation of ceremonies, generation of contributions, and verification of contributions.
+
+### Directory Structure
+-----------------
+In our project, we used the phat-pod-tools template from Phala Network to generate the build of our Node.js server compatible with Gramine.
+
+Here's a brief overview of the structure:
+
+```bash
+.
+├── bazk-build    # Gramine build template
+├── ceremonies    # Phase1 ceremonies
+├── docker        # Docker images
+├── scripts       # Scripts to setup
+├── src           # Nodejs server
+```
+
+We have the Node.js server and a complete setup to be able to run it inside the Gramine SGX.
+
+### Dependencies
+-----------------
+- [Docker](https://docs.docker.com/get-docker/) installed and the docker daemon is running.
+- Current user is in the `docker` group.
+- [Node.js](https://nodejs.org/en/download/) installed. (Tested version : `v16.17.1`)
+- Intel IAS API key and SPID. (You can get it from [here](https://api.portal.trustedservices.intel.com/products#product=dev-intel-software-guard-extensions-attestation-service-linkable). can subscribe to get immediate access to the development environment)
+
+### Installation
+-----------------
+1) Clone the repository:
+```bash
+$ gh repo clone hack-a-chain-software/kadena-product
+$ cd kadena-product
+```
+
+2) Check all packages and copy the .env.example file and edit it with your environment config:
+```bash
+$ cp ./packages/gramine/.env.example ./packages/gramine/.env
+```
+
+3) Install frontend dependencies via PNPM
+```bash
+$ yarn install
+```
+
+### Environments
+-----------------
+```bash
+# Required variables
+IAS_SPID="YOUR_INTEL_IAS_SPID"
+IAS_API_KEY="YOUR_INTEL_IAS_API_KEY"
+PINATA_API_KEY="YOUR_PINATA_API_KEY"
+PINATA_API_SECRET="YOUR_PINATA_SECRET"
+ACCOUNT_MNEMONIC="VALIDATOR_CONTRACT_ACCOUNT"
+
+# Variables with defaults
+SGX_ENABLED=true
+TEST_MODE=false
+```
+
+### Build
+-----------------
+```bash
+yarn gramine build
+```
+
+### Run development
+-----------------
+After building the app and create the **env file**, you can run the server in development mode with the following steps:
+
+1) Initialize the Gramine container with the generated build:
+```bash
+## Gramine env file
+SGX_ENABLED=false
+TEST_MODE=true
+
+sudo docker run -p 3000:3000 --env-file ../.env --rm -v $(pwd)/dist:/dist -it gramineproject/gramine:v1.5
+```
+
+2) After initializing Docker, inside the console you can run this command to start the server on port 3000:
+```bash
+cd ./dist && mkdir -p ./data && chmod 777 -R . && ./node ./app/index.js
+```
+
+### Run production
+-----------------
+After building the app and create the **env file**, you can run the server in production mode inside in gramine with the following steps:
+
+1) Initialize the Gramine container with the generated build and map sgx devices:
+```bash
+## Gramine env file
+SGX_ENABLED=true
+
+sudo docker run -p 3000:3000 --env-file ../.env --rm -v $(pwd)/dist:/dist -it gramineproject/gramine:v1.5
+```
+
+2) After initializing Docker, inside the console you can run this command to start the server on port 3000: 
+```bash
+cd ./dist && mkdir -p ./data && chmod 777 -R . && ./node ./app/index.js
+```
+
+### API Specs
+In the current version, our server can receive commands for you to create a new phase 2 ceremony, generate contributions for ceremonies, and also verify contributions.
+
+For both modes, development and production, the API listens on port 3000, and you can perform the following commands:
+
+```bash
+# --------------------------------
+# Notes
+# --------------------------------
+# 1) New phase2 ceremony
+# index.js ./app/bin/new ./circuit.json circom1.params <phase1 radix> <power> 256 <ceremony name> <ceremony description> <deadline unix timestamp>
+#
+# 2) Contribute to the ceremony
+# index.js <ceremony id> ./app/bin/contribute circom1.params circom2.params
+#
+# 3) Verify the ceremony and create new challange
+# index.js <ceremony id> ./app/bin/verify_contribution ./circuit.json "circom1.params", "circom2.params"
+# --------------------------------
+curl -X POST http://localhost:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '["./app/bin/new", "circuit.json", "circom1.params", "./app/ceremonies/p12", 12, 256, "my ceremony name", "my ceremony description", 1709221725]'
+
+curl -X POST http://localhost:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '[1707244846, "./app/bin/contribute", "circom1.params", "circom2.params"]'
+
+curl -X POST http://localhost:3000/execute \
+     -H "Content-Type: application/json" \
+     -d '[1707244846, "./app/bin/verify_contribution", "circuit.json", "circom1.params", "circom2.params", "./"]'
+```
+
+** For this version of the API, we have temporarily copied a circom.json so that anyone can test the commands. This will be updated in the next versions.
+
+
+<!-- ### zkSnark Execution using Gramine
 
 ## Introduction
 
@@ -167,4 +304,4 @@ mmap (memory map) and BufWriter in Rust serve different purposes and operate at 
 
 - Operating System: mmap's behavior and performance can be highly dependent on the operating system's implementation of virtual memory and page caching. BufWriter's behavior is more consistent across platforms because it relies on Rust's standard library for buffering logic.
 
-- In summary, whether to use mmap or BufWriter depends on the specific requirements of your application, the size of the data you're working with, the access patterns, and the level of control you need over I/O operations.
+- In summary, whether to use mmap or BufWriter depends on the specific requirements of your application, the size of the data you're working with, the access patterns, and the level of control you need over I/O operations. -->
