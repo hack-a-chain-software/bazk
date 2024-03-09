@@ -37,7 +37,7 @@ else
 fi
 
 # Run docker command
-CONTAINER_ID=$(sudo docker run -d -p 3000:3000 --env-file .env --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v $(pwd)/dist:/dist -it gramineproject/gramine)
+CONTAINER_ID=$(sudo docker run -d -p 3000:3000 --env-file .env --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v $(pwd)/dist:/dist -it mateus4loading/bazk-runtime:latest)
 
 CONTAINER_ID_TRUNCATED=$(echo $CONTAINER_ID | cut -c 1-12)
 
