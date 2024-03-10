@@ -1,18 +1,6 @@
 version: '3.8'
 
 services:
-  bazk-runtime:
-    build:
-      context: .
-      dockerfile: ./docker/runtime/Dockerfile
-    image: mateus4loading/bazk-runtime:latest
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./bazk-build/dist:/bazk-build/dist
-    env_file:
-      - ./.env
-
   bazk-builder:
     build:
       context: .
