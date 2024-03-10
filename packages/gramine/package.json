@@ -5,15 +5,7 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "build": "yarn clean && yarn build-dist && yarn build-manifest",
-    "build-app-dist": "yarn clean && yarn build-app",
-    "build-and-deploy": "yarn && yarn build && yarn deploy",
-    "build-manifest": "./build.sh",
-    "build-dist": "yarn build-app",
-    "build-app": "yarn build-bin && webpack && yarn build-ceremonies",
-    "build-bin": "./build-bin.sh",
-    "build-ceremonies": "cpy \"ceremonies/**/*\" dist/ceremonies",
-    "clean": "rm -rf dist && (cd bazk-build || true && rm -f *.manifest *.sgx *.sig && rm -rf cruntime app dist)",
+    "build": "webpack && ./build.sh",
     "deploy-azure": "ssh -i ${AZURE_SSH_PATH} azureuser@${AZURE_HOST_IP} 'rm -rf ~/bazk-build/*' && scp -r -i ${AZURE_SSH_PATH} $(pwd)/bazk-build/dist azureuser@${AZURE_HOST_IP}:~/bazk-build/",
     "dev": "cd $(pwd)/bazk-build && eval $(cat ../.env | sed 's/^/export /') && ./node ./app/index.js",
     "deploy": "yarn deploy-azure"

@@ -266,6 +266,10 @@ async function main(args?: string[]) {
       }
     }
 
+    return {
+      data: `Contribution ${fileArgs.at(-2)} verified`
+    }
+
     console.log("[Enclave] Everything done, enjoy!");
   } catch (error: any) {
     console.error("[Enclave] Error:", error);
@@ -306,6 +310,8 @@ const server = http.createServer((req: any, res: any) => {
         const args = JSON.parse(buffer);
 
         main(args).then((result: any) => {
+          console.log('MAIN RESULTS: ', result)
+
           res.writeHead(200, {'Content-Type': 'application/json'});
           if (result.error) {
             res.end(JSON.stringify({

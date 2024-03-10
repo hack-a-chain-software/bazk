@@ -66,6 +66,7 @@ trusted_files = [
 ]
 
 allowed_files = [
+  "file:/etc/ld.so.cache",
   "file:/etc/hosts",
   "file:/etc/resolv.conf",
   "file:/etc/ssl/openssl.cnf",
