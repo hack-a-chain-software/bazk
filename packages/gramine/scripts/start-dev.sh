@@ -1,5 +1,5 @@
 #!/bin/bash
-rm -rf ./dist && sudo docker system prune -a --volumes
+rm -rf ./dist
 
 # Path of the folder to check
 FOLDER="./dist"
@@ -37,4 +37,4 @@ else
     rm dist.zip
 fi
 
-sudo docker run -p 3000:3000 --env-file .env --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v $(pwd)/dist:/dist -it gramineproject/gramine
+sudo docker run -p 3000:3000 --env-file .env --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v $(pwd)/dist:/dist -it gramineproject/gramine:v1.5
