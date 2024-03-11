@@ -1,8 +1,10 @@
-name: Build and Release
+name: Release
 
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: []
 
 jobs:
   build:
@@ -32,13 +34,6 @@ jobs:
           sudo apt-get install -y docker-ce docker-ce-cli containerd.io
           echo "Installed build-essential, curl, git, wget, and Docker"
 
-      - name: Setup Rust and Cargo
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: 1.51.0
-          override: true
-          components: rustc, cargo
-
       - name: Use Node.js 18
         uses: actions/setup-node@v2
         with:
@@ -50,14 +45,8 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: Update permissions
-        run: (cd ./packages/gramine/bazk-build && chmod +x *)
-
       - name: Build app
-        run: yarn gramine build-app-dist
-
-      - name: Build manifest
-        run: yarn gramine build-manifest
+        run: yarn gramine build
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2

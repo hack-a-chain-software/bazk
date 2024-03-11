@@ -49,12 +49,17 @@ resource "azurerm_virtual_machine" "bazk" {
   # Provisioner block for remote-exec
   provisioner "remote-exec" {
     inline = [
+        "echo 'y' | sudo ufw enable",
+        "sudo ufw allow 3000/tcp",
+        "sudo ufw allow 22/tcp",
+        "sudo ufw status",
         "sudo apt-get update",
         "sudo apt-get install -y curl",
         "curl -fsSL https://get.docker.com -o get-docker.sh",
         "sudo sh get-docker.sh",
         "sudo groupadd docker",
         "sudo apt install -y unzip",
+        "echo 'TEST_MODE=false' >> .env",
         "echo 'IAS_SPID=${var.ias_spid}' >> .env",
         "echo 'SGX_ENABLED=${var.sgx_enabled}' >> .env",
         "echo 'IAS_API_KEY=${var.ias_api_key}' >> .env",
@@ -62,7 +67,8 @@ resource "azurerm_virtual_machine" "bazk" {
         "echo 'PINATA_API_SECRET=${var.pinata_api_secret}' >> .env",
         "echo 'ACCOUNT_MNEMONIC=${var.phala_account_mnemonic}' >> .env",
         "chmod +x start.sh",
-        "chmod +x update.sh",
+        "chmod +x start-dev.sh",
+        "sh start.sh",
     ]
   }
 }

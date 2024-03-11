@@ -6,9 +6,6 @@ FOLDER="./dist"
 # GitHub API URL to get the latest release
 API_URL="https://api.github.com/repos/hack-a-chain-software/bazk/releases/latest"
 
-# Docker command to run
-DOCKER_COMMAND="sudo docker run --env-file .env --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v $(pwd)/dist:/dist -it gramineproject/gramine"
-
 # Function to parse JSON and get the ZIP download URL
 get_zip_url() {
     curl -s $API_URL | grep -o '"browser_download_url": "[^"]*' | grep -o '[^"]*$' | grep 'dist.zip'
@@ -39,5 +36,12 @@ else
     rm dist.zip
 fi
 
-# Executes the Docker command
-$DOCKER_COMMAND
+# Run docker command
+CONTAINER_ID=$(sudo docker run -d -p 3000:3000 --env-file .env --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v $(pwd)/dist:/dist -it gramineproject/gramine:v1.5)
+
+CONTAINER_ID_TRUNCATED=$(echo $CONTAINER_ID | cut -c 1-12)
+
+sleep 5
+
+# Start gramine
+sudo docker exec -it -d $CONTAINER_ID_TRUNCATED /bin/bash -c "cd ./dist && mkdir -p ./data && chmod +x -R . && ./gramine-sgx bazk ./app/index.js"
