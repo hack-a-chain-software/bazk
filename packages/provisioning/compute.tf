@@ -59,6 +59,7 @@ resource "azurerm_virtual_machine" "bazk" {
         "sudo sh get-docker.sh",
         "sudo groupadd docker",
         "sudo apt install -y unzip",
+        "echo 'TEST_MODE=false' >> .env",
         "echo 'IAS_SPID=${var.ias_spid}' >> .env",
         "echo 'SGX_ENABLED=${var.sgx_enabled}' >> .env",
         "echo 'IAS_API_KEY=${var.ias_api_key}' >> .env",
