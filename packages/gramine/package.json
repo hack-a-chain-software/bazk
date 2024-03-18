@@ -6,9 +6,8 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack && ./build.sh",
-    "deploy-azure": "ssh -i ${AZURE_SSH_PATH} azureuser@${AZURE_HOST_IP} 'rm -rf ~/bazk-build/*' && scp -r -i ${AZURE_SSH_PATH} $(pwd)/bazk-build/dist azureuser@${AZURE_HOST_IP}:~/bazk-build/",
-    "dev": "cd $(pwd)/bazk-build && eval $(cat ../.env | sed 's/^/export /') && ./node ./app/index.js",
-    "deploy": "yarn deploy-azure"
+    "start": "yarn build && yarn runtime",
+    "runtime": "bash ./scripts/runtime.sh"
   },
   "devDependencies": {
     "cpy-cli": "^5.0.0",

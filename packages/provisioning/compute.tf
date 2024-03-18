@@ -66,9 +66,8 @@ resource "azurerm_virtual_machine" "bazk" {
         "echo 'PINATA_API_KEY=${var.pinata_api_key}' >> .env",
         "echo 'PINATA_API_SECRET=${var.pinata_api_secret}' >> .env",
         "echo 'ACCOUNT_MNEMONIC=${var.phala_account_mnemonic}' >> .env",
-        "chmod +x start.sh",
-        "chmod +x start-dev.sh",
-        "sh start.sh",
+        "chmod +x runtime.sh",
+        # "sh runtime.sh",
     ]
   }
 }
