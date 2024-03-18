@@ -10,3 +10,13 @@ services:
       - ./bazk-build:/bazk-build
     env_file:
       - ./.env
+
+  bazk-runtime:
+    build:
+      context: .
+      dockerfile: ./docker/runtime/Dockerfile
+    image: mateus4loading/bazk-runtime:latest
+    volumes:
+      - ./bazk-build/dist:/dist
+    env_file:
+      - ./.env

@@ -1,5 +1,5 @@
 #!/bin/sh
-docker run \
+sudo docker run \
     -u $(id -u ${USER}):$(id -g ${USER}) \
     --rm \
     --env IAS_SPID=$IAS_SPID \

@@ -30,7 +30,7 @@ RUN PACKAGE=$(curl -s "https://api.github.com/repos/hack-a-chain-software/phase2
 RUN cp $(which curl) ./core/curl
 RUN cp $(which node) ./core/node
 
-COPY ./scripts/run-builder.sh /run-builder.sh
-RUN chmod +x /run-builder.sh
+COPY ./scripts/build.sh /build.sh
+RUN chmod +x /build.sh
 
-ENTRYPOINT ["/run-builder.sh"]
+ENTRYPOINT ["/build.sh"]

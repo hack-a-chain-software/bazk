@@ -31,8 +31,8 @@ We have the Node.js server and a complete setup to be able to run it inside the 
 -----------------
 1) Clone the repository:
 ```bash
-$ gh repo clone hack-a-chain-software/kadena-product
-$ cd kadena-product
+$ gh repo clone hack-a-chain-software/bazk
+$ cd bazk
 ```
 
 2) Check all packages and copy the .env.example file and edit it with your environment config:
@@ -70,35 +70,23 @@ yarn gramine build
 -----------------
 After building the app and create the **env file**, you can run the server in development mode with the following steps:
 
-1) Initialize the Gramine container with the generated build:
 ```bash
-## Gramine env file
+## Development mode requires
 SGX_ENABLED=false
 TEST_MODE=true
 
-sudo docker run -p 3000:3000 --env-file ../.env --rm -v $(pwd)/dist:/dist -it gramineproject/gramine:v1.5
-```
-
-2) After initializing Docker, inside the console you can run this command to start the server on port 3000:
-```bash
-cd ./dist && mkdir -p ./data && chmod 777 -R . && ./node ./app/index.js
+yarn gramine start
 ```
 
 ### Run production
 -----------------
 After building the app and create the **env file**, you can run the server in production mode inside in gramine with the following steps:
 
-1) Initialize the Gramine container with the generated build and map sgx devices:
 ```bash
-## Gramine env file
+## Production mode requires
 SGX_ENABLED=true
 
-sudo docker run -p 3000:3000 --env-file ../.env --rm -v $(pwd)/dist:/dist -it gramineproject/gramine:v1.5
-```
-
-2) After initializing Docker, inside the console you can run this command to start the server on port 3000: 
-```bash
-cd ./dist && mkdir -p ./data && chmod 777 -R . && ./node ./app/index.js
+yarn gramine start
 ```
 
 ### API Specs
@@ -121,11 +109,11 @@ For both modes, development and production, the API listens on port 3000, and yo
 # --------------------------------
 curl -X POST http://localhost:3000/execute \
      -H "Content-Type: application/json" \
-     -d '["./app/bin/new", "circuit.json", "circom1.params", "./app/ceremonies/p12", 12, 256, "my ceremony name", "my ceremony description", 1709221725]'
+     -d '["./app/bin/new", "circuit.json", "circom1.params", "./app/ceremonies/p10", 10, 256, "my ceremony name", "my ceremony description", 1709221725]'
 
 curl -X POST http://localhost:3000/execute \
      -H "Content-Type: application/json" \
-     -d '[1707244846, "./app/bin/contribute", "circom1.params", "circom2.params"]'
+     -d '[1707244846, "./app/bin/contribute", "circom2.params", "circom3.params"]'
 
 curl -X POST http://localhost:3000/execute \
      -H "Content-Type: application/json" \
