@@ -5,9 +5,9 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "build": "webpack && ./build.sh",
     "start": "yarn build && yarn runtime",
-    "runtime": "bash ./scripts/runtime.sh"
+    "runtime": "bash ./scripts/runtime.sh",
+    "build": "webpack && bash ./scripts/run-build.sh"
   },
   "devDependencies": {
     "cpy-cli": "^5.0.0",
