@@ -44,3 +44,30 @@ export const uploadToPinata = async (filePath: string): Promise<string> => {
     throw error;
   }
 }
+
+export const downloadFromPinata = async (cid: string): Promise<any> => {
+  if (cid == null) {
+    throw new Error("invalid CID");
+  }
+
+  const curlCommand = "./curl";
+
+  const args = [
+    `https://ipfs.io/ipfs/${cid}/`,
+    "-s",
+    "--output",
+    `./circom1.params`
+  ];
+
+  try {
+    const { stderr } = await execFile(curlCommand, args);
+
+    if (stderr) {
+      throw new Error(`Error: ${stderr}`);
+    }
+
+  } catch (error) {
+    console.error("Error download file from IPFS:", error);
+    throw error;
+  }
+}

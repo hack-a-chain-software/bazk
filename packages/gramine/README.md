@@ -85,6 +85,7 @@ After building the app and create the **env file**, you can run the server in pr
 ```bash
 ## Production mode requires
 SGX_ENABLED=true
+TEST_MODE=false
 
 yarn gramine start
 ```
@@ -292,4 +293,4 @@ mmap (memory map) and BufWriter in Rust serve different purposes and operate at 
 
 - Operating System: mmap's behavior and performance can be highly dependent on the operating system's implementation of virtual memory and page caching. BufWriter's behavior is more consistent across platforms because it relies on Rust's standard library for buffering logic.
 
-- In summary, whether to use mmap or BufWriter depends on the specific requirements of your application, the size of the data you're working with, the access patterns, and the level of control you need over I/O operations. -->
+- In summary, whether to use mmap or BufWriter depends on the specific requirements of your application, the size of the data you're working with, the access patterns, and the level of control you need over I/O operations.
