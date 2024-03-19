@@ -7,7 +7,7 @@
   "scripts": {
     "start": "yarn build && yarn runtime",
     "runtime": "bash ./scripts/runtime.sh",
-    "azure": "scp -r ./bazk-build/dist ubuntu@20.185.158.217:~/",
+    "azure": "scp -r ./bazk-build/dist ubuntu@172.191.227.142:~/",
     "build": "webpack && bash ./scripts/run-build.sh"
   },
   "devDependencies": {

@@ -118,5 +118,7 @@ allowed_files = [
   "file:circom6.params",
   "file:circom7.params",
   "file:circom8.params",
+  "file:circom9.params",
+  "file:circom10.params",
   "file:circuit.json",
 ]

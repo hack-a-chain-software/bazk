@@ -88,7 +88,7 @@ export const dispatch = async (args: DispatchArgsInterface): Promise<any> => {
   const command = getCommandByKey(args.key)
 
   try {
-    const commandOutput = await command(args.data);
+    const commandOutput = await command(args.data, validatorContract);
 
     const outputFilesArray = commandOutput?.outputFilesArray ?? [];
 
@@ -104,7 +104,6 @@ export const dispatch = async (args: DispatchArgsInterface): Promise<any> => {
       ).isValid;
 
       if (!testMode) {
-
         const result = await contract.send.addContribution(
           { pair, cert, address: cert.address },
           commandOutput.ceremonyId,
@@ -125,6 +124,8 @@ export const dispatch = async (args: DispatchArgsInterface): Promise<any> => {
           }
         );
       }
+
+      console.log("Finished")
 
       return {
         data: commandOutput

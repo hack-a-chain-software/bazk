@@ -45,18 +45,18 @@ export const uploadToPinata = async (filePath: string): Promise<string> => {
   }
 }
 
-export const downloadFromPinata = async (cid: string): Promise<any> => {
-  if (cid == null) {
-    throw new Error("invalid CID");
+export const downloadFromPinata = async (contribution: any): Promise<any> => {
+  if (!contribution) {
+    throw new Error("invalid contribution");
   }
 
   const curlCommand = "./curl";
 
   const args = [
-    `https://ipfs.io/ipfs/${cid}/`,
+    `https://ipfs.io/ipfs/${contribution.hash}/`,
     "-s",
     "--output",
-    `./circom1.params`
+    `./${contribution.name}`
   ];
 
   try {

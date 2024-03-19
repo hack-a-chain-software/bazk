@@ -114,7 +114,7 @@ curl -X POST http://localhost:3000/execute \
 
 curl -X POST http://localhost:3000/execute \
      -H "Content-Type: application/json" \
-     -d '[1707244846, "./app/bin/contribute", "circom2.params", "circom3.params"]'
+     -d '[1707244846, "./app/bin/contribute", "circom1.params", "circom2.params"]'
 
 curl -X POST http://localhost:3000/execute \
      -H "Content-Type: application/json" \

@@ -19,7 +19,7 @@ const commandfileName = './app/bin/new';
 
 const outputFileName = 'circom1.params';
 
-export const validateArgs = (args: any) => {
+const validateArgs = (args: any) => {
   if (args.name == null) {
     throw new Error('[Enclave] Name not provided, please provide a name for the ceremony');
   }
@@ -95,6 +95,10 @@ export const createCeremony = async (args: CreateArgsInterface): Promise<any> =>
       Math.floor(Date.now() / 1000)
     )
   ]
+
+  await fs.unlink(outputFileName, () => {
+    console.log(outputFileName + ' deleted.');
+  });
 
   return {
     name,
