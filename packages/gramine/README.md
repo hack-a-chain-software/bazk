@@ -102,7 +102,7 @@ For both modes, development and production, the API listens on port 3000, and yo
 # 1) New phase2 ceremony
 # Send a POST request with the command key as 'create' and a data object with the command arguments
 # --------------------------------
-curl -X POST http://{IP_OR_LOCALHOST}:3000/execute \
+curl -X POST http://{IP OR LOCALHOST}:3000/execute \
      -H "Content-Type: application/json" \
      -d '{"key":"create","data":{"power":"10","name":"1 New Era", "description":"my ceremony description","deadline":1712712496}}'
 
@@ -112,17 +112,17 @@ curl -X POST http://{IP_OR_LOCALHOST}:3000/execute \
 # 2) Contribute to the ceremony
 # Send a POST request with the command key as 'contribute' and a data object with the command arguments
 # --------------------------------
-curl -X POST http://{IP_OR_LOCALHOST}:3000/execute \
+curl -X POST http://{IP OR LOCALHOST}:3000/execute \
      -H "Content-Type: application/json" \
      -d '{"key":"contribute","data":{"ceremonyId":1710878188}}'
 
 # --------------------------------
 # Notes
 # --------------------------------
-# 3) Verify the ceremony and create new challange
+# 3) Verify the contribution
 # Send a POST request with the command key as 'verify' and a data object with the command arguments
 # --------------------------------
-curl -X POST http://{IP_OR_LOCALHOST}:3000/execute \
+curl -X POST http://{IP OR LOCALHOST}:3000/execute \
      -H "Content-Type: application/json" \
      -d '{"key":"verify","data":{"hashes":["QmcE8DfXtNKrg4R5nQNkb9qoKNw1u8QyBhKfhmR3YpmBY8","QmRJWTjM4HNncaWDQhs9RHF3LRZ19Aamu66vwpBgnRBKiA"]}}'
 ```
