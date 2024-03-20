@@ -100,25 +100,31 @@ For both modes, development and production, the API listens on port 3000, and yo
 # Notes
 # --------------------------------
 # 1) New phase2 ceremony
-# index.js ./app/bin/new ./circuit.json circom1.params <phase1 radix> <power> 256 <ceremony name> <ceremony description> <deadline unix timestamp>
-#
-# 2) Contribute to the ceremony
-# index.js <ceremony id> ./app/bin/contribute circom1.params circom2.params
-#
-# 3) Verify the ceremony and create new challange
-# index.js <ceremony id> ./app/bin/verify_contribution ./circuit.json "circom1.params", "circom2.params"
+# Send a POST request with the command key as 'create' and a data object with the command arguments
 # --------------------------------
-curl -X POST http://localhost:3000/execute \
+curl -X POST http://{IP_OR_LOCALHOST}:3000/execute \
      -H "Content-Type: application/json" \
-     -d '["./app/bin/new", "circuit.json", "circom1.params", "./app/ceremonies/p10", 10, 256, "my ceremony name", "my ceremony description", 1709221725]'
+     -d '{"key":"create","data":{"power":"10","name":"1 New Era", "description":"my ceremony description","deadline":1712712496}}'
 
-curl -X POST http://localhost:3000/execute \
+# --------------------------------
+# Notes
+# --------------------------------
+# 2) Contribute to the ceremony
+# Send a POST request with the command key as 'contribute' and a data object with the command arguments
+# --------------------------------
+curl -X POST http://{IP_OR_LOCALHOST}:3000/execute \
      -H "Content-Type: application/json" \
-     -d '[1707244846, "./app/bin/contribute", "circom1.params", "circom2.params"]'
+     -d '{"key":"contribute","data":{"ceremonyId":1710878188}}'
 
-curl -X POST http://localhost:3000/execute \
+# --------------------------------
+# Notes
+# --------------------------------
+# 3) Verify the ceremony and create new challange
+# Send a POST request with the command key as 'verify' and a data object with the command arguments
+# --------------------------------
+curl -X POST http://{IP_OR_LOCALHOST}:3000/execute \
      -H "Content-Type: application/json" \
-     -d '[1707244846, "./app/bin/verify_contribution", "circuit.json", "circom1.params", "circom2.params", "./"]'
+     -d '{"key":"verify","data":{"hashes":["QmcE8DfXtNKrg4R5nQNkb9qoKNw1u8QyBhKfhmR3YpmBY8","QmRJWTjM4HNncaWDQhs9RHF3LRZ19Aamu66vwpBgnRBKiA"]}}'
 ```
 
 ** For this version of the API, we have temporarily copied a circom.json so that anyone can test the commands. This will be updated in the next versions.
