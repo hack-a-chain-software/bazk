@@ -531,10 +531,10 @@
     axios "^1.5.1"
     base64-js "^1.5.1"
 
-"@phala/sdk@0.6.0-beta.13":
-  version "0.6.0-beta.13"
-  resolved "https://registry.yarnpkg.com/@phala/sdk/-/sdk-0.6.0-beta.13.tgz#094e3e155ddc214d56587914b86716ddbc9e3120"
-  integrity sha512-5eXvAH8xlpG/2MCxKwcpUF/i2IfTOENtwdKntnKengjHMqLL3TukMjb0LdSgrhAAgUyRBAeu3tcAUBxz02dIHA==
+"@phala/sdk@0.6.0-beta.10":
+  version "0.6.0-beta.10"
+  resolved "https://registry.yarnpkg.com/@phala/sdk/-/sdk-0.6.0-beta.10.tgz#ddf20f0757e35ce5e4091af94635db676ac767df"
+  integrity sha512-rx4xK91G5LjNJudtTfFeTtwcuI0LeRG/YIDH4gzaX5M3r8vffUoB5WFfbEaIiQwfhvKVJ6FcD9svX8uRb3B/dQ==
   dependencies:
     "@polkadot/api" "~10.11.1"
     "@polkadot/api-contract" "~10.11.1"
@@ -556,21 +556,27 @@
     rxjs "^7.8.1"
     viem "^1.5.0"
 
-"@phala/sdk@^0.5.8":
-  version "0.5.8"
-  resolved "https://registry.yarnpkg.com/@phala/sdk/-/sdk-0.5.8.tgz#faba2363f140545c34ba9f9bb9fbfe8af566a604"
-  integrity sha512-0Z3zVr3yDlYQWtV226FmQlseV/vgKiRWP5ngP7CppsqiP7i9DIz8K0qVX77YXHp5tR7+2FsaeZ20FHq88eB72A==
+"@phala/sdk@0.6.0-beta.13":
+  version "0.6.0-beta.13"
+  resolved "https://registry.yarnpkg.com/@phala/sdk/-/sdk-0.6.0-beta.13.tgz#094e3e155ddc214d56587914b86716ddbc9e3120"
+  integrity sha512-5eXvAH8xlpG/2MCxKwcpUF/i2IfTOENtwdKntnKengjHMqLL3TukMjb0LdSgrhAAgUyRBAeu3tcAUBxz02dIHA==
   dependencies:
-    "@polkadot/api" "^10.9.1"
-    "@polkadot/api-contract" "^10.9.1"
-    "@polkadot/keyring" "^12.3.2"
-    "@polkadot/types" "^10.9.1"
-    "@polkadot/types-augment" "^10.9.1"
-    "@polkadot/util" "^12.3.2"
-    "@polkadot/util-crypto" "^12.3.2"
+    "@polkadot/api" "~10.11.1"
+    "@polkadot/api-contract" "~10.11.1"
+    "@polkadot/extension-inject" "~0.46.6"
+    "@polkadot/keyring" "~12.6.1"
+    "@polkadot/networks" "~12.6.1"
+    "@polkadot/types" "~10.11.1"
+    "@polkadot/types-augment" "~10.11.1"
+    "@polkadot/types-codec" "~10.11.1"
+    "@polkadot/ui-keyring" "~3.6.4"
+    "@polkadot/ui-settings" "~3.6.4"
+    "@polkadot/util" "~12.6.1"
+    "@polkadot/util-crypto" "~12.6.1"
     browserify-cipher "^1.0.1"
     cross-fetch "^4.0.0"
     protobufjs "^7.2.4"
+    ramda "^0.29.1"
     randombytes "^2.1.0"
     rxjs "^7.8.1"
     viem "^1.5.0"
@@ -628,7 +634,7 @@
     rxjs "^7.8.1"
     tslib "^2.6.2"
 
-"@polkadot/api-contract@^10.9.1", "@polkadot/api-contract@~10.11.1":
+"@polkadot/api-contract@~10.11.1":
   version "10.11.2"
   resolved "https://registry.yarnpkg.com/@polkadot/api-contract/-/api-contract-10.11.2.tgz#2211fc17ea470413b279bafccea8f70f3308fa4d"
   integrity sha512-n+G1puptaQA5CwO2EHmD29QR1qlV/dVs6R0cBSGFaXvYJxqYJvN2LEir3i9vWjO0IVqulTjLPWvv7MbR3CxhmA==
@@ -659,7 +665,7 @@
     rxjs "^7.8.1"
     tslib "^2.6.2"
 
-"@polkadot/api@10.11.2", "@polkadot/api@^10.11.1", "@polkadot/api@^10.11.2", "@polkadot/api@^10.9.1", "@polkadot/api@~10.11.1":
+"@polkadot/api@10.11.2", "@polkadot/api@^10.11.1", "@polkadot/api@^10.11.2", "@polkadot/api@~10.11.1":
   version "10.11.2"
   resolved "https://registry.yarnpkg.com/@polkadot/api/-/api-10.11.2.tgz#16cd07062d51cc9cf77a3a6afa3cb4e526e44a82"
   integrity sha512-AorCZxCWCoTtdbl4DPUZh+ACe/pbLIS1BkdQY0AFJuZllm0x/yWzjgampcPd5jQAA/O3iKShRBkZqj6Mk9yG/A==
@@ -695,7 +701,7 @@
     "@polkadot/x-global" "^12.6.1"
     tslib "^2.6.2"
 
-"@polkadot/keyring@^12.3.2", "@polkadot/keyring@^12.5.1", "@polkadot/keyring@^12.6.1", "@polkadot/keyring@^12.6.2", "@polkadot/keyring@~12.6.1":
+"@polkadot/keyring@^12.5.1", "@polkadot/keyring@^12.6.1", "@polkadot/keyring@^12.6.2", "@polkadot/keyring@~12.6.1":
   version "12.6.2"
   resolved "https://registry.yarnpkg.com/@polkadot/keyring/-/keyring-12.6.2.tgz#6067e6294fee23728b008ac116e7e9db05cecb9b"
   integrity sha512-O3Q7GVmRYm8q7HuB3S0+Yf/q/EB2egKRRU3fv9b3B7V+A52tKzA+vIwEmNVaD1g5FKW9oB97rmpggs0zaKFqHw==
@@ -756,7 +762,7 @@
   optionalDependencies:
     "@substrate/connect" "0.7.35"
 
-"@polkadot/types-augment@10.11.2", "@polkadot/types-augment@^10.9.1", "@polkadot/types-augment@~10.11.1":
+"@polkadot/types-augment@10.11.2", "@polkadot/types-augment@~10.11.1":
   version "10.11.2"
   resolved "https://registry.yarnpkg.com/@polkadot/types-augment/-/types-augment-10.11.2.tgz#197b24f2c85c9ca483d5cb6d2acc06f42c707abd"
   integrity sha512-8eB8ew04wZiE5GnmFvEFW1euJWmF62SGxb1O+8wL3zoUtB9Xgo1vB6w6xbTrd+HLV6jNSeXXnbbF1BEUvi9cNg==
@@ -804,7 +810,7 @@
     "@polkadot/util" "^12.6.2"
     tslib "^2.6.2"
 
-"@polkadot/types@10.11.2", "@polkadot/types@^10.11.1", "@polkadot/types@^10.9.1", "@polkadot/types@~10.11.1":
+"@polkadot/types@10.11.2", "@polkadot/types@^10.11.1", "@polkadot/types@~10.11.1":
   version "10.11.2"
   resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-10.11.2.tgz#3317b6fcee53bbfba7bf654413f93ccd742c478e"
   integrity sha512-d52j3xXni+C8GdYZVTSfu8ROAnzXFMlyRvXtor0PudUc8UQHOaC4+mYAkTBGA2gKdmL8MHSfRSbhcxHhsikY6Q==
@@ -843,7 +849,7 @@
     store "^2.0.12"
     tslib "^2.6.2"
 
-"@polkadot/util-crypto@12.6.2", "@polkadot/util-crypto@^12.3.2", "@polkadot/util-crypto@^12.5.1", "@polkadot/util-crypto@^12.6.1", "@polkadot/util-crypto@^12.6.2", "@polkadot/util-crypto@~12.6.1":
+"@polkadot/util-crypto@12.6.2", "@polkadot/util-crypto@^12.5.1", "@polkadot/util-crypto@^12.6.1", "@polkadot/util-crypto@^12.6.2", "@polkadot/util-crypto@~12.6.1":
   version "12.6.2"
   resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-12.6.2.tgz#d2d51010e8e8ca88951b7d864add797dad18bbfc"
   integrity sha512-FEWI/dJ7wDMNN1WOzZAjQoIcCP/3vz3wvAp5QQm+lOrzOLj0iDmaIGIcBkz8HVm3ErfSe/uKP0KS4jgV/ib+Mg==
@@ -859,7 +865,7 @@
     "@scure/base" "^1.1.5"
     tslib "^2.6.2"
 
-"@polkadot/util@12.6.2", "@polkadot/util@^12.3.2", "@polkadot/util@^12.5.1", "@polkadot/util@^12.6.1", "@polkadot/util@^12.6.2", "@polkadot/util@~12.6.1":
+"@polkadot/util@12.6.2", "@polkadot/util@^12.5.1", "@polkadot/util@^12.6.1", "@polkadot/util@^12.6.2", "@polkadot/util@~12.6.1":
   version "12.6.2"
   resolved "https://registry.yarnpkg.com/@polkadot/util/-/util-12.6.2.tgz#9396eff491221e1f0fd28feac55fc16ecd61a8dc"
   integrity sha512-l8TubR7CLEY47240uki0TQzFvtnxFIO7uI/0GoWzpYD/O62EIAMRsuY01N4DuwgKq2ZWD59WhzsLYmA5K6ksdw==
@@ -2161,6 +2167,11 @@ decamelize@^1.1.0, decamelize@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
   integrity sha512-z2S+W9X73hAUUki+N+9Za2lBlun89zigOyGrsax+KUQ6wKW4ZoWpEYBkGhQjwAjjDCkWxhY0VKEhk8wzY7F5cA==
+
+decimal.js@^10.4.3:
+  version "10.4.3"
+  resolved "https://registry.yarnpkg.com/decimal.js/-/decimal.js-10.4.3.tgz#1044092884d245d1b7f65725fa4ad4c6f781cc23"
+  integrity sha512-VBBaLc1MgL5XpzgIP7ny5Z6Nx3UrRkIViUkPUdtl9aya5amy3De1gsUUSB1g3+3sExYNjCAsAznmukyxCb1GRA==
 
 deep-equal@^2.2.3:
   version "2.2.3"
@@ -4905,7 +4916,7 @@ supports-preserve-symlinks-flag@^1.0.0:
 
 tailwind-merge@^2.2.1:
   version "2.2.1"
-  resolved "https://registry.yarnpkg.com/tailwind-merge/-/tailwind-merge-2.2.1.tgz#3f10f296a2dba1d88769de8244fafd95c3324aeb"
+  resolved "https://registry.yarnpkg.com/tailwind-merge/-/tailwind-merge-2.2.1.tgz#3f10f296a2dba1d88769de8244fafd95c3324aeb"=======
   integrity sha512-o+2GTLkthfa5YUt4JxPfzMIpQzZ3adD1vLVkvKE1Twl9UAhGsEbIZhHHZVRttyW177S8PDJI3bTQNaebyofK3Q==
   dependencies:
     "@babel/runtime" "^7.23.7"
@@ -4958,6 +4969,7 @@ terser@^5.26.0:
   version "5.27.2"
   resolved "https://registry.yarnpkg.com/terser/-/terser-5.27.2.tgz#577a362515ff5635f98ba149643793a3973ba77e"
   integrity sha512-sHXmLSkImesJ4p5apTeT63DsV4Obe1s37qT8qvwHRmVxKTBH7Rv9Wr26VcAMmLbmk9UliiwK8z+657NyJHHy/w==
+
   dependencies:
     "@jridgewell/source-map" "^0.3.3"
     acorn "^8.8.2"
@@ -5207,6 +5219,20 @@ varint@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/varint/-/varint-6.0.0.tgz#9881eb0ce8feaea6512439d19ddf84bf551661d0"
   integrity sha512-cXEIW6cfr15lFv563k4GuVuW/fiwjknytD37jIOLSdSWuOI6WnO/oKwmP2FQTU2l01LP8/M5TSAJpzUaGe3uWg==
+
+viem@1.19.6:
+  version "1.19.6"
+  resolved "https://registry.yarnpkg.com/viem/-/viem-1.19.6.tgz#daf1ebf4774a5bb9e87822ab25fcc67420471847"
+  integrity sha512-WSBHBMurWIWQk2yisOD8hqSA5S56cZu6onty3hzauVjiHMildtVWujF7YT0xjoU40GpFODvJASRR2RFdzgvUUg==
+  dependencies:
+    "@adraffy/ens-normalize" "1.10.0"
+    "@noble/curves" "1.2.0"
+    "@noble/hashes" "1.3.2"
+    "@scure/bip32" "1.3.2"
+    "@scure/bip39" "1.2.1"
+    abitype "0.9.8"
+    isows "1.0.3"
+    ws "8.13.0"
 
 viem@^1.5.0:
   version "1.21.4"
