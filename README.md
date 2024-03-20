@@ -42,7 +42,8 @@ There are four subdirectories in this repo:
 - [Docker](https://docs.docker.com/get-docker/) installed and the docker daemon is running.
 - Current user is in the `docker` group.
 - [Node.js](https://nodejs.org/en/download/) installed. (Tested version : `v16.17.1`)
-- Intel IAS API key and SPID. (You can get it from [here](https://api.portal.trustedservices.intel.com/EPID-attestation))
+- [Act](https://github.com/nektos/act) installed. (Tested version : `0.2.9`)
+- Intel IAS API key and SPID. (You can get it from [here](https://api.portal.trustedservices.intel.com/products#product=dev-intel-software-guard-extensions-attestation-service-linkable). can subscribe to get immediate access to the development environment)
 
 #### Initialize submodules
 
@@ -206,4 +207,59 @@ export SGX_ENABLED=false
 ```bash
 circom circuit.circom --r1cs
 snarkjs rej circuit.r1cs circuit.json
+```
+
+#### Run App using dev mode
+
+1) Build the app:
+```bash
+$ pnpm gramine build
+```
+
+2) Check the gramine package and copy the .env.example file and edit it with your environment config:
+```bash
+$ cp ./packages/gramine/.env.example ./packages/gramine/.env
+```
+** Don't forget to update the SGX ENABLED variable to **false**
+
+4) Run the app using a initial command
+```bash
+# --------------------------------
+# Notes to use the app commands
+# --------------------------------
+# 1) New ceremony with new challenge
+# yarn gramine dev ./app/bin/new_constrained <challenge> <power> <bash> <ceremony name> <ceremony description> <deadline timestamp>
+#
+# 2) Contribute to the ceremony
+# yarn gramine dev <ceremony id> ./app/bin/compute_constrained <challenge> <response> <power> <bash>
+#
+# 3) Verify the ceremony and create new challange
+# yarn gramine dev <ceremony id> ./app/bin/verify_transform_constrained <existing challenge> <response> <new challenge> <power> <bash>
+#
+# 4) Finalize the ceremony and prepare for phase 2
+# yarn gramine dev <ceremony id> ./app/bin/prepare_phase2 <response> <power> <bash>
+# --------------------------------
+
+## Base example to create a new ceremony
+$ yarn gramine dev ./app/bin/new_constrained challenge 10 256 "my ceremony name" "my ceremony description" 1709221725
+$ yarn gramine dev 1708608454 ./app/bin/compute_constrained challenge response 10 256
+$ yarn gramine dev 1707244846 ./app/bin/verify_transform_constrained challenge response challenge2 10 256
+$ yarn gramine dev 1707244846 ./app/bin/compute_constrained challenge2 response2 10 256
+$ yarn gramine dev 1707244846 ./app/bin/prepare_phase2 response2 10 256
+```	
+
+## Workflows
+
+In order to test the workflows locally, you need to install [act](https://github.com/nektos/act).
+
+After install, you can the workflow using the following command:
+
+```bash
+act -W .github/workflows/build-and-release.yml --artifact-server-path ./.github/workflows/.artifacts/ --secret-file ./packages/gramine/.env --job build
+```
+
+If you want to run in your own environment, you can use the following command:
+
+```bash
+act -W .github/workflows/build-and-release.yml --artifact-server-path ./.github/workflows/.artifacts/ --secret-file ./packages/gramine/.env -P ubuntu-latest=-self-hosted --job build
 ```
