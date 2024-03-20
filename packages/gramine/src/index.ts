@@ -11,6 +11,18 @@ let isCommandExecuting = false
 let output: any = null
 
 const server = http.createServer((req: any, res: any) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, POST, GET');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204);
+
+    res.end();
+
+    return;
+  }
+
   if (req.method === 'GET' && req.url === '/output') {
     res.writeHead(200, {'Content-Type': 'application/json'});
 
