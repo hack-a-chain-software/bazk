@@ -6,6 +6,7 @@
     "start": "terraform init -var-file=.tfvars",
     "plan": "terraform plan -var-file=.tfvars",
     "apply": "terraform apply -var-file=.tfvars -auto-approve",
+    "refresh": "terraform refresh -var-file=.tfvars ",
     "destroy": "terraform destroy -var-file=.tfvars -auto-approve"
   },
   "keywords": [],
