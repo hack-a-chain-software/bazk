@@ -4,7 +4,7 @@ import { createFileObject } from "../utils/file";
 import { createMetadata } from "../utils/metadata";
 import { uploadToPinata } from "../utils/pinata";
 
-export interface CreateArgsInterface {
+interface CreateArgsInterface {
   name: string,
   power: number,
   description: string,
@@ -33,7 +33,7 @@ const validateArgs = (args: any) => {
   }
 };
 
-export const createCeremony = async (args: CreateArgsInterface): Promise<any> => {
+export const create = async (args: CreateArgsInterface): Promise<any> => {
   console.log('[Enclave] Create command dispatched');
 
   validateArgs(args);
@@ -96,9 +96,7 @@ export const createCeremony = async (args: CreateArgsInterface): Promise<any> =>
     )
   ]
 
-  await fs.unlink(outputFileName, () => {
-    console.log(outputFileName + ' deleted.');
-  });
+  fs.unlinkSync(outputFileName);
 
   return {
     name,

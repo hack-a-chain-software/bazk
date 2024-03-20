@@ -3,7 +3,7 @@ import { execFile } from "../utils/exec";
 import { createFileObject } from "../utils/file";
 import { downloadFromPinata, uploadToPinata } from "../utils/pinata";
 import { testMode } from "../constants/env";
-import { validadeDeadline, validateLastHash } from "../utils/phala";
+import { validadeDeadline } from "../utils/phala";
 
 export interface ContributeArgsInterface {
   ceremonyId: number,
@@ -69,13 +69,8 @@ export const contribute = async (args: ContributeArgsInterface, validatorContrac
     )
   ]
 
-  await fs.unlink(lastContribution.name, () => {
-    console.log(lastContribution.name + ' deleted.');
-  });
-
-  await fs.unlink(outputFileName, () => {
-    console.log(outputFileName + ' deleted.');
-  });
+  fs.unlinkSync(outputFileName);
+  fs.unlinkSync(lastContribution.name);
 
   return {
     phase: 2,

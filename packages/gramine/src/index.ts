@@ -50,19 +50,30 @@ const server = http.createServer((req: any, res: any) => {
       const args = JSON.parse(buffer);
 
       dispatch(args)
-        .then((res: any) => output = res)
+        .then((result: any) => {
+          output = res
+
+          res.writeHead(200, {'Content-Type': 'application/json'});
+
+          res.end(JSON.stringify({
+            success: true,
+            message: result
+          }));
+        })
+        .catch((error: any) => {
+          res.writeHead(400, {'Content-Type': 'application/json'});
+
+          res.end(JSON.stringify({
+            success: false,
+            message: error.message
+          }));
+        })
         .finally(() => {
           isCommandExecuting = false
         });
-
-
-      res.writeHead(200, {'Content-Type': 'application/json'});
-
-      res.end(JSON.stringify({
-        success: true,
-        message: 'Command started'
-      }));
     });
+
+    console.log("?????")
   } else {
     res.writeHead(404, {'Content-Type': 'application/json'});
 

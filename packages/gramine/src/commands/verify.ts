@@ -2,19 +2,26 @@ import fs from "fs";
 import { execFile } from "../utils/exec";
 import { downloadFromPinata } from "../utils/pinata";
 
-export interface CreateArgsInterface {
+interface VerifyArgsInterface {
   hashes: string[],
+  power: number,
 }
 
-const commandfileName = './app/bin/verify';
+const commandfileName = './app/bin/verify_contribution';
+
+const circuitFIleName = 'circuit.json';
 
 const validateArgs = (args: any) => {
+  if (!args.power) {
+    throw new Error('[Enclave] Power not provided');
+  }
+
   if (args.hashes == null || args.hashes.length < 1) {
     throw new Error('[Enclave] Hashes not provided');
   }
 };
 
-export const verify = async (args: CreateArgsInterface): Promise<any> => {
+export const verify = async (args: VerifyArgsInterface): Promise<any> => {
   console.log('[Enclave] Contribute command dispatched');
 
   validateArgs(args);
@@ -36,8 +43,10 @@ export const verify = async (args: CreateArgsInterface): Promise<any> => {
   const { stderr } = await execFile(
     commandfileName,
     [
+      circuitFIleName,
       "from.params",
       "to.params",
+      `./app/ceremonies/p${args.power}`
     ]
   );
 
@@ -45,14 +54,8 @@ export const verify = async (args: CreateArgsInterface): Promise<any> => {
     throw new Error(stderr);
   }
 
-  await fs.unlink('from.params', () => {
-    console.log('from.params deleted.');
-  });
+  fs.unlinkSync('to.params');
+  fs.unlinkSync('from.params');
 
-  await fs.unlink('to.params', () => {
-    console.log('to.params deleted.');
-  });
-
-  return {
-  }
+  return {}
 };

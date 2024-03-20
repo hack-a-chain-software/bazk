@@ -7,15 +7,15 @@ import { getClient, getContract, signCertificate } from '@phala/sdk';
 import { iasApiKey, sgxEnabled, testMode } from './constants/env';
 import { cryptoWaitReady, signatureVerify } from '@polkadot/util-crypto';
 
-export type CommandKeyType = 'createCeremony' | 'verify' | 'contribute'
+export type CommandKeyType = 'create' | 'verify' | 'contribute'
 
 export const commandsKeys: CommandKeyType[] = [
   'verify',
+  'create',
   'contribute',
-  'createCeremony',
 ]
 
-export const getCommandByKey = (key: CommandKeyType) => {
+const getCommandByKey = (key: CommandKeyType) => {
   const command = commands[key]
 
   if (!command) {
@@ -25,7 +25,7 @@ export const getCommandByKey = (key: CommandKeyType) => {
   return command
 }
 
-export interface DispatchArgsInterface {
+interface DispatchArgsInterface {
   key: CommandKeyType,
   data: any
 }

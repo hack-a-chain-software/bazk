@@ -1,0 +1,21 @@
+config:
+  target: 'http://localhost:3000'
+  # target: 'http://52.191.66.177:3000'
+  phases:
+    - duration: 60
+      arrivalRate: 10
+  defaults:
+    headers:
+      Content-Type: "application/json"
+
+scenarios:
+  - flow:
+      - post:
+          url: "/execute"
+          json:
+            key: "create"
+            data:
+              power: "10"
+              name: "Artilhary new era"
+              description: "my ceremony description"
+              deadline: 1712712496
