@@ -1,94 +1,19 @@
 import Table from "@/components/Table";
 import Pagination from '@/components/Pagination'
-import PageTitle from "@/components/layout/Title";
-import NameColumn from "@/components/columns/Name";
-import ContributionsColumn from "@/components/columns/Contributions";
-import Status from "@/components/Tag";
-import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useFoundationContext } from "@/providers/foundation";
-import CreatedAtColumn from "@/components/columns/CreatedAt";
 import usePaginate from "@/hooks/usePaginate";
-
-const tableColumns = [
-  {
-    key: 'ceremonyId',
-    label: 'ID',
-    classRoot: 'min-w-[70px]'
-  },
-  {
-    key: 'name',
-    label: 'Circuit Name',
-    classRoot: 'min-w-[190px]',
-    render: (row: any) => (
-      <NameColumn
-        name={row.name}
-      />
-    )
-  },
-  {
-    key: 'hash',
-    label: 'Hash',
-    classRoot: 'min-w-[160px]',
-  },
-  {
-    key: 'deadline',
-    label: 'Deadline',
-    classRoot: 'min-w-[130px]',
-    render: (row: any) => {
-      return (
-        <CreatedAtColumn
-          date={row.deadline * 1000}
-        />
-      )
-    }
-  },
-  {
-    key: 'status',
-    label: 'Status',
-    classRoot: 'min-w-[72px]',
-    render: (row: any) => {
-      return (
-        <Status
-          status={row.status as 'open' | 'finalized'}
-        />
-      )
-    }
-  },
-  {
-    key: 'contributions',
-    label: 'Contributions',
-    classRoot: 'min-w-[92px]',
-    render: (row: any) => (
-      <ContributionsColumn
-        contributions={row.contributions}
-      />
-    )
-  },
-  {
-    key: 'actions',
-    label: 'Actions',
-    classRoot: 'min-w-[53px]',
-    render: (row: any) => {
-      return (
-        <Link
-          to={`/ceremony/${row.ceremonyId}`}
-          className="text-bazk-blue-500 text-sm text-center block"
-        >
-          View
-        </Link>
-      )
-    }
-  },
-]
+import { ApiServiceContext } from "@/App";
+import { ceremoniesTableColumns } from "@/utils/tables";
 
 export const IndexPage = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [ceremonies, setCeremonies] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
 
+  const isStarted = ApiServiceContext.useSelector(state => state.matches('started'))
+
   const {
-    initialized,
     getCeremonies,
   } = useFoundationContext()
 
@@ -103,7 +28,7 @@ export const IndexPage = () => {
   })
 
   useEffect(() => {
-    if (!initialized) {
+    if (!isStarted) {
       return
     }
 
@@ -115,7 +40,7 @@ export const IndexPage = () => {
       setCeremonies(res)
       setIsLoading(false)
     })()
-  }, [initialized, getCeremonies])
+  }, [isStarted, getCeremonies])
 
   return (
     <div
@@ -126,7 +51,7 @@ export const IndexPage = () => {
           <Table
             rows={page}
             title="Ceremonies"
-            columns={tableColumns}
+            columns={ceremoniesTableColumns}
           />
 
           {ceremonies && ceremonies.length > 0 && (

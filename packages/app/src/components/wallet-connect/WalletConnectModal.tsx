@@ -1,6 +1,6 @@
 import Modal from '../Modal';
 import { twMerge } from 'tailwind-merge';
-import { PhalaConnectContext } from '@/App';
+import { ApiServiceContext, PhalaConnectContext } from '@/App';
 import ChevronIcon from '@/components/icons/Chevron'
 import DownloadIcon from '@/components/icons/Download'
 import SpinnerIcon from '@/components/icons/Spinner';
@@ -12,6 +12,8 @@ export const WalletConnectModal = () => {
   const providers = PhalaConnectContext.useSelector((state) => state.context.providers)
   const signinProvider = PhalaConnectContext.useSelector((state) => state.context.provider)
   const isSigningIn = PhalaConnectContext.useSelector((state: any) => state.matches('signedOut.signingIn'))
+
+  const registry = ApiServiceContext.useSelector((state) => state.context.phatRegistry)
 
   return (
     <Modal
@@ -56,7 +58,7 @@ export const WalletConnectModal = () => {
                   'hover:bg-bazk-grey-300',
                 )
               }
-              onClick={() => phalaConnectActorRef?.send({ type: 'sign-in', value: provider })}
+              onClick={() => phalaConnectActorRef?.send({ type: 'sign-in', value: { provider, registry } })}
             >
               <div
                 className="flex items-center gap-3"
@@ -73,7 +75,7 @@ export const WalletConnectModal = () => {
               </div>
 
               <div>
-                {provider?.installed && !isSigningIn && signinProvider?.key !== provider.key && (
+                {provider?.installed && signinProvider?.key !== provider.key && (
                   <ChevronIcon
                     className="rotate-180 text-[#64748B] min-w-6 min-h-6"
                   />

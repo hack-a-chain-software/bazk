@@ -9,26 +9,31 @@ import Container from '@/components/layout/Container'
 
 import { FoundationContextProvider } from './providers/foundation'
 import { createActorContext } from '@xstate/react'
-import { HackaConnectMachine } from './machines/hacka-connect/HackaConnectMachine'
+import { HackaConnectMachine } from './machines/HackaConnectMachine'
+import ApiServicetMachine from './machines/ApiServiceMachine'
 
 export const PhalaConnectContext = createActorContext(HackaConnectMachine);
+
+export const ApiServiceContext = createActorContext(ApiServicetMachine);
 
 export default function BazkApp() {
   const Pages = () => useRoutes(routes);
 
   return (
-    <PhalaConnectContext.Provider>
-      <FoundationContextProvider>
-        <Root>
-          <Router>
-            <Header/>
+    <ApiServiceContext.Provider>
+      <PhalaConnectContext.Provider>
+        <FoundationContextProvider>
+          <Root>
+            <Router>
+              <Header/>
 
-            <Container>
-              <Pages/>
-            </Container>
-          </Router>
-        </Root>x
-      </FoundationContextProvider>
-    </PhalaConnectContext.Provider>
+              <Container>
+                <Pages/>
+              </Container>
+            </Router>
+          </Root>x
+        </FoundationContextProvider>
+      </PhalaConnectContext.Provider>
+    </ApiServiceContext.Provider>
   )
 }
