@@ -10,6 +10,7 @@ import { useFoundationContext } from '@/providers/foundation';
 import usePaginate from '@/hooks/usePaginate';
 import { ApiServiceContext } from '@/App';
 import { contributionsTableColumns } from '@/utils/tables';
+import { isBefore } from 'date-fns';
 
 export const CeremonyPage = () => {
   const { id } = useParams()
@@ -41,7 +42,13 @@ export const CeremonyPage = () => {
     (async () => {
       const res = await getCeremony(id) as any
 
-      setCeremony(res)
+      if (!res) {
+        return
+      }
+
+      const isOpen = isBefore(new Date(), new Date(res.deadline * 1000))
+
+      setCeremony({ ...res, isOpen })
     })()
   }, [id, isStarted, getCeremony])
 
@@ -56,8 +63,10 @@ export const CeremonyPage = () => {
           title="Ceremony"
         />
 
-        {ceremony && (
-          <ContributionButton />
+        {ceremony && ceremony.isOpen && (
+          <ContributionButton
+            disabled={!ceremony.isOpen}
+          />
         )}
       </div>
 

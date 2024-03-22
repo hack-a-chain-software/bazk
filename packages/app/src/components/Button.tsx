@@ -48,6 +48,7 @@ export const ButtonSecondaryLarge = ({
 
 export const ButtonLarge = ({
   label,
+  loading = false,
   disabled = false,
   onClick = () => {},
 }: ButtonInterface) => (
@@ -57,7 +58,7 @@ export const ButtonLarge = ({
     className="
       text-sm md:text-base w-full px-4 py-2 md:py-3 rounded-md leading-[19.6px] bg-bazk-blue-500 hover:bg-[#5340D9] text-white font-semibold disabled:opacity-[0.7] disabled:cursor-not-allowed"
   >
-    {label}
+    {loading ? <SpinnerButton/> : label}
   </button>
 )
 

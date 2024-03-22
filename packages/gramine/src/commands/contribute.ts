@@ -45,7 +45,7 @@ export const contribute = async (args: ContributeArgsInterface, validatorContrac
 
   console.log("[Enclave] Running contribute command...: ");
 
-  const outputFileName = `circom${contributions.length}.params`
+  const outputFileName = `circom${contributions.length + 1}.params`
 
   const { stderr } = await execFile(
     commandfileName,

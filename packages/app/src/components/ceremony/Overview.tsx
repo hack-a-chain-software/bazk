@@ -1,4 +1,5 @@
 import { format } from "date-fns"
+import { twMerge } from "tailwind-merge"
 
 export interface OverviewInterface {
   ceremony: any
@@ -98,13 +99,18 @@ export const Overview = ({
             </span>
 
             <span
-              className="text-[#1E293B] font-medium text-sm md:text-base"
+              className={
+                twMerge(
+                  "text-[#1E293B] font-medium text-sm md:text-base",
+                  !ceremony.isOpen && "text-bazk-red-500"
+                )
+              }
             >
               {format(ceremony.deadline * 1000, 'dd/MM/yyyy')}
             </span>
           </div>
 
-          <div
+          {/* <div
             className="
               p-2
               flex justify-between items-center flex-wrap gap-2
@@ -123,7 +129,7 @@ export const Overview = ({
             >
               264480...e61873
             </span>
-          </div>
+          </div> */}
         </div>
       </div>
 

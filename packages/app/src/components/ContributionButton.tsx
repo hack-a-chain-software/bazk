@@ -4,7 +4,7 @@ import Modal from "./Modal"
 import Puzzle from "./icons/Puzzle"
 import { Link, useLocation } from "react-router-dom"
 
-export const ContributionButton = () => {
+export const ContributionButton = ({ disabled = false }: { disabled?: boolean }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const location = useLocation();
@@ -22,6 +22,7 @@ export const ContributionButton = () => {
   return (
     <div>
       <Button
+        disabled={disabled}
         onClick={openModal}
         label="Start a contribution"
       />
