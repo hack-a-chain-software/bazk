@@ -14,7 +14,6 @@ export const Overview = ({
         p-4 md:p-6
         h-max
         bg-white
-        col-span-4
         rounded-lg
         flex flex-col
       "
