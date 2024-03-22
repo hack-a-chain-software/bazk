@@ -2,8 +2,7 @@ import { createMachine, fromPromise } from "xstate";
 import { ButtonLarge } from "@/components/Button";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { useActorRef, useSelector } from "@xstate/react";
-
-const url = "http://40.121.212.147:3000/execute";
+import { apiUrl } from "@/utils/constants";
 
 const createContributionMachine = createMachine({
   id: 'create-ceremony',
@@ -33,7 +32,7 @@ const createContributionMachine = createMachine({
         }),
         onDone: [
           {
-            guard: ({ event }: any) => !event.output.success,
+            guard: ({ event }: any) => !event?.output?.success,
             target: 'idle',
             actions: ({ event }: any) => {
               const error = event.output?.message;
@@ -66,7 +65,7 @@ export const CreateContributionPage = () => {
           };
 
           try {
-            const response = await fetch(url, {
+            const response = await fetch(apiUrl, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -75,8 +74,6 @@ export const CreateContributionPage = () => {
             });
 
             const result = await response.json()
-
-            console.log("contribution result", result)
 
             if (result && result?.message?.data?.outputFilesArray) {
               const [ contribution ] = result.message.data.outputFilesArray;
@@ -87,6 +84,8 @@ export const CreateContributionPage = () => {
             return result
           } catch (error) {
             console.error('Contribution error:', error);
+
+            return {}
           }
         }),
       },

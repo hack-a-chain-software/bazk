@@ -7,8 +7,7 @@ import PageTitle from "@/components/layout/Title";
 import { useActorRef, useSelector } from "@xstate/react";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-
-const url = "http://40.121.212.147:3000/execute";
+import { apiUrl } from "@/utils/constants";
 
 const defaultForm = {
   name: "",
@@ -95,7 +94,7 @@ export const CreatePage = () => {
         console.log("Creating ceremony with params: ", data)
 
         try {
-          const response = await fetch(url, {
+          const response = await fetch(apiUrl, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -113,7 +112,9 @@ export const CreatePage = () => {
 
           return result
         } catch (error) {
-          console.error('Houve um problema com sua operação de fetch:', error);
+          console.error('Request error:', error);
+
+          return {}
         }
       }),
     },

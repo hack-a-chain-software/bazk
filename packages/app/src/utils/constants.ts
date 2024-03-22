@@ -1,3 +1,5 @@
+export const apiUrl = "https://gawarawdfds.azure-api.net/execute/";
+
 export interface ProvidersBaseListInterface {
   type: 'polkadot' | 'ethereum'
   key: string;
