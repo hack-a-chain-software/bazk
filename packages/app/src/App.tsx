@@ -31,7 +31,7 @@ export default function BazkApp() {
                 <Pages/>
               </Container>
             </Router>
-          </Root>x
+          </Root>
         </FoundationContextProvider>
       </PhalaConnectContext.Provider>
     </ApiServiceContext.Provider>

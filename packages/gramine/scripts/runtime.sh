@@ -25,7 +25,7 @@ get_zip_url() {
 
 # Checks if the folder exists
 if [ -n "$VOLUME_PATH" ]; then
-    echo "Folder $FOLDER found. Running Docker..."
+    echo "Folder dist found. Running Docker..."
 else
     echo "Neither $FOLDER nor $ALTERNATE_FOLDER found. Downloading and extracting the file..."
 

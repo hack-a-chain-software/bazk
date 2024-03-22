@@ -6,14 +6,14 @@ import { uploadToPinata } from "../utils/pinata";
 
 interface CreateArgsInterface {
   name: string,
+  bash: string,
   power: number,
+  circuit: string,
   description: string,
   deadline: string | number
 }
 
-const bash = 256
-
-const circuitFIleName = 'circuit.json';
+const circuitFileName = 'circuit.json';
 
 const commandfileName = './app/bin/new';
 
@@ -31,6 +31,14 @@ const validateArgs = (args: any) => {
   if (args.deadline == null) {
     throw new Error('[Enclave] Deadline not provided, please provide a deadline for the ceremony');
   }
+
+  if (args.circuit == null) {
+    throw new Error('[Enclave] Circuit not provided, please provide a circuit for the ceremony');
+  }
+
+  if (args.bash == null) {
+    throw new Error('[Enclave] Curve not provided, please provide a curve for the ceremony');
+  }
 };
 
 export const create = async (args: CreateArgsInterface): Promise<any> => {
@@ -40,10 +48,14 @@ export const create = async (args: CreateArgsInterface): Promise<any> => {
 
   const {
     name,
+    bash,
     power,
+    circuit,
     deadline,
     description,
   } = args;
+
+  fs.writeFileSync(circuitFileName, circuit, 'utf8');
 
   const ceremonyId = Math.floor(Date.now() / 1000);
 
@@ -52,7 +64,7 @@ export const create = async (args: CreateArgsInterface): Promise<any> => {
   const { stderr } = await execFile(
     commandfileName,
     [
-      circuitFIleName,
+      circuitFileName,
       'circom1.params',
       `./app/ceremonies/p${args.power}`
     ]
@@ -71,7 +83,7 @@ export const create = async (args: CreateArgsInterface): Promise<any> => {
     nPrvInputs,
     nPubInputs,
   } = JSON.parse(
-    fs.readFileSync(circuitFIleName as string, "utf8"),
+    fs.readFileSync(circuitFileName as string, "utf8"),
   );
 
   const metadataArray = [

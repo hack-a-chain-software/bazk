@@ -84,8 +84,6 @@ const server = http.createServer((req: any, res: any) => {
           isCommandExecuting = false
         });
     });
-
-    console.log("?????")
   } else {
     res.writeHead(404, {'Content-Type': 'application/json'});
 

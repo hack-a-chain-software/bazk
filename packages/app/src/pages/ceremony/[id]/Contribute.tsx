@@ -11,9 +11,9 @@ export const CreateContributionPage = () => {
       <div
         className="bg-white rounded-lg p-4 md:p-6 flex flex-col gap-4"
       >
-        <Progress
+        {/* <Progress
           progress="50"
-        />
+        /> */}
 
         <div
           className="gap-2 flex flex-col"
@@ -35,7 +35,7 @@ export const CreateContributionPage = () => {
         <div
           className="flex gap-4 pt-4"
         >
-          <Link
+          {/* <Link
             to="/ceremony/1"
             className="w-full"
           >
@@ -43,17 +43,12 @@ export const CreateContributionPage = () => {
               label="Cancel"
               onClick={() => {}}
             />
-          </Link>
+          </Link> */}
 
-          <Link
-            to="/contribution/finished"
-            className="w-full"
-          >
-            <ButtonLarge
-              label="Finish"
-              onClick={() => {}}
-            />
-          </Link>
+          <ButtonLarge
+            label="Finish"
+            onClick={() => {}}
+          />
         </div>
       </div>
     </div>
