@@ -1,4 +1,6 @@
-export const apiUrl = "https://gawarawdfds.azure-api.net/execute/";
+export const apiUrl = import.meta.env.MODE === "development"
+  ? "http://40.121.212.147:3000/execute"
+  : "https://gawarawdfds.azure-api.net/execute/";
 
 export interface ProvidersBaseListInterface {
   type: 'polkadot' | 'ethereum'
