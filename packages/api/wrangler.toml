@@ -1,0 +1,15 @@
+node_compat = true
+name = "bazk-api"
+main = "dist/index.mjs"
+compatibility_date = "experimental"
+
+[durable_objects]
+bindings = [{ name = "DURABLE", class_name = "Intermediary" }]
+
+[build]
+command = "node build.js"
+
+[miniflare]
+kv_persist = true
+cache_persist = true
+durable_objects_persist = true
