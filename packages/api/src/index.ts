@@ -5,28 +5,23 @@ const durableObjecId = "cache";
 
 export default {
   fetch: async (request: any, env: Env) => {
+    if (request.method === 'OPTIONS') {
+      return new Response(
+        null,
+        {
+          headers: {
+            "Access-Control-Allow-Origin": '*',
+            "Access-Control-Allow-Methods": 'OPTIONS, POST, GET',
+            "Access-Control-Allow-Headers": 'Content-Type',
+          }
+        }
+      );
+    }
+
     const id = env.DURABLE.idFromName(durableObjecId);
 
     const stub = env.DURABLE.get(id);
 
-    try {
-      const commandOuput = await stub.fetch(request);
-
-      console.log(commandOuput, 'commandOuput')
-
-      return commandOuput
-    } catch (err) {
-      console.warn(
-        "execution failed during durable object request, error: ",
-        err
-      )
-
-      return new Response(
-        "execution failed during durable object request, error: ",
-        {
-          status: 405
-        }
-      )
-    }
+    return await stub.fetch(request);
   },
 };

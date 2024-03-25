@@ -2,15 +2,6 @@ import { Env } from "../types/env";
 import { BusyState } from "../types/intermediary";
 import { sendRequest } from "../services/request";
 
-async function delayAndResolve(milliseconds = 1000000) {
-  await new Promise(resolve => setTimeout(resolve, milliseconds));
-
-  return {
-    data: "Mock data",
-    errors: false,
-  }
-}
-
 /**
  * The Durable Object
  */
@@ -56,23 +47,57 @@ export class Intermediary {
 
     const currentState = await this.getCurrentState();
 
+    console.log("[DOS] Current state ", currentState)
+
     if (currentState) {
-      return new Response("The pod is busy");
+      return new Response(JSON.stringify({
+        sucess: false,
+        message: "Pod is already executing a command, please try again later."
+      }), {
+        headers: {
+          "Access-Control-Allow-Origin": '*',
+          "Access-Control-Allow-Methods": 'OPTIONS, POST, GET',
+          "Access-Control-Allow-Headers": 'Content-Type',
+        }
+      });
     }
 
     await this.updateCurrentState(true);
 
-    const {
-      data,
-      errors,
-    } = await sendRequest(args, this.env);
+    try {
+      console.log("[DOS] Try to execute command for params ", args)
 
-    if (errors) {
-      throw new Error(JSON.stringify(errors))
+      const res = await sendRequest(args, this.env);
+
+      await this.updateCurrentState(false);
+
+      await new Promise(resolve => setTimeout(resolve, 4000));
+
+      console.log("[DOS] Command output ", res)
+
+      return new Response(JSON.stringify(res), {
+        headers: {
+          "Access-Control-Allow-Origin": '*',
+          "Access-Control-Allow-Methods": 'OPTIONS, POST, GET',
+          "Access-Control-Allow-Headers": 'Content-Type',
+        }
+      });
+    } catch (e: any) {
+      await this.updateCurrentState(false);
+
+      console.log("[DOS] Command ERROR ", e)
+
+      return new Response(JSON.stringify({
+        sucess: false,
+        message: e.message
+      }), {
+        headers: {
+          "Access-Control-Allow-Origin": '*',
+          "Access-Control-Allow-Methods": 'OPTIONS, POST, GET',
+          "Access-Control-Allow-Headers": 'Content-Type',
+        }
+      });
+
     }
-
-    await this.updateCurrentState(false);
-
-    return new Response(JSON.stringify(data));
   }
 }

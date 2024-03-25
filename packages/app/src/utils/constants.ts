@@ -1,6 +1,4 @@
-export const apiUrl = import.meta.env.MODE === "development"
-  ? "http://40.121.212.147:3000/execute"
-  : "https://gawarawdfds.azure-api.net/";
+export const apiUrl = import.meta.env.POD_URL ?? "https://bazk-api.hideyourcash.workers.dev"
 
 export interface ProvidersBaseListInterface {
   type: 'polkadot' | 'ethereum'

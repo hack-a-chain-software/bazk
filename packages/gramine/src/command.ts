@@ -128,15 +128,17 @@ export const dispatch = async (args: DispatchArgsInterface): Promise<any> => {
       console.log("Finished")
 
       return {
+        success: true,
         data: commandOutput
       }
     }
 
-    console.log("Finish")
+    console.log("Finished")
   } catch (error: any) {
     console.error("[Enclave] Error:", error);
 
     return {
+      success: false,
       error: error.message
     }
   }

@@ -1,10 +1,14 @@
 node_compat = true
 name = "bazk-api"
 main = "dist/index.mjs"
-compatibility_date = "experimental"
+compatibility_date = "2024-03-25"
 
 [durable_objects]
 bindings = [{ name = "DURABLE", class_name = "Intermediary" }]
+
+[[migrations]]
+tag = "v1"
+new_classes = ["Intermediary"]
 
 [build]
 command = "node build.js"

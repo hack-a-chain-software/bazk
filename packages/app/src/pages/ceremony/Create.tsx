@@ -8,6 +8,8 @@ import { useActorRef, useSelector } from "@xstate/react";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiUrl } from "@/utils/constants";
+import toast from 'react-hot-toast';
+import { ToastError } from "@/components/Toast";
 
 const defaultForm = {
   name: "",
@@ -65,11 +67,7 @@ const createCeremonyMachine = createMachine({
           {
             guard: ({ event }: any) => !event.output.success,
             target: 'editing',
-            actions: ({ event }: any) => {
-              const error = event.output?.message;
-
-              console.log("error", error)
-            }
+            actions: 'notify'
           },
         ],
       },
@@ -81,6 +79,13 @@ export const CreatePage = () => {
   const navigate = useNavigate();
 
   const createCeremonyActorRef = useActorRef(createCeremonyMachine.provide({
+    actions: {
+      notify: ({ event }: any) => {
+        const error = event.output?.message;
+
+        toast.custom(<ToastError label={error} />);
+      }
+    },
     actors: {
       createCeremony: fromPromise(async ({ input }: any) => {
         const data = {

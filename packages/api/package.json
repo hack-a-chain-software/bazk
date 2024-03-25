@@ -1,5 +1,5 @@
 {
-  "name": "pod-proxy-api",
+  "name": "@bazk/api",
   "version": "1.0.0",
   "description": "Production level CF Worker api proxy",
   "type": "module",
