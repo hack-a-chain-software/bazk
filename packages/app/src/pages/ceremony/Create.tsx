@@ -113,15 +113,17 @@ export const CreatePage = () => {
 
           console.log('Requisição enviada', result);
 
-          if (result && result?.message?.data?.ceremonyId) {
-            navigate(`/ceremony/finished/?id=${result?.message?.data?.ceremonyId}`)
+          if (result && result?.data?.ceremonyId) {
+            navigate(`/ceremony/finished/?id=${result?.data?.ceremonyId}`)
           }
 
           return result
-        } catch (error) {
+        } catch (error: any) {
           console.error('Request error:', error);
 
-          return {}
+          return {
+            error: error.message
+          }
         }
       }),
     },

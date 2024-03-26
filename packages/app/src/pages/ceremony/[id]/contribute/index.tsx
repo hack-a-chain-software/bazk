@@ -83,8 +83,8 @@ export const CreateContributionPage = () => {
 
             const result = await response.json()
 
-            if (result && result?.message?.data?.outputFilesArray) {
-              const [ contribution ] = result.message.data.outputFilesArray;
+            if (result && result?.data?.outputFilesArray) {
+              const [ contribution ] = result.message.outputFilesArray;
 
               navigate(`${location.pathname}/${contribution.hash}`)
             }
