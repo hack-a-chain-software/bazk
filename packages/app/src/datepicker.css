@@ -51,9 +51,10 @@
 }
 
 .react-datepicker {
-  width: 440px;
-  min-height: 440px;
-  padding: 24px 16px;
+  width: 400px;
+  max-width: 100%;
+  min-height: 389px;
+  padding: 24px;
   font-family: "Helvetica Neue", helvetica, arial, sans-serif;
   font-size: 0.8rem;
   background-color: #FFF;
@@ -74,7 +75,7 @@
 }
 
 .react-datepicker__day-names {
-  margin-top: 24px;
+  margin-top: 16px;
   white-space: nowrap;
   display: flex;
   height: 36px;
@@ -128,6 +129,13 @@
   font-style: normal;
   font-weight: 400;
   line-height: 140%; /* 22.4px */
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background-color: #624BFF !important;
+  color: white;
+  border-radius: 100% !important;
 }
 
 /* UP HERES */
@@ -492,7 +500,6 @@
 .react-datepicker__year-text--in-range:hover {
   background-color: #1d5d90;
 }
-.react-datepicker__day--keyboard-selected,
 .react-datepicker__month-text--keyboard-selected,
 .react-datepicker__quarter-text--keyboard-selected,
 .react-datepicker__year-text--keyboard-selected {
@@ -500,7 +507,6 @@
   background-color: #bad9f1;
   color: rgb(0, 0, 0);
 }
-.react-datepicker__day--keyboard-selected:hover,
 .react-datepicker__month-text--keyboard-selected:hover,
 .react-datepicker__quarter-text--keyboard-selected:hover,
 .react-datepicker__year-text--keyboard-selected:hover {

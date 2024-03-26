@@ -3,6 +3,9 @@ import { ButtonLarge } from "@/components/Button";
 import { useLocation, useNavigate, useParams } from "react-router";
 import { useActorRef, useSelector } from "@xstate/react";
 import { apiUrl } from "@/utils/constants";
+import toast from 'react-hot-toast';
+import { ToastError } from "@/components/Toast";
+import { Carousel } from "@/components/Carousel";
 
 const createContributionMachine = createMachine({
   id: 'create-ceremony',
@@ -32,13 +35,9 @@ const createContributionMachine = createMachine({
         }),
         onDone: [
           {
-            guard: ({ event }: any) => !event?.output?.success,
+            guard: ({ event }: any) => !event?.output?.success || !event?.output?.message?.success,
             target: 'idle',
-            actions: ({ event }: any) => {
-              const error = event.output?.message;
-
-              console.log("error", error)
-            }
+            actions: 'notifyError'
           },
         ],
       },
@@ -55,6 +54,15 @@ export const CreateContributionPage = () => {
 
   const createContributionActorRef = useActorRef(
     createContributionMachine.provide({
+      actions: {
+        notifyError: ({ event }: any) => {
+          const {
+            error
+          } = event.output?.message as any;
+
+          toast.custom(<ToastError label={error} />);
+        }
+      },
       actors: {
         createContribution: fromPromise(async ({ input }: any) => {
           const data = {
@@ -111,7 +119,7 @@ export const CreateContributionPage = () => {
         /> */}
 
         <div
-          className="gap-2 flex flex-col"
+          className="gap-3 flex flex-col"
         >
           <span
             className="text-[#1E293B] text-lg md:text-[22px] leading-[140%] font-semibold"
@@ -124,8 +132,9 @@ export const CreateContributionPage = () => {
           >
             Keep your browser open and connected for the contribution to be completed.
           </span>
-
         </div>
+
+        <Carousel />
 
         <div
           className="flex gap-4 pt-4"
@@ -142,6 +151,7 @@ export const CreateContributionPage = () => {
           <ButtonLarge
             label="Start"
             loading={isContributing}
+            disabled={isContributing}
             onClick={() => createContributionActorRef.send({ type: 'contribute' })}
           />
         </div>

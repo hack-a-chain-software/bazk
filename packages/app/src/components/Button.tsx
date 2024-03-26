@@ -10,7 +10,7 @@ export interface ButtonInterface {
 
 const SpinnerButton = () => (
   <div
-    className="flex items-center justify-center w-[100px] h-[19px]"
+    className="flex items-center justify-center w-[100px] h-[19px] mx-auto"
   >
     <Spinner />
   </div>

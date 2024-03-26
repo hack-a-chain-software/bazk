@@ -68,8 +68,7 @@ const server = http.createServer((req: any, res: any) => {
           res.writeHead(200, {'Content-Type': 'application/json'});
 
           res.end(JSON.stringify({
-            success: true,
-            message: result
+            ...result
           }));
         })
         .catch((error: any) => {
@@ -77,7 +76,7 @@ const server = http.createServer((req: any, res: any) => {
 
           res.end(JSON.stringify({
             success: false,
-            message: error.message
+            error: error.message
           }));
         })
         .finally(() => {

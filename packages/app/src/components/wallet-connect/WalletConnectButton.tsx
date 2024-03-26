@@ -62,7 +62,7 @@ export const ConnectWalletButton = () => {
             <span
               className="text-white font-medium leading-[140%]"
             >
-              connect wallet
+              Connect Wallet
             </span>
 
             <div

@@ -67,7 +67,7 @@ const createCeremonyMachine = createMachine({
           {
             guard: ({ event }: any) => !event.output.success,
             target: 'editing',
-            actions: 'notify'
+            actions: 'notifyError'
           },
         ],
       },
@@ -80,8 +80,10 @@ export const CreatePage = () => {
 
   const createCeremonyActorRef = useActorRef(createCeremonyMachine.provide({
     actions: {
-      notify: ({ event }: any) => {
-        const error = event.output?.message;
+      notifyError: ({ event }: any) => {
+        const {
+          error
+        } = event.output?.message as any;
 
         toast.custom(<ToastError label={error} />);
       }
@@ -207,7 +209,7 @@ export const CreatePage = () => {
             value={power}
             disabled={isCreating}
             label="Power (Pot)"
-            placeholder="Set Power"
+            placeholder="Set a power between 10 and 16"
             onChange={(value) => {
               createCeremonyActorRef.send({
                 type: 'change',

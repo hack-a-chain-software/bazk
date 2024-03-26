@@ -61,7 +61,7 @@ export const DropZone = ({
             <span
               className="text-xs md:text-sm text-[#1E293B] font-medium"
             >
-              {name}.JSON
+              {name}
             </span>
           </div>
         </>
