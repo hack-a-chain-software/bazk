@@ -14,6 +14,7 @@ module.exports = {
   rules: {
     'react/no-unknown-property': 0,
     'react-refresh/only-export-components': 0,
+    "@typescript-eslint/ban-ts-comment": 0,
     '@typescript-eslint/no-explicit-any': 0,
     'react-refresh/only-export-components': [
       'warn',

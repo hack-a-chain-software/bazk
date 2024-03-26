@@ -34,8 +34,6 @@ const FoundationContextProvider = ({ children }: any) => {
 
     const rawCeremonies = output.toJSON().ok.ok
 
-    console.log('rawCeremonies', rawCeremonies.map(([ceremony]: any) => ceremony))
-
     return rawCeremonies
       .filter(([ceremony]: any) => ceremony.phase !== 1)
       .map(([ceremony, contributions]: any) => {
@@ -50,6 +48,7 @@ const FoundationContextProvider = ({ children }: any) => {
           hash: '55ab71351f...c8c5cbb24d'
         })
       })
+      .slice(52)
   }, [contract])
 
   const getCeremony = useCallback(async (id: string | number) => {

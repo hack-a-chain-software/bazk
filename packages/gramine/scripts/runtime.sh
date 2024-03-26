@@ -25,7 +25,7 @@ get_zip_url() {
 
 # Checks if the folder exists
 if [ -n "$VOLUME_PATH" ]; then
-    echo "Folder $FOLDER found. Running Docker..."
+    echo "Folder dist found. Running Docker..."
 else
     echo "Neither $FOLDER nor $ALTERNATE_FOLDER found. Downloading and extracting the file..."
 
@@ -53,5 +53,13 @@ if [ "$TEST_MODE" = "true" ]; then
     # Run docker command
     sudo docker run -p 3000:3000 --env-file .env --rm -v $(pwd)/$VOLUME_PATH:/dist -it mateus4loading/bazk-runtime:latest
 else
-    sudo docker run -d -p 3000:3000 --env-file .env --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v $(pwd)/$VOLUME_PATH:/dist -it mateus4loading/bazk-runtime:latest
+    CONTAINER_ID=$(sudo docker run -d -p 3000:3000 --env-file .env --rm --device /dev/sgx_enclave --device /dev/sgx_provision -v $(pwd)/dist:/dist -it gramineproject/gramine:v1.5)
+
+    CONTAINER_ID_TRUNCATED=$(echo $CONTAINER_ID | cut -c 1-12)
+
+    sleep 5
+
+    # Start gramine
+    sudo docker exec -it -d $CONTAINER_ID_TRUNCATED /bin/bash -c "cd ./dist && mkdir -p ./data && chmod +x -R . && ./gramine-sgx bazk ./app/index.js"
+
 fi

@@ -10,9 +10,9 @@ export const Container = ({ children }: { children: ReactNode }) => {
         w-full
         flex-grow
         flex-col items-start justify-start
-        overflow-y-scroll
         max-w-screen-xl
         mx-auto
+        min-h-[100vh]
       "
     >
       {children}

@@ -44,3 +44,30 @@ export const uploadToPinata = async (filePath: string): Promise<string> => {
     throw error;
   }
 }
+
+export const downloadFromPinata = async (contribution: any): Promise<any> => {
+  if (!contribution) {
+    throw new Error("invalid contribution");
+  }
+
+  const curlCommand = "./curl";
+
+  const args = [
+    `https://ipfs.io/ipfs/${contribution.hash}/`,
+    "-s",
+    "--output",
+    `./${contribution.name}`
+  ];
+
+  try {
+    const { stderr } = await execFile(curlCommand, args);
+
+    if (stderr) {
+      throw new Error(`Error: ${stderr}`);
+    }
+
+  } catch (error) {
+    console.error("Error download file from IPFS:", error);
+    throw error;
+  }
+}

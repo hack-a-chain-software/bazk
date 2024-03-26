@@ -12,6 +12,7 @@ export interface ColumnInterface {
 export interface TableInterface {
   rows: any[],
   title: string;
+  itemsKey?: string;
   classRoot?: string;
   columns: ColumnInterface[],
 }
@@ -21,6 +22,7 @@ export const Table = ({
   title,
   columns,
   classRoot,
+  itemsKey = 'contributions',
 }: TableInterface) => {
   return (
     <div
@@ -101,7 +103,7 @@ export const Table = ({
           <span
             className="text-bazk-font-1 text-lg font-medium"
           >
-            No contributions have been made yet.
+            No {itemsKey} have been made yet.
           </span>
         </div>
       )}

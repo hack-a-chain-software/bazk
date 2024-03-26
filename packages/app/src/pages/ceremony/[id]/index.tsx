@@ -10,6 +10,8 @@ import { useFoundationContext } from '@/providers/foundation';
 import usePaginate from '@/hooks/usePaginate';
 import { ApiServiceContext } from '@/App';
 import { contributionsTableColumns } from '@/utils/tables';
+import { isBefore } from 'date-fns';
+import { Downloads } from '@/components/ceremony/Downloads';
 
 export const CeremonyPage = () => {
   const { id } = useParams()
@@ -41,7 +43,13 @@ export const CeremonyPage = () => {
     (async () => {
       const res = await getCeremony(id) as any
 
-      setCeremony(res)
+      if (!res) {
+        return
+      }
+
+      const isOpen = isBefore(new Date(), new Date(res.deadline * 1000))
+
+      setCeremony({ ...res, isOpen })
     })()
   }, [id, isStarted, getCeremony])
 
@@ -56,8 +64,10 @@ export const CeremonyPage = () => {
           title="Ceremony"
         />
 
-        {ceremony && (
-          <ContributionButton />
+        {ceremony && ceremony.isOpen && (
+          <ContributionButton
+            disabled={!ceremony.isOpen}
+          />
         )}
       </div>
 
@@ -78,9 +88,17 @@ export const CeremonyPage = () => {
         <div
           className="space-y-4 md:space-y-0 md:grid grid-cols-12 gap-6"
         >
-          <Overview
-            ceremony={ceremony}
-          />
+          <div
+            className='col-span-4 flex flex-col gap-4 w-full'
+          >
+            <Overview
+              ceremony={ceremony}
+            />
+
+            <Downloads
+              ceremony={ceremony}
+            />
+          </div>
 
           <div
             className="w-full col-span-8 flex flex-col gap-4 md:gap-6"

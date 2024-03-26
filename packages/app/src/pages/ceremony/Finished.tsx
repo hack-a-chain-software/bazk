@@ -1,8 +1,26 @@
 import { ButtonLarge, ButtonSecondaryLarge } from "@/components/Button";
 import { Completed } from "@/components/icons";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export const FinishedPage = () => {
+  const [id, setId] = useState(null);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search.split('?')[1]);
+
+    const id = queryParams.get('id')
+
+    if (!id) {
+      navigate('/')
+
+      return
+    }
+
+    setId(id as any);
+  }, [location, navigate]);
 
   return (
     <div
@@ -53,7 +71,7 @@ export const FinishedPage = () => {
           </Link>
 
           <Link
-            to="/ceremony/1"
+            to={`/ceremony/${id}`}
             className="w-full"
           >
             <ButtonLarge

@@ -51,6 +51,7 @@ export const IndexPage = () => {
           <Table
             rows={page}
             title="Ceremonies"
+            itemsKey="ceremonies"
             columns={ceremoniesTableColumns}
           />
 
