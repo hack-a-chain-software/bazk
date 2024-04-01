@@ -10,10 +10,10 @@ export const webSocketConnection = fromPromise(
       options({
         provider: new WsProvider(RPC_TESTNET_URL),
         noInitWarn: true,
-      })
+      }) as any
     )
 
-    const phatRegistry = await OnChainRegistry.create(api)
+    const phatRegistry = await OnChainRegistry.create(api as any)
 
     return {
       api,

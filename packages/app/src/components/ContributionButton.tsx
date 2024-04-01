@@ -2,10 +2,14 @@ import Button, { ButtonLarge, ButtonSecondaryLarge } from "./Button"
 import { useState } from 'react'
 import Modal from "./Modal"
 import Puzzle from "./icons/Puzzle"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 
-export const ContributionButton = () => {
+export const ContributionButton = ({ disabled = false }: { disabled?: boolean }) => {
   const [isOpen, setIsOpen] = useState(false)
+
+  const location = useLocation();
+
+  const contributePath = `${location.pathname}/contribute`;
 
   function closeModal () {
     setIsOpen(false)
@@ -18,6 +22,7 @@ export const ContributionButton = () => {
   return (
     <div>
       <Button
+        disabled={disabled}
         onClick={openModal}
         label="Start a contribution"
       />
@@ -64,11 +69,12 @@ export const ContributionButton = () => {
         >
           <ButtonSecondaryLarge
             onClick={() => {}}
+            disabled
             label="External"
           />
 
           <Link
-            to="/contribution/create"
+            to={contributePath}
             className="w-full"
           >
             <ButtonLarge

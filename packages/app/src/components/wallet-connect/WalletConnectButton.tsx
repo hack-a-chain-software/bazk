@@ -21,7 +21,7 @@ export const ConnectWalletButton = () => {
     return (
       <button
         className={twMerge(
-          'bg-bazk-800 h-[40px]',
+          'hidden md:block bg-bazk-800 h-[40px]',
           'px-4 rounded-lg border border-bazk-500',
         )}
       >
@@ -52,7 +52,7 @@ export const ConnectWalletButton = () => {
         <button
           onClick={() => PhalaConnectActorRef.send({ type: 'open-modal' })}
           className={twMerge(
-            'bg-bg-bazk-dark-blue',
+            'hidden md:block bg-bg-bazk-dark-blue',
             'h-[40px] px-4 rounded-lg border border-bazk-500 hover:bg-bazk-800',
           )}
         >
@@ -62,7 +62,7 @@ export const ConnectWalletButton = () => {
             <span
               className="text-white font-medium leading-[140%]"
             >
-              connect wallet
+              Connect Wallet
             </span>
 
             <div
@@ -87,7 +87,7 @@ export const ConnectWalletButton = () => {
   }
 
   return (
-    <Popover className="relative outline-none">
+    <Popover className="hidden md:block relative outline-none">
       <Popover.Button
         className={twMerge(
           'group',
