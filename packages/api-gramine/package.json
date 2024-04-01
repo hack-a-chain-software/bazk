@@ -1,5 +1,5 @@
 {
-  "name": "@bazk/gramine",
+  "name": "@bazk/api-gramine",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
