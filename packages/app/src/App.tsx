@@ -5,6 +5,7 @@ import {
 import routes from '~react-pages'
 import Root from '@/components/layout/Root'
 import Header from '@/components/layout/Header'
+import { Toaster } from 'react-hot-toast'
 import Container from '@/components/layout/Container'
 
 import { FoundationContextProvider } from './providers/foundation'
@@ -24,6 +25,8 @@ export default function BazkApp() {
       <PhalaConnectContext.Provider>
         <FoundationContextProvider>
           <Root>
+            <Toaster/>
+
             <Router>
               <Header/>
 
@@ -31,7 +34,7 @@ export default function BazkApp() {
                 <Pages/>
               </Container>
             </Router>
-          </Root>x
+          </Root>
         </FoundationContextProvider>
       </PhalaConnectContext.Provider>
     </ApiServiceContext.Provider>
