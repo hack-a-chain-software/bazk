@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { apiUrl } from "@/utils/constants";
 import toast from 'react-hot-toast';
 import { ToastError } from "@/components/Toast";
+import Info from "@/components/icons/Info";
 
 const defaultForm = {
   name: "",
@@ -281,6 +282,47 @@ export const CreatePage = () => {
         <div
           className="flex justify-end items-center gap-2 pt-2"
         >
+          <div
+            className="flex-grow h-[20px]"
+          >
+            <div
+              className="group z-[99999] relative"
+            >
+              <a
+                href="/circuit.json"
+                download="circuit.json"
+                className="h-[20px] text-sm flex items-center gap-1"
+              >
+                Download an example file
+
+                <Info/>
+              </a>
+
+              <div
+                className="
+                  absolute
+                  hidden
+                  mt-2
+                  w-max
+                  text-sm
+                  max-w-[280px]
+                  text-left
+                  group-hover:flex
+                  bg-white
+                  px-4 py-3
+                  rounded-lg
+                  shadow-[4px_4px_8px_0px_rgba(30,41,59,0.18)]
+                "
+              >
+                <span
+                  className="text-xxs text-font-1"
+                >
+                  You can download the example file to create ceremonies.
+                </span>
+              </div>
+            </div>
+          </div>
+
           {!isCreating && (
             <ButtonSecondary
               label="Cancel"
