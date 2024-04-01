@@ -8,6 +8,7 @@
   "scripts": {
     "app": "yarn workspace @bazk/app",
     "gramine": "yarn workspace @bazk/gramine",
+    "serverless": "yarn workspace @bazk/serverless",
     "api-gramine": "yarn workspace @bazk/api-gramine",
     "provisioning": "yarn workspace @bazk/provisioning"
   },
