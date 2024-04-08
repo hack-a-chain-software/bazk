@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# SPDX-License-Identifier: LGPL-3.0-or-later
+# Copyright (C) 2014 Stony Brook University
+# Copyright (C) 2019 Invisible Things Lab
+# Copyright (C) 2021 Intel Corporation
+#                    Michał Kowalczyk <mkow@invisiblethingslab.com>
+#                    Wojtek Porczyk <woju@invisiblethingslab.com>
+
+GRAMINE_DIR="$PWD/cruntime"
+PAL_CMD="$GRAMINE_DIR/direct/loader"
+LIBPAL_PATH="$GRAMINE_DIR/direct/libpal.so"
+
+APPLICATION=
+
+
+while [ "$1" != "" ];
+do
+	if [ "$APPLICATION" == "" ]; then
+		APPLICATION=$1
+		shift
+		continue
+	fi
+	break
+done
+
+if [ "$APPLICATION" == "" ]; then
+	echo "Usage: $0 [<application>] <args>..."
+	exit 2
+fi
+
+if [ ! -e "$APPLICATION.manifest" ]; then
+    echo "Invalid application path specified ($APPLICATION.manifest does not exist)." >&2
+    echo "The path should point to application configuration files, so that they can be" >&2
+    echo "found after appending corresponding extensions." >&2
+    exit 2
+fi
+
+if [ ! -f "$PAL_CMD" ]; then
+	echo "$PAL_CMD not found"
+	exit 1
+fi
+
+"$PAL_CMD" "$LIBPAL_PATH" init "$APPLICATION" "$@"

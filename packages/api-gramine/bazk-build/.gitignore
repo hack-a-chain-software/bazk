@@ -1,0 +1,10 @@
+/app/
+/cruntime/
+/dist/
+/node.manifest
+/node.manifest.sgx
+/node.sig
+/bin
+challenge
+curl
+/payload/
