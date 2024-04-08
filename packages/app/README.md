@@ -1,30 +1,47 @@
-# React + TypeScript + Vite
+[Bazk](https://www.bazk.tech/)
+==========
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Guidelines
+* Use the present tense ("Add feature" not "Added feature") and the imperative mood ("Move class to..." not "Moves class to...") on commits and use the name issue on pull requests.
+* Pull requests must be reviewed before merged.
+* Done is better than perfect. Does it work as expected? Ship now, iterate later.
 
-Currently, two official plugins are available:
+## Coding Style
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- CSS: https://github.com/airbnb/css
+- Javascript: https://github.com/airbnb/javascript
+- React: https://airbnb.io/javascript/react/
 
-## Expanding the ESLint configuration
+## Directory Structure
+In our project, Nuxt.js is used in combination with Nuxt Layer to manage various applications as individual layers. This unique structure allows us to segregate our codebase based on their functionality or scope and handle each layer as a separate Nuxt.js application.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Here's a brief overview of the structure:
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```bash
+.
+├── components        # UI Components
+├── pages             # App pages
+├── hooks             # UI Hooks
+├── machines          # Xstate machines
+├── providers         # App providers
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Installation
+-----------------
+
+#### Steps
+1) Clone the repository:
+```bash
+$ gh repo clone hack-a-chain-software/bazk
+$ cd bazk
+```
+
+2) Install frontend dependencies via YARN:
+```bash
+$ yarn install
+```
+
+3) Run dev server
+```bash
+$ yarn app dev
+```

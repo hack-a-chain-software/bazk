@@ -2,9 +2,10 @@ import { ButtonLarge } from "@/components/Button";
 import { Completed } from "@/components/icons";
 import Copy from "@/components/icons/Copy";
 import Download from "@/components/icons/Download";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export const FinishedPage = () => {
+  const { hash, id } = useParams();
 
   return (
     <div
@@ -37,7 +38,7 @@ export const FinishedPage = () => {
           <span
             className="text-sm md:text-base text-[#475569] leading-[22.4px]"
           >
-            You contributed to Opact Tickets Setup Ceremony version 3.0. Your contribution files are available below, and you can also view them on the Ceremony page
+            Your contribution files are available below, and you can also view them on the Ceremony page
           </span>
         </div>
 
@@ -53,11 +54,12 @@ export const FinishedPage = () => {
               Hash
             </span>
 
-            <div
-              className="flex items-center gap-4"
+            <button
+              onClick={() => navigator.clipboard.writeText(hash || "")}
+              className="flex md:max-w-full w-full items-center justify-between gap-4 px-3 md:px-4 py-4 border border-bazk-grey-500 rounded-lg hover:opacity-[0.7] active:border-green-500 text-[#1E293B] active:text-green-500"
             >
               <span
-                className="max-w-[calc(100%-36px)] md:max-w-full w-full text-[#1E293B] px-3 md:px-4 py-4 border border-bazk-grey-500 rounded-lg leading-[16px] break-words"
+                className="max-w-[calc(100%-36px)] leading-[16px] break-words"
               >
                 b145sd6fg54dfdf65dfds...g12921fgh2d8
               </span>
@@ -65,7 +67,7 @@ export const FinishedPage = () => {
               <Copy
                 className="w-6 h-6 md:w-8 md:h-8 shrink-0"
               />
-            </div>
+            </button>
           </div>
 
           <div
@@ -77,19 +79,24 @@ export const FinishedPage = () => {
               Contribution
             </span>
 
-            <div
-              className="w-full flex items-center gap-4"
+            <Link
+              target='__blank'
+              to={`https://ipfs.io/ipfs/${hash}/`}
             >
-              <span
-                className="flex w-full text-[#1E293B] px-3 md:px-4 py-4 border border-bazk-grey-500 rounded-lg leading-[16px]"
+              <button
+                className="w-full flex items-center gap-4 px-3 md:px-4 py-4 border border-bazk-grey-500 rounded-lg hover:opacity-[0.7]"
               >
-                Opacttickets_000026.zkey
-              </span>
+                <span
+                  className="flex w-full text-[#1E293B] leading-[16px]"
+                >
+                  contribution.params
+                </span>
 
-              <Download
-                className="w-8 h-8"
-              />
-            </div>
+                <Download
+                  className="w-8 h-8"
+                />
+              </button>
+            </Link>
           </div>
         </div>
 
@@ -97,7 +104,7 @@ export const FinishedPage = () => {
           className="flex justify-center gap-2 pt-4"
         >
           <Link
-            to="/ceremony/1"
+            to={`/ceremony/${id}`}
           >
             <ButtonLarge
               label="Ceremony Page"
