@@ -1,5 +1,11 @@
-import { execFile } from "./exec";
+import https from 'https';
+import fs from 'fs';
+import { promisify } from 'util';
+import { readFile } from 'fs/promises';
 import { pinataKey, pinataSecret } from "../constants/env";
+import stream from 'stream';
+
+const pipeline = promisify(stream.pipeline);
 
 export const uploadToPinata = async (filePath: string): Promise<string> => {
   if (pinataKey == null) {
@@ -10,64 +16,76 @@ export const uploadToPinata = async (filePath: string): Promise<string> => {
     throw new Error("PINATA_API_SECRET env var not set");
   }
 
-  const curlCommand = "./curl";
+  const boundary = `--------------------------${Date.now().toString(16)}`;
+  const fileContent = await readFile(filePath);
 
-  const args = [
-    "https://api.pinata.cloud/pinning/pinFileToIPFS",
-    "-s",
-    "-X",
-    "POST",
-    "-H",
-    `pinata_api_key: ${pinataKey}`,
-    "-H",
-    `pinata_secret_api_key: ${pinataSecret}`,
-    "-F",
-    `file=@./${filePath}`,
-  ];
+  const filename = filePath.split('/').pop();
+  const payload = `--${boundary}\r\n` +
+                  `Content-Disposition: form-data; name="file"; filename="${filename}"\r\n` +
+                  `Content-Type: application/octet-stream\r\n\r\n` +
+                  fileContent + `\r\n` +
+                  `--${boundary}--`;
 
-  try {
-    const { stdout, stderr } = await execFile(curlCommand, args);
+  const options = {
+      hostname: 'api.pinata.cloud',
+      path: '/pinning/pinFileToIPFS',
+      method: 'POST',
+      headers: {
+          'Content-Type': `multipart/form-data; boundary=${boundary}`,
+          'pinata_api_key': pinataKey,
+          'pinata_secret_api_key': pinataSecret,
+          'Content-Length': Buffer.byteLength(payload)
+      }
+  };
 
-    if (stderr) {
-      throw new Error(`Error: ${stderr}`);
-    }
+  return new Promise((resolve, reject) => {
+      const req = https.request(options, res => {
+          let response = '';
+          res.on('data', (chunk) => {
+              response += chunk;
+          });
+          res.on('end', () => {
+              if (res.statusCode === 200) {
+                  resolve(JSON.parse(response).IpfsHash);
+              } else {
+                  reject(new Error(`Server responded with status code: ${res.statusCode}`));
+              }
+          });
+      });
 
-    console.log("[IPFS] Upload successful");
-    console.log("[IPFS] stdout: \n");
-    console.log(stdout);
-    console.log("\n");
+      req.on('error', (e) => {
+          reject(new Error(`Problem with request: ${e.message}`));
+      });
 
-    const response = JSON.parse(stdout);
-    return response.IpfsHash;
-  } catch (error) {
-    console.error("Error uploading file to IPFS:", error);
-    throw error;
-  }
+      req.write(payload);
+      req.end();
+  });
 }
+
 
 export const downloadFromPinata = async (contribution: any): Promise<any> => {
-  if (!contribution) {
-    throw new Error("invalid contribution");
+  if (!contribution || !contribution.hash || !contribution.name) {
+    throw new Error("Invalid contribution: missing hash or name.");
   }
 
-  const curlCommand = "./curl";
+    const url = `https://ipfs.io/ipfs/${contribution.hash}/`;
+    const outputPath = `./${contribution.name}`;
 
-  const args = [
-    `https://ipfs.io/ipfs/${contribution.hash}/`,
-    "-s",
-    "--output",
-    `./${contribution.name}`
-  ];
+    console.log(`Downloading file from IPFS: ${url}`);
 
-  try {
-    const { stderr } = await execFile(curlCommand, args);
+  return new Promise((resolve, reject) => {
+    const request = https.get(url, (response) => {
+      if (response.statusCode === 200) {
+        pipeline(response, fs.createWriteStream(outputPath))
+          .then(() => resolve(`Download completed: ${outputPath}`))
+          .catch((error) => reject(new Error(`Stream pipeline failed: ${error}`)));
+      } else {
+        reject(new Error(`Failed to download file: Server responded with ${response.statusCode}`));
+      }
+    });
 
-    if (stderr) {
-      throw new Error(`Error: ${stderr}`);
-    }
-
-  } catch (error) {
-    console.error("Error download file from IPFS:", error);
-    throw error;
-  }
-}
+    request.on('error', (error) => {
+      reject(new Error(`Request failed: ${error.message}`));
+    });
+  });
+};
