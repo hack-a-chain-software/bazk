@@ -7,7 +7,8 @@
   "scripts": {
     "start": "yarn build && yarn runtime",
     "runtime": "bash ./scripts/runtime.sh",
-    "build": "webpack && bash ./scripts/run-build.sh"
+    "build": "webpack && bash ./scripts/run-build.sh",
+    "deploy": "scp -r ./bazk-build/dist ubuntu@40.87.66.12:~/"
   },
   "devDependencies": {
     "cpy-cli": "^5.0.0",
