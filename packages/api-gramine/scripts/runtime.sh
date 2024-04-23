@@ -60,6 +60,5 @@ else
     sleep 5
 
     # Start gramine
-    sudo docker exec -it -d $CONTAINER_ID_TRUNCATED /bin/bash -c "cd ./dist && mkdir -p ./data && chmod +x -R . && ./gramine-sgx bazk ./app/index.js"
-
+    sudo docker exec -it -d $CONTAINER_ID_TRUNCATED /bin/bash -c "cd ./dist && mkdir -p ./data && chmod +x -R . && ./gramine-sgx bazk"
 fi
