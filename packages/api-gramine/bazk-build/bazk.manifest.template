@@ -65,10 +65,10 @@ trusted_files = [
   "file:app/bin/verify_contribution",
   "file:app/ceremonies/",
   "file:/etc/ssl/certs/ca-certificates.crt",
-  "file:index.js",
 ]
 
 allowed_files = [
+  "file:index.js",
   "file:/etc/ld.so.cache",
   "file:/etc/hosts",
   "file:/etc/resolv.conf",
