@@ -1,12 +1,12 @@
 {
   "source": {
-    "hash": "0x72fbdda48c6e925a3f4c1590af00b04f687777050b074bd81e5baff3461145d3",
+    "hash": "0xe2e9378b961f70eff453d32d62dce9c9b4f515b4e35c60e85782e1cbf7306aea",
     "language": "ink! 4.2.0",
-    "compiler": "rustc 1.72.1",
+    "compiler": "rustc 1.77.2",
     "build_info": {
       "build_mode": "Debug",
-      "cargo_contract_version": "3.2.0",
-      "rust_toolchain": "stable-x86_64-apple-darwin",
+      "cargo_contract_version": "4.1.1",
+      "rust_toolchain": "stable-x86_64-unknown-linux-gnu",
       "wasm_opt_settings": {
         "keep_debug_symbols": false,
         "optimization_passes": "Z"
@@ -20,6 +20,7 @@
       "Kevin Wang <wy721@qq.com>"
     ]
   },
+  "image": null,
   "spec": {
     "constructors": [
       {
