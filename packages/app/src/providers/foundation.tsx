@@ -48,7 +48,6 @@ const FoundationContextProvider = ({ children }: any) => {
           hash: '55ab71351f...c8c5cbb24d'
         })
       })
-      .slice(52)
   }, [contract])
 
   const getCeremony = useCallback(async (id: string | number) => {
