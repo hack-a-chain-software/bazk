@@ -31,7 +31,8 @@ optional = true
 [dependencies.sgx-attestation]
 # TODO.kevin, use crates.io once it's published
 git = "https://github.com/Phala-Network/phala-blockchain"
-default-features = false
+features = ["verify"]
+default-features = true
 
 [dev-dependencies]
 ink_e2e = "4.2.0"
