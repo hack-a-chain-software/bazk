@@ -1,15 +1,19 @@
 import Table from "@/components/Table";
 import Pagination from '@/components/Pagination'
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFoundationContext } from "@/providers/foundation";
-import usePaginate from "@/hooks/usePaginate";
 import { ApiServiceContext } from "@/App";
 import { ceremoniesTableColumns } from "@/utils/tables";
+
+const limit = 11
+const totalCount = 1;
 
 export const IndexPage = () => {
   const [isLoading, setIsLoading] = useState(true)
   const [ceremonies, setCeremonies] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
+
+  const totalPages = useMemo(() => Math.max(Math.ceil(totalCount / limit), 1), [])
 
   const isStarted = ApiServiceContext.useSelector(state => state.matches('started'))
 
@@ -17,30 +21,26 @@ export const IndexPage = () => {
     getCeremonies,
   } = useFoundationContext()
 
-  const {
-    page,
-    totalPages,
-    totalItems,
-  } = usePaginate({
-    currentPage,
-    itemsPerPage: 11,
-    items: ceremonies,
-  })
-
-  useEffect(() => {
-    if (!isStarted) {
+  const fetch = useCallback(async (page: number) => {
+    if (!getCeremonies) {
       return
     }
 
-    (async () => {
-      setIsLoading(true)
+    setIsLoading(true)
 
-      const res = await getCeremonies() as any
+    const res = await getCeremonies(page, 11) as any
 
-      setCeremonies(res)
-      setIsLoading(false)
-    })()
-  }, [isStarted, getCeremonies])
+    setCeremonies(res)
+    setIsLoading(false)
+  }, [getCeremonies])
+
+  useEffect(() => {
+    if (!isStarted || currentPage !== 1) {
+      return
+    }
+
+    fetch(currentPage)
+  }, [isStarted, currentPage, fetch])
 
   return (
     <div
@@ -49,7 +49,7 @@ export const IndexPage = () => {
       {!isLoading && (
         <div>
           <Table
-            rows={page}
+            rows={ceremonies}
             title="Ceremonies"
             itemsKey="ceremonies"
             columns={ceremoniesTableColumns}
@@ -58,11 +58,17 @@ export const IndexPage = () => {
           {ceremonies && ceremonies.length > 0 && (
             <Pagination
               totalPages={totalPages}
-              totalItems={totalItems}
+              totalItems={ceremonies.length}
               currentPage={currentPage}
-              itemsPerPage={page.length}
+              itemsPerPage={limit}
               onPageChange={(page: number | string) => {
                 setCurrentPage(page as number)
+
+                if (page === 1) {
+                  return
+                }
+
+                fetch(page as number)
               }}
             />
           )}
