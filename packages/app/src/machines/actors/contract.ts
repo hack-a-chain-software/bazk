@@ -2,7 +2,7 @@ import abi from '@/abi.json'
 import { fromPromise } from "xstate";
 import { PinkContractPromise } from '@phala/sdk';
 
-const BAZK_CONTRACT_ID = '0xec0fdb16780cc905dbf8091eaff8d4a6341b5ae8c6353a0c1f88ef29c63673f0'
+const BAZK_CONTRACT_ID = '0x43b5e1432806aad3b30873924021168ea9be88926cf09049fa82acce786974d2'
 
 export const contractConnection = fromPromise(
   async ({ input }: any) => {

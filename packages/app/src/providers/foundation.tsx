@@ -30,7 +30,7 @@ const FoundationContextProvider = ({ children }: any) => {
 
     const {
       output
-    } = await contract.query.getCerimonies(pair.address, { cert })
+    } = await contract.query.getCerimonies(pair.address, { cert }, 0, 20)
 
     const rawCeremonies = output.toJSON().ok.ok
 
