@@ -5,7 +5,7 @@ import { signCertificate } from '@phala/sdk'
 import { ApiServiceContext } from '@/App';
 
 interface FoundationContextValue {
-  getCeremonies: () => Promise<any[]>
+  getCeremonies: (page: number, count: number) => Promise<any[]>
   getCeremony: (id: string | number) => Promise<any>
 }
 
@@ -30,9 +30,11 @@ const FoundationContextProvider = ({ children }: any) => {
 
     const {
       output
-    } = await contract.query.getCerimonies(pair.address, { cert }, 0, 20)
+    } = await contract.query.getCerimonies(pair.address, { cert }, 0, 11)
 
     const rawCeremonies = output.toJSON().ok.ok
+
+    console.log('rawCeremonies', output.toJSON())
 
     return rawCeremonies
       .filter(([ceremony]: any) => ceremony.phase !== 1)
