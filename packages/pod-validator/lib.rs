@@ -178,6 +178,11 @@ mod pod_validator {
         }
 
         #[ink(message)]
+        pub fn get_ceremonies_count(&self) -> u32 {
+            self.ceremonies_count
+        }
+
+        #[ink(message)]
         /// Gets the number of IPFS hashes associated with the given ceremony.
         pub fn get_ceremony_hashes_count(&self, ceremony_id: u32) -> Result<u32> {
             let hashes = self.ceremony_hashes.get(ceremony_id).unwrap_or_default();
@@ -211,8 +216,10 @@ mod pod_validator {
                 timestamp,
             });
         
-            // Update the ceremony if it already exists, otherwise, it is a new entry
-            self.ceremonies.insert(ceremony_id, &ceremony);
+            if !self.ceremonies.contains(ceremony_id) {
+                self.ceremonies.insert(ceremony_id, &ceremony);
+            }
+            
             self.ceremonies_indexes.insert(self.ceremonies_count, &ceremony_id);
             match self.ceremonies_count.checked_add(1) {
                 Some(new_count) => self.ceremonies_count = new_count,
