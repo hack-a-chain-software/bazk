@@ -1,6 +1,6 @@
 {
   "source": {
-    "hash": "0xcadf9e08f36b1da7c61c4ad1738eb29537bb65b55f55e917d2c98771d1e131db",
+    "hash": "0xa6162c09e1f9e1c1576f6580260379a0b561b3a7d2148db8426b9d758d45db79",
     "language": "ink! 4.3.0",
     "compiler": "rustc 1.77.2",
     "build_info": {
@@ -51,7 +51,7 @@
         "displayName": [
           "Balance"
         ],
-        "type": 37
+        "type": 38
       },
       "blockNumber": {
         "displayName": [
@@ -63,20 +63,20 @@
         "displayName": [
           "ChainExtension"
         ],
-        "type": 40
+        "type": 41
       },
       "hash": {
         "displayName": [
           "Hash"
         ],
-        "type": 38
+        "type": 39
       },
       "maxEventTopics": 4,
       "timestamp": {
         "displayName": [
           "Timestamp"
         ],
-        "type": 39
+        "type": 40
       }
     },
     "events": [
@@ -353,6 +353,22 @@
         "selector": "0xb12eab37"
       },
       {
+        "args": [],
+        "default": false,
+        "docs": [],
+        "label": "get_ceremonies_count",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": [
+            "ink",
+            "MessageResult"
+          ],
+          "type": 25
+        },
+        "selector": "0x8df99ef4"
+      },
+      {
         "args": [
           {
             "label": "ceremony_id",
@@ -376,7 +392,7 @@
             "ink",
             "MessageResult"
           ],
-          "type": 25
+          "type": 26
         },
         "selector": "0x002d1e5f"
       },
@@ -404,7 +420,7 @@
             "ink",
             "MessageResult"
           ],
-          "type": 25
+          "type": 26
         },
         "selector": "0x4d0e10e7"
       },
@@ -532,7 +548,7 @@
             "ink",
             "MessageResult"
           ],
-          "type": 27
+          "type": 28
         },
         "selector": "0xd101eea9"
       },
@@ -560,7 +576,7 @@
             "ink",
             "MessageResult"
           ],
-          "type": 32
+          "type": 33
         },
         "selector": "0xad9b0765"
       },
@@ -588,7 +604,7 @@
             "ink",
             "MessageResult"
           ],
-          "type": 35
+          "type": 36
         },
         "selector": "0x9ec8a573"
       }
@@ -1427,7 +1443,7 @@
               {
                 "fields": [
                   {
-                    "type": 26
+                    "type": 7
                   }
                 ],
                 "index": 0,
@@ -1448,7 +1464,7 @@
         "params": [
           {
             "name": "T",
-            "type": 26
+            "type": 7
           },
           {
             "name": "E",
@@ -1462,6 +1478,48 @@
     },
     {
       "id": 26,
+      "type": {
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 27
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 12
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
+        "params": [
+          {
+            "name": "T",
+            "type": 27
+          },
+          {
+            "name": "E",
+            "type": 12
+          }
+        ],
+        "path": [
+          "Result"
+        ]
+      }
+    },
+    {
+      "id": 27,
       "type": {
         "def": {
           "variant": {
@@ -1503,7 +1561,7 @@
       }
     },
     {
-      "id": 27,
+      "id": 28,
       "type": {
         "def": {
           "variant": {
@@ -1511,7 +1569,7 @@
               {
                 "fields": [
                   {
-                    "type": 28
+                    "type": 29
                   }
                 ],
                 "index": 0,
@@ -1532,7 +1590,7 @@
         "params": [
           {
             "name": "T",
-            "type": 28
+            "type": 29
           },
           {
             "name": "E",
@@ -1545,7 +1603,7 @@
       }
     },
     {
-      "id": 28,
+      "id": 29,
       "type": {
         "def": {
           "variant": {
@@ -1553,7 +1611,7 @@
               {
                 "fields": [
                   {
-                    "type": 29
+                    "type": 30
                   }
                 ],
                 "index": 0,
@@ -1574,7 +1632,7 @@
         "params": [
           {
             "name": "T",
-            "type": 29
+            "type": 30
           },
           {
             "name": "E",
@@ -1587,28 +1645,28 @@
       }
     },
     {
-      "id": 29,
+      "id": 30,
       "type": {
         "def": {
           "sequence": {
-            "type": 30
+            "type": 31
           }
         }
       }
     },
     {
-      "id": 30,
+      "id": 31,
       "type": {
         "def": {
           "tuple": [
-            31,
+            32,
             7
           ]
         }
       }
     },
     {
-      "id": 31,
+      "id": 32,
       "type": {
         "def": {
           "composite": {
@@ -1654,7 +1712,7 @@
       }
     },
     {
-      "id": 32,
+      "id": 33,
       "type": {
         "def": {
           "variant": {
@@ -1662,7 +1720,7 @@
               {
                 "fields": [
                   {
-                    "type": 33
+                    "type": 34
                   }
                 ],
                 "index": 0,
@@ -1683,7 +1741,7 @@
         "params": [
           {
             "name": "T",
-            "type": 33
+            "type": 34
           },
           {
             "name": "E",
@@ -1696,7 +1754,7 @@
       }
     },
     {
-      "id": 33,
+      "id": 34,
       "type": {
         "def": {
           "variant": {
@@ -1704,7 +1762,7 @@
               {
                 "fields": [
                   {
-                    "type": 34
+                    "type": 35
                   }
                 ],
                 "index": 0,
@@ -1725,7 +1783,7 @@
         "params": [
           {
             "name": "T",
-            "type": 34
+            "type": 35
           },
           {
             "name": "E",
@@ -1738,11 +1796,11 @@
       }
     },
     {
-      "id": 34,
+      "id": 35,
       "type": {
         "def": {
           "tuple": [
-            31,
+            32,
             4,
             8
           ]
@@ -1750,7 +1808,7 @@
       }
     },
     {
-      "id": 35,
+      "id": 36,
       "type": {
         "def": {
           "variant": {
@@ -1758,7 +1816,7 @@
               {
                 "fields": [
                   {
-                    "type": 36
+                    "type": 37
                   }
                 ],
                 "index": 0,
@@ -1779,7 +1837,7 @@
         "params": [
           {
             "name": "T",
-            "type": 36
+            "type": 37
           },
           {
             "name": "E",
@@ -1792,7 +1850,7 @@
       }
     },
     {
-      "id": 36,
+      "id": 37,
       "type": {
         "def": {
           "variant": {
@@ -1834,7 +1892,7 @@
       }
     },
     {
-      "id": 37,
+      "id": 38,
       "type": {
         "def": {
           "primitive": "u128"
@@ -1842,7 +1900,7 @@
       }
     },
     {
-      "id": 38,
+      "id": 39,
       "type": {
         "def": {
           "composite": {
@@ -1862,7 +1920,7 @@
       }
     },
     {
-      "id": 39,
+      "id": 40,
       "type": {
         "def": {
           "primitive": "u64"
@@ -1870,7 +1928,7 @@
       }
     },
     {
-      "id": 40,
+      "id": 41,
       "type": {
         "def": {
           "variant": {}
