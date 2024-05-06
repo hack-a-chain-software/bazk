@@ -215,31 +215,29 @@ mod pod_validator {
                 deadline,
                 timestamp,
             });
-        
-            if !self.ceremonies.contains(ceremony_id) {
-                self.ceremonies.insert(ceremony_id, &ceremony);
-            }
             
             self.ceremonies_indexes.insert(self.ceremonies_count, &ceremony_id);
-            match self.ceremonies_count.checked_add(1) {
-                Some(new_count) => self.ceremonies_count = new_count,
-                None => return Err(Error::Overflow),
+
+            if !self.ceremonies.contains(ceremony_id) {
+                self.ceremonies.insert(ceremony_id, &ceremony);
+                match self.ceremonies_count.checked_add(1) {
+                    Some(new_count) => self.ceremonies_count = new_count,
+                    None => return Err(Error::Overflow),
+                }
             }
-            
+   
             ink::env::debug_println!("[Contract] Ceremony (created or updated) for ceremony ID {}.", ceremony_id);
         
             // Add metadata to the ceremony
             if !metadatas.is_empty() {
                 ink::env::debug_println!("[Contract] Adding metadatas to ceremony ID {}.", ceremony_id);
                 self.add_ceremony_metadatas(ceremony_id, metadatas)?;
-                ink::env::debug_println!("[Contract] Metadatas added to ceremony ID {}.", ceremony_id);
             }
         
             // Add file hashes to the ceremony
             if !hashes.is_empty() {
                 ink::env::debug_println!("[Contract] Adding hashes to ceremony ID {}.", ceremony_id);
                 self.add_ceremony_hashes(ceremony_id, hashes)?;
-                ink::env::debug_println!("[Contract] Hashes added to ceremony ID {}.", ceremony_id);
             }
         
             ink::env::debug_println!("[Contract] add_contribution completed for ceremony ID {}.", ceremony_id);
