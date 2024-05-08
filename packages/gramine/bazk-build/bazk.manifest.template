@@ -67,6 +67,8 @@ trusted_files = [
   "file:app/bin/verify_transform_constrained",
   "file:app/bin/prepare_phase2",
   "file:app/ceremonies/",
+  "file:/etc/ssl/certs/ca-certificates.crt",
+  "file:index.js",
 ]
 
 allowed_files = [
@@ -77,8 +79,6 @@ allowed_files = [
   "file:/etc/passwd",
   "file:/etc/host.conf",
   "file:/etc/gai.conf",
-  "file:/etc/ssl/certs/ca-certificates.crt",
-  "file:index.js",
   "file:data/",
   "file:challenge",
   "file:challenge1",

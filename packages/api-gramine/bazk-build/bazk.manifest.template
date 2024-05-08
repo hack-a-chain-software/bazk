@@ -64,9 +64,11 @@ trusted_files = [
   "file:app/bin/contribute",
   "file:app/bin/verify_contribution",
   "file:app/ceremonies/",
+  "file:/etc/ssl/certs/ca-certificates.crt",
 ]
 
 allowed_files = [
+  "file:index.js",
   "file:/etc/ld.so.cache",
   "file:/etc/hosts",
   "file:/etc/resolv.conf",
@@ -75,8 +77,6 @@ allowed_files = [
   "file:/etc/passwd",
   "file:/etc/host.conf",
   "file:/etc/gai.conf",
-  "file:/etc/ssl/certs/ca-certificates.crt",
-  "file:index.js",
   "file:data/",
   "file:challenge",
   "file:challenge1",

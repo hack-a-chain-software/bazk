@@ -8,6 +8,7 @@ edition = "2021"
 ink = { version = "4.2.0", default-features = false }
 hex = { version = "0.4", default-features = false, features = ["alloc"] }
 hex_fmt = "0.3"
+ink_storage = { version = "4.2.0", default-features = false }
 
 [dependencies.pink]
 package = "pink-extension"
@@ -30,6 +31,7 @@ optional = true
 [dependencies.sgx-attestation]
 # TODO.kevin, use crates.io once it's published
 git = "https://github.com/Phala-Network/phala-blockchain"
+features = ["verify"]
 default-features = false
 
 [dev-dependencies]

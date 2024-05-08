@@ -101,6 +101,7 @@ async function main(args?: string[]) {
     );
 
     commandfileName = firstArgument as string;
+    validateCommandFileName(commandfileName);
     phase = getPhase(commandfileName);
     deadline = args?.pop() as string;
     description = args?.pop() as string;
@@ -140,6 +141,7 @@ async function main(args?: string[]) {
     console.log("[Enclave] Ceremony id provided, continuing ceremony...");
     ceremonyId = firstArgument as number;
     commandfileName = args?.shift() as string;
+    validateCommandFileName(commandfileName);
     phase = getPhase(commandfileName);
     bash = Number(args?.[args.length - 1]);
     power = Number(args?.[args.length - 2]);
@@ -527,6 +529,28 @@ async function getIpfsHash(filePath: string) {
   const fileContent = fs.readFileSync(filePath);
   const hash = await IPFS.of(fileContent);
   return hash;
+}
+
+function validateCommandFileName(command: string) {
+  if (!isValidCommandFileName(command)) {
+    console.error(
+      "Invalid command name. Please use one of the following commands: new, new_constrained, compute_constrained, verify_transform_constrained, contribute, verify_contribution, prepare_phase2"
+    );
+    return false;
+  }
+  return true;
+}
+
+function isValidCommandFileName(command: string) {
+  return (
+    command.includes("new") ||
+    command.includes("new_constrained") ||
+    command.includes("compute_constrained") ||
+    command.includes("verify_transform_constrained") ||
+    command.includes("contribute") ||
+    command.includes("verify_contribution") ||
+    command.includes("prepare_phase2")
+  );
 }
 
 function getPhase(command: string) {
