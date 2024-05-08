@@ -216,9 +216,8 @@ mod pod_validator {
                 timestamp,
             });
             
-            self.ceremonies_indexes.insert(self.ceremonies_count, &ceremony_id);
-
             if !self.ceremonies.contains(ceremony_id) {
+                self.ceremonies_indexes.insert(self.ceremonies_count, &ceremony_id);
                 self.ceremonies.insert(ceremony_id, &ceremony);
                 match self.ceremonies_count.checked_add(1) {
                     Some(new_count) => self.ceremonies_count = new_count,
