@@ -54,10 +54,7 @@ jobs:
         run: (cd ./packages/api-gramine/bazk-build && chmod +x *)
 
       - name: Build app
-        run: yarn api-gramine build-app-dist
-
-      - name: Build manifest
-        run: yarn api-gramine build-manifest
+        run: yarn api-gramine build
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
