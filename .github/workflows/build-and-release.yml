@@ -51,19 +51,19 @@ jobs:
         run: yarn install
 
       - name: Update permissions
-        run: (cd ./packages/gramine/bazk-build && chmod +x *)
+        run: (cd ./packages/api-gramine/bazk-build && chmod +x *)
 
       - name: Build app
-        run: yarn gramine build-app-dist
+        run: yarn api-gramine build-app-dist
 
       - name: Build manifest
-        run: yarn gramine build-manifest
+        run: yarn api-gramine build-manifest
 
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
           name: dist
-          path: ./packages/gramine/bazk-build/dist/
+          path: ./packages/api-gramine/bazk-build/dist/
 
   release:
     needs: build
