@@ -53,6 +53,16 @@ jobs:
       - name: Update permissions
         run: (cd ./packages/api-gramine/bazk-build && chmod +x *)
 
+      - name: Create .env file
+        run: |
+          echo "ACCOUNT_MNEMONIC=${{ secrets.ACCOUNT_MNEMONIC }}" > ./packages/api-gramine/.env
+          echo "PINATA_API_KEY=${{ secrets.PINATA_API_KEY }}" >> ./packages/api-gramine/.env
+          echo "PINATA_API_SECRET=${{ secrets.PINATA_API_SECRET }}" >> ./packages/api-gramine/.env
+          echo "TEST_MODE=false" >> ./packages/api-gramine/.env
+          echo "SGX_ENABLED=${{ secrets.SGX_ENABLED }}" >> ./packages/api-gramine/.env
+          echo "IAS_SPID=${{ secrets.IAS_SPID }}" >> ./packages/api-gramine/.env
+          echo "IAS_API_KEY=${{ secrets.IAS_API_KEY }}" >> ./packages/api-gramine/.env
+
       - name: Build app
         run: yarn api-gramine build
 
