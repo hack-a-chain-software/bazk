@@ -102,7 +102,7 @@ export const CreatePage = () => {
         console.log("Creating ceremony with params: ", data)
 
         try {
-          const response = await fetch(apiUrl, {
+          const response = await fetch(import.meta.env.VITE_POD_URL || apiUrl, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

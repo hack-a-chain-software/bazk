@@ -29,6 +29,15 @@ Here's a brief overview of the structure:
 ## Installation
 -----------------
 
+### Environments
+-----------------
+```bash
+## This is the URL of the API-Gramine, the gramine api
+VITE_POD_URL="localhost:3000"
+## Pod validator address 
+VITE_CONTRACT_ID="0xd72ac19567088e35a446e0dacdfadc5f266ea68d2481401d9e6b374310fac3de"
+```
+
 #### Steps
 1) Clone the repository:
 ```bash
@@ -36,12 +45,17 @@ $ gh repo clone hack-a-chain-software/bazk
 $ cd bazk
 ```
 
-2) Install frontend dependencies via YARN:
+2) Configure enviroments
+```bash
+$ cp ./app/.env.example ./app/.env
+```
+
+3) Install frontend dependencies via YARN:
 ```bash
 $ yarn install
 ```
 
-3) Run dev server
+4) Run dev server
 ```bash
 $ yarn app dev
 ```
